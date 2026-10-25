@@ -1,0 +1,144 @@
+{
+  "updated": "2026-01-11",
+  "todo": [
+    {
+      "what": "Review the example question",
+      "when": "Next meeting",
+      "how": "Read the short task card",
+      "note": "Agree on the evaluation criterion"
+    },
+    {
+      "what": "Pick the next experiment",
+      "when": "After review",
+      "how": "Compare two proposed settings",
+      "note": "Keep the first result as a reference"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "01-11",
+      "items": [
+        {
+          "time": "09:00",
+          "what": "Read the example task and its criterion",
+          "kind": "复习"
+        },
+        {
+          "time": "14:00",
+          "what": "Compare the demonstration results",
+          "kind": "研究"
+        }
+      ],
+      "relative_day": 0
+    },
+    {
+      "date": "01-12",
+      "items": [
+        {
+          "time": "10:00",
+          "what": "Review the next task",
+          "kind": "研究"
+        }
+      ],
+      "relative_day": 1
+    }
+  ],
+  "progress_lines": [
+    {
+      "line": "A small reproducible workflow",
+      "text": "The example shows a task progressing from a question to execution and review."
+    },
+    {
+      "line": "Evaluation",
+      "text": "Each result stays linked to the task, the criterion and the next decision."
+    }
+  ],
+  "runs": [
+    {
+      "id": "demo-run",
+      "task_id": "T002",
+      "name": "Small demonstration",
+      "done": 6,
+      "total": 10,
+      "status": "进行中",
+      "line": "Example research"
+    },
+    {
+      "id": "demo-setup",
+      "name": "Environment preparation",
+      "done": 4,
+      "total": 4,
+      "status": "已完成",
+      "line": "Preparation"
+    }
+  ],
+  "tree": [
+    {
+      "title": "Example research",
+      "status": "doing",
+      "summary": "A fictional project used to demonstrate the collaboration board.",
+      "children": [
+        {
+          "title": "Question and criterion",
+          "status": "done",
+          "summary": "A concrete comparison is defined before execution.",
+          "children": []
+        },
+        {
+          "title": "Demonstration",
+          "status": "doing",
+          "summary": "Six of ten example items are complete.",
+          "tasks": [
+            "T002"
+          ],
+          "children": []
+        }
+      ]
+    }
+  ],
+  "task_groups": [
+    {
+      "group": "示例研究",
+      "tasks": [
+        {
+          "id": "T002",
+          "name": "运行小对照",
+          "who": "GPT",
+          "description": "比较两种工作流程的表现。",
+          "deliverable": "一份可复现结果与工作量记录。"
+        },
+        {
+          "id": "T003",
+          "name": "审阅对照结果",
+          "who": "Claude",
+          "description": "核对结果是否满足事先约定的标准。",
+          "deliverable": "明确的验收决定与下一步。"
+        },
+        {
+          "id": "T004",
+          "name": "整理交付文档",
+          "who": "GPT",
+          "description": "审阅完成后组织正式材料。",
+          "deliverable": "简洁的读者报告。"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "title": "Usage and setup",
+      "path": "/help",
+      "cat": "项目",
+      "archived": false
+    }
+  ],
+  "important_dates": [
+    {
+      "kind": "exam",
+      "date": "2026-01-20",
+      "public_name": "Example review",
+      "name": "Example review",
+      "relative_day": 7
+    }
+  ]
+}

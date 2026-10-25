@@ -1,0 +1,72 @@
+
+.room-markdown{white-space:normal;min-width:0;max-width:100%}
+.room-markdown p{white-space:pre-wrap;margin:0 0 .5em}.room-markdown p:last-child{margin-bottom:0}
+.room-markdown :is(h3,h4,h5,h6){font-size:1.08em;line-height:1.5;margin:.6em 0 .35em}
+.room-markdown :is(ul,ol){margin:.4em 0;padding-left:1.6em}.room-markdown li{white-space:pre-wrap}
+.room-markdown blockquote{margin:.5em 0;padding:.3em .8em;border-left:3px solid var(--room-accent);background:var(--room-bg);color:inherit}
+.room-markdown a{color:var(--room-accent);text-decoration:underline;overflow-wrap:anywhere}
+.room-markdown :not(pre)>code{font: .9em/1.6 Consolas,monospace;background:var(--room-bg);padding:.1em .35em;border-radius:4px}
+.room-code{max-width:100%;min-width:0;border:1px solid var(--room-border);border-radius:8px;overflow:hidden;margin:.5em 0;background:var(--room-bg)}
+.room-code-bar{display:flex;align-items:center;justify-content:space-between;padding:4px 10px;border-bottom:1px solid var(--room-border);font-size:11px;color:var(--muted)}
+#msgs .room-code-copy{background:transparent;color:var(--room-accent);font-size:12px;padding:4px 8px}
+.room-code pre{overflow:auto;max-width:100%;max-height:360px;margin:0;padding:12px;white-space:pre;overflow-wrap:normal;word-break:normal;tab-size:4;font:12px/1.7 Consolas,monospace}
+.room-code code{font:inherit;white-space:pre}
+.room-token-keyword{color:var(--room-accent);font-weight:700}.room-token-string{color:var(--ink);text-decoration:underline dotted;text-underline-offset:3px}
+.room-token-comment{color:var(--muted);font-style:italic}.room-token-number{color:var(--room-accent)}
+.room-table-wrap{max-width:100%;overflow:auto;margin:.6em 0;border:1px solid var(--room-border);border-radius:6px}
+.room-markdown table{border-collapse:collapse;min-width:100%;width:max-content;font-size:12px}
+.room-markdown :is(th,td){padding:6px 10px;border:1px solid var(--room-border);text-align:left;max-width:260px;white-space:normal;overflow-wrap:anywhere}
+.room-markdown th{background:var(--room-bg)}
+.room-message.room-continuation{margin-top:-12px}.room-message.room-continuation>.room-avatar{visibility:hidden;pointer-events:none}
+.room-message.room-continuation .room-meta{display:none}
+.room-message.room-mentioned .room-bubble{border-inline-start:3px solid var(--room-accent)!important}
+.room-mention-self{outline:0}
+.room-foot{height:auto;min-height:22px;display:flex;align-items:center;flex-wrap:wrap;gap:8px;max-width:100%}
+.room-reactions{position:relative;display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+#msgs :is(.room-reaction,.room-reaction-add,.room-reaction-option){display:inline-flex;align-items:center;justify-content:center;gap:4px;font:inherit;font-size:12px;line-height:1.5;padding:2px 4px;border:0;border-radius:0;background:transparent;color:var(--muted,var(--ink));min-height:32px;box-shadow:none;transform:none}
+#msgs :is(.room-reaction,.room-reaction-add,.room-reaction-option):is(:hover,:active){background:transparent;color:var(--room-accent);box-shadow:none;transform:none}
+#msgs .room-reaction-image{display:block;width:24px;height:24px;max-width:none;max-height:none;object-fit:contain;border:0;border-radius:0}
+#msgs .room-reaction-option{width:32px;height:32px;padding:4px}
+#msgs .room-reaction[aria-pressed=true]{color:var(--room-accent);box-shadow:none}
+.room-reaction-picker{position:absolute;bottom:calc(100% + 4px);left:0;z-index:4;box-sizing:border-box;display:flex;flex-direction:column;gap:8px;padding:12px;width:248px;max-width:calc(100vw - 40px);border:0;border-radius:10px;background:var(--card,#fff);box-shadow:0 4px 14px #0002}
+.room-reaction-heading{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;color:var(--ink)}
+.room-reaction-total{font-size:11px;font-weight:400;color:var(--muted)}
+#msgs .room-reaction-search{box-sizing:border-box;width:100%;min-width:0;padding:7px 8px;border:0;border-radius:4px;background:var(--room-bg);color:var(--ink);font:inherit;font-size:12px;line-height:1.5}
+.room-reaction-grid{display:grid;grid-template-columns:repeat(6,32px);gap:4px;max-height:min(200px,30vh);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;align-content:start}
+.room-reaction-empty{font-size:12px;color:var(--muted);padding:8px 0;text-align:center}
+.room-reaction-empty[hidden]{display:none}
+.room-reaction-picker[hidden]{display:none!important}
+.room-sticker{display:block;width:112px;height:128px;object-fit:contain}
+.room-images button{padding:0;border:0;background:transparent;line-height:0;max-width:100%;border-radius:10px}
+.room-images img{max-width:min(240px,100%)}
+.room-unread-divider{display:flex;align-items:center;gap:10px;color:var(--room-accent);font-size:12px;margin:16px 0;clear:both}
+.room-unread-divider::before,.room-unread-divider::after{content:'';height:1px;flex:1;background:var(--room-accent)}
+.room-image-dialog{box-sizing:border-box;width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;padding:16px;border:0;background:var(--bg,#fff);color:var(--ink,#293341)}
+.room-image-dialog::backdrop{background:#000b}.room-image-header{display:flex;justify-content:space-between;align-items:center;gap:12px;height:44px}
+.room-image-header button,.room-image-stage button{padding:10px 16px;border:1px solid currentColor;border-radius:8px;background:transparent;color:inherit;font:inherit;min-width:44px;min-height:44px}
+.room-image-stage{display:flex;gap:12px;align-items:center;justify-content:center;height:calc(100% - 52px);min-height:0}
+.room-image-full{max-width:calc(100% - 140px);max-height:100%;object-fit:contain;min-width:0}.room-image-stage button:disabled{opacity:.35}
+@media(max-width:600px){.room-image-dialog{padding:8px}.room-image-stage{gap:4px}.room-image-stage button{padding:8px;min-width:36px}.room-image-full{max-width:calc(100% - 80px)}.room-reaction-picker{width:232px;padding:10px}.room-reaction-grid{grid-template-columns:repeat(5,32px);max-height:min(180px,28vh)}.room-code pre{max-height:260px}}
+@media(prefers-reduced-motion:reduce){.room-highlight .room-bubble{animation:none;outline:2px solid var(--room-accent)}}
+
+/* T164: direct attribution and an accessible list of reaction members. */
+#msgs .room-reaction.mine,#msgs .room-reaction[aria-pressed=true]{background:var(--room-bg,#edf3ff);color:var(--room-accent);border-radius:999px;box-shadow:inset 0 0 0 1px var(--room-accent)}
+html.theme-pink #msgs .room-reaction.mine{background:#fce6f0;color:#a83265;box-shadow:inset 0 0 0 1px #df8aad}
+#msgs .room-reaction-avatar-stack{display:inline-flex;align-items:center;padding-left:3px}
+.room-reaction-avatar{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none;width:20px;height:20px;overflow:hidden;border:1px solid var(--card,#fff);border-radius:50%;background:var(--room-bg,#edf2f7);color:var(--ink);font:600 10px/1 var(--sans,sans-serif)}
+.room-reaction-avatar img{display:block;width:100%;height:100%;max-width:none;object-fit:cover}
+#msgs .room-reaction-avatar-stack .room-reaction-avatar{margin-left:-3px}
+#msgs .room-reaction-overflow{font-size:10px;font-variant-numeric:tabular-nums}
+#msgs .room-reaction[aria-disabled=true]{cursor:default}
+.room-reaction-actors{min-width:176px;padding:8px}
+.room-reaction-person{display:flex;align-items:center;gap:8px;padding:5px 6px;min-height:32px;overflow-wrap:anywhere}
+.room-reaction-person .room-reaction-avatar{width:26px;height:26px;font-size:12px}
+.room-reaction-unknown{margin:4px 6px;font-size:11px;color:var(--muted)}
+.room-reaction-actors:focus-visible{outline:2px solid var(--room-action-accent);outline-offset:2px}
+@media(max-width:600px){.room-reaction-person{min-height:36px}}
+
+/* Compact reaction attribution; the roster opens by context menu or touch hold. */
+html body #msgs .room-reaction-avatar-stack{padding-left:2px}
+html body .room-reaction .room-reaction-avatar{width:16px;height:16px;font-size:8px;border-width:1.5px}
+html body #msgs .room-reaction-avatar-stack .room-reaction-avatar{margin-left:-4px}
+html body #msgs .room-reaction-avatar-stack .room-reaction-avatar:first-child{margin-left:0}

@@ -1,0 +1,23 @@
+const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
+class Element{
+ constructor(tag){this.tagName=tag;this.children=[];this.attributes={};this._text='';this.hidden=false;}
+ set textContent(v){this._text=String(v);this.children=[];}get textContent(){return this._text+this.children.map(c=>c.textContent??String(c)).join(' ');}
+ append(...children){this.children.push(...children);}replaceChildren(...children){this.children=children;this._text='';}
+ setAttribute(k,v){this.attributes[k]=v;}removeAttribute(k){delete this.attributes[k];}addEventListener(){}focus(){}close(){}showModal(){}
+}
+function schedule(status='unreported',remaining=.7){return {agents:Object.fromEntries(['Claude','GPT'].map(name=>[name,{remaining,reset_hours:24,next_wake:2000000000,reason:'Planning advice',reported_at:status==='unreported'?null:'2026-01-01T00:00:00Z',quota:{status,tier:'normal',source:status==='native'?'codex-app-server':'manual-band-estimate',precision:status==='native'?'provider_percent':'band',observed_at:status==='native'?1700000000:null}}])),shares:{Claude:.5,GPT:.5}};}
+async function harness(value){
+ const elements=new Map(),intervals=[],requests=[];const get=key=>{if(/^#pair/.test(key))return null;if(!elements.has(key))elements.set(key,new Element(key));return elements.get(key);};
+ const state={value,reloads:0,accountRefreshes:0};const context={document:{querySelector:get,createElement:tag=>new Element(tag)},BoardIdentity:{ready:Promise.resolve(),me:{local:true},refreshAccounts:async()=>{state.accountRefreshes++;}},setInterval:fn=>intervals.push(fn),location:{reload(){state.reloads++;}},fetch:async(url,options)=>{requests.push({url,options});return {ok:true,json:async()=>url==='/api/project'?{question:'Example question',deliverable:'Example output',user_name:'Example user',onboarding_complete:true}:state.value};}};
+ vm.runInNewContext(fs.readFileSync('board/v02.js','utf8'),context);await new Promise(resolve=>setImmediate(resolve));
+ return {box:()=>get('#quota-body').children[0],text:()=>get('#quota-body').children[0].textContent,render:async value=>{state.value=value;await intervals[0]();},get,requests,state};
+}
+test('initial unreported quota shows pending and hides numerical meter and wake',async()=>{const h=await harness(schedule());assert.match(h.text(),/待上报/);assert.doesNotMatch(h.text(),/70%|下次/);assert.equal(h.box().children.find(n=>n.tagName==='meter').hidden,true);});
+test('manual tier shows an estimate and a suggested patrol',async()=>{const h=await harness(schedule('manual-estimate',.4));assert.match(h.text(),/手动估计.*40%/);assert.match(h.text(),/建议巡检/);assert.doesNotMatch(h.text(),/原生观测/);});
+test('native percent identifies actual observation and time',async()=>{const h=await harness(schedule('native',.61));assert.match(h.text(),/原生观测.*61%/);assert.match(h.text(),/观测时间/);assert.doesNotMatch(h.box().children[0].textContent,/手动估计/);});
+test('configured band is explicitly an estimated fallback',async()=>{const h=await harness(schedule('configured-estimate',.7));assert.match(h.text(),/档位估计.*70%/);assert.doesNotMatch(h.text(),/原生观测/);});
+test('legacy schedule without provenance stays pending until a report',async()=>{const value=schedule();for(const a of Object.values(value.agents))delete a.quota;const h=await harness(value);assert.match(h.text(),/待上报/);assert.doesNotMatch(h.text(),/70%/);});
+test('a schedule refresh upgrades pending to native without reloading',async()=>{const h=await harness(schedule());await h.render(schedule('native',.61));assert.match(h.text(),/原生观测.*61%/);assert.doesNotMatch(h.text(),/待上报/);});
+
+test('project and quota initialize against their own endpoints',async()=>{const h=await harness(schedule());assert.deepEqual(h.requests.map(r=>r.url),['/api/project','/api/schedule']);assert.equal(h.get('#project-settings').open,false);assert.equal(h.get('#setup-name').value,'Example user');});
+test('project form saves all fields, refreshes identity and reloads',async()=>{const h=await harness(schedule());h.get('#setup-question').value='Which local workflow?';h.get('#setup-deliverable').value='A comparison';h.get('#setup-name').value='Changed user';await h.get('#setup-form').onsubmit({preventDefault(){}});const request=h.requests.at(-1);assert.equal(request.url,'/api/project');assert.equal(request.options.method,'POST');assert.deepEqual(JSON.parse(request.options.body),{question:'Which local workflow?',deliverable:'A comparison',user_name:'Changed user'});assert.equal(h.get('#setup-status').textContent,'已保存');assert.equal(h.state.accountRefreshes,1);assert.equal(h.state.reloads,1);});

@@ -1,0 +1,16 @@
+/data/
+/config/site.json
+**/__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+*.log
+*.zip
+access.json
+accounts.json
+messages.jsonl
+work/
+.DS_Store
+
+.playwright-cli/

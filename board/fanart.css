@@ -1,0 +1,3 @@
+/* Character sheets share the existing theme geometry. */
+html.theme-pink{--character-sheet:url(/art/trio-atlas.png)!important;--emotion-sheet:url(/art/emotion-atlas.png)!important}
+html.theme-pink nav .brand .logo{background-image:url(/art/avatar-claude.png)}

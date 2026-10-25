@@ -2,14 +2,28 @@
 const {test,before,after}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const {chromium}=require('playwright');
+let playwrightPath,chromium,skipReason;
+try{playwrightPath=require.resolve('playwright');}
+catch(error){
+  if(error.code!=='MODULE_NOT_FOUND'||error.message.split('\n')[0]!=="Cannot find module 'playwright'")throw error;
+  skipReason='Optional browser tests: install Playwright to run (npm install --no-save playwright).';
+}
+if(playwrightPath)({chromium}=require(playwrightPath));
 const assets=fs.existsSync(path.join(__dirname,'../board/discussion.css'))?path.join(__dirname,'../board'):path.join(__dirname,'..');
 let browser;
-before(async()=>{browser=await chromium.launch({headless:true});});
+before(async()=>{
+  if(skipReason)return;
+  try{browser=await chromium.launch({headless:true});}
+  catch(error){
+    if(!/^browserType\.launch: Executable doesn't exist at [^\r\n]+/.test(error.message))throw error;
+    skipReason='Optional browser tests: install the Chromium browser (npx playwright install chromium).';
+  }
+});
 after(async()=>{await browser?.close();});
 
 for(const theme of ['default','pink'])for(const width of [320,390,768,1024,1440]){
-  test(`${theme} ${width}px: latest control paints above message metadata and below modal`,async()=>{
+  test(`${theme} ${width}px: latest control paints above message metadata and below modal`,async t=>{
+    if(skipReason){t.skip(skipReason);return;}
     const page=await browser.newPage({viewport:{width,height:844},hasTouch:true});
     try{
       await page.setContent(`<!doctype html><html class="theme-${theme}"><body>

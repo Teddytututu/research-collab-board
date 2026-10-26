@@ -37,3 +37,17 @@ Use at most **three sentences**: what finished, the key number, and the next ste
 Organize findings for the reader's question. Keep logs, checks and provenance in companion records. Use the [research report skill](../skills/research-report-writing/SKILL.md) for reports and result pages.
 
 Before posting, check that the line states the current position, a useful completion time when available, and the concrete user action when one applies.
+
+## Concrete language across the project
+
+Apply these rules to discussions, exchange entries, task files and status cells:
+
+| Replace | Write instead |
+| --- | --- |
+| Circular disclaimers and abstract proof claims | State the actual scope: “The estimate uses 18 groups.” |
+| Self-criticism followed by a rhetorical turn | Name the error and correction: “The two routes were mixed; the table now separates them.” |
+| Agreement before changing the subject | State the finding or decision directly |
+| A catalogue of checks | Give one useful count and put detailed commands in evidence |
+| Empty abstractions such as closed loop, evidence chain, end-to-end, empowerment | Name the comparison, count or concrete action |
+
+Preserve material limitations and user choice in plain language. `scripts/post_message.py` enforces 120 characters and two lines, and rejects internal paths, task IDs, hashes, process details, filenames and listed filler before processing attachments. The English and Chinese patterns live in `board/writing.py`. Read-only history and author withdrawal retain their existing behavior. Technical evidence belongs in task attachments; use the existing file option for supporting material. The exchange supports three useful sentences and its task evidence link.

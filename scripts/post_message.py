@@ -7,6 +7,7 @@ if __name__=='__main__':use_project_environment(__file__)
 from board.project import post,channel_id,ledger,message_metadata,all_posts,delete_message
 from board.app import image_upload,file_upload
 from board import storage
+from board.writing import validate_message
 p=argparse.ArgumentParser();p.add_argument('author',choices=['Claude','GPT'],nargs='?');p.add_argument('text',nargs='?');p.add_argument('--reply');p.add_argument('--delete',metavar='MESSAGE_ID');p.add_argument('--image',action='append',type=Path,default=[]);p.add_argument('--file',action='append',type=Path,default=[]);p.add_argument('--root',type=Path,default=ROOT/'data');p.add_argument('--channel');p.add_argument('--recent',action='store_true');p.add_argument('--limit',type=int,default=12);a=p.parse_args()
 channel=channel_id(a.channel or 'main')
 if a.delete:
@@ -17,6 +18,8 @@ if a.recent:
  rows.sort(key=lambda row:row.get('created_at',''))
  print(json.dumps([dict(row,**message_metadata(row)) for row in rows[-max(1,min(a.limit,100)):]],ensure_ascii=False,indent=2));raise SystemExit(0)
 if not a.author or a.text is None:p.error('Provide an assistant and message, or --recent')
+problems=validate_message(a.text)
+if problems:p.error('; '.join(problems))
 if len(a.image)+len(a.file)>6:p.error('Up to six attachments')
 images=[];files=[]
 for file in a.image:

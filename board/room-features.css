@@ -70,3 +70,10 @@ html body #msgs .room-reaction-avatar-stack{padding-left:2px}
 html body .room-reaction .room-reaction-avatar{width:16px;height:16px;font-size:8px;border-width:1.5px}
 html body #msgs .room-reaction-avatar-stack .room-reaction-avatar{margin-left:-4px}
 html body #msgs .room-reaction-avatar-stack .room-reaction-avatar:first-child{margin-left:0}
+
+/* Compact attribution overlaps the lower-right corner of the reaction. */
+html body #msgs .room-reaction{position:relative;min-width:36px;min-height:38px;padding:2px 8px 8px 2px}
+html body #msgs .room-reaction.mine,html.theme-pink body #msgs .room-reaction.mine,html body #msgs .room-reaction[aria-pressed=true]{background:transparent;color:var(--muted,var(--ink));border:0;box-shadow:none;border-radius:0}
+html body #msgs .room-reaction-avatar-stack{position:absolute;right:0;bottom:0;display:flex;padding:0;pointer-events:none}
+html body #msgs .room-reaction .room-reaction-avatar{width:14px;height:14px;box-sizing:border-box;border:1px solid #fff;font-size:8px}
+html body #msgs .room-reaction-count{position:absolute;right:0;bottom:0;font-size:10px;line-height:14px;font-variant-numeric:tabular-nums}

@@ -23,6 +23,9 @@ def files():
     names+=['demo/overview.json','demo/board.md']
     names += [p.relative_to(ROOT).as_posix() for p in (ROOT/'tests').glob('test_v02*.py')]
     names += ['board/message_controls.py','tests/discussion-actions.test.cjs','tests/mobile-layers.browser.cjs']
+    names += ['board/lifecycle.py','board/watch_rules.py','board/writing.py','board/lifecycle-view.js','board/lifecycle-view.css']
+    names += ['scripts/task_flow.py','scripts/flow_check.py','scripts/patrol_log.py']
+    names += ['tests/lifecycle-view.test.cjs','tests/mobile-layers-optional-runtime.test.cjs']
     names += ['tests/room-collection.test.cjs','tests/eta-view.test.cjs','tests/identity-refresh.test.cjs','tests/quota-truth.test.cjs']
     for folder in ['personas','protocol','templates']:
         names += [p.relative_to(ROOT).as_posix() for p in (ROOT/folder).glob('*') if p.suffix in ['.md','.json']]

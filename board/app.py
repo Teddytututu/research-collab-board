@@ -6,6 +6,7 @@ import base64,hashlib,html,io,ipaddress,json,mimetypes,os,re,uuid
 from . import project,storage,scheduler,contacts,task_eta,assets,onboarding
 ASSETS=Path(__file__).resolve().parent
 STATIC={n for n in ['index.html','discussion.js','discussion.css','identity.js','identity.css','room-extras.js','room-markdown.js','room-features.css','room-collection.js','mood.js','room-collection.css','v02.js','v02.css','eta-view.js','eta-view.css','fanart.css','help.html']}
+STATIC.update({'lifecycle-view.js','lifecycle-view.css'})
 REACTIONS={'👍':'done','❤️':'care','😂':'smile','🎉':'celebrate','👀':'review','💡':'idea'}
 REACTION_KEYS=list(dict.fromkeys([*REACTIONS,*(x['key'] for x in assets.emote_manifest())]))
 def contained(root,relative):
@@ -65,6 +66,9 @@ def conversation(root,channel=None):
 
 def snapshot(root,channel=None):
     overview=storage.read(root/'overview.json',{});state=storage.read(root/'attachments/state.json',{});tasks=[]
+    if overview.get('patrols'):
+        from .lifecycle import check
+        overview['flow_issues']=check(root)
     for line in (root/'board.md').read_text(encoding='utf-8').splitlines():
         cells=[x.strip() for x in line.strip('|').split('|')]
         if len(cells)>=4 and re.fullmatch('T[0-9]+',cells[0]):tasks.append(dict(id=cells[0],title=re.sub(r'\[([^]]+)\]\([^)]+\)',r'\1',cells[1]),status=cells[2],owner=cells[3]))

@@ -893,6 +893,8 @@ html.theme-pink #nav .brand .brand-person img{transform:scale(1.45);transform-or
 </style>
 <link rel="stylesheet" href="/room-collection.css">
 <link rel="stylesheet" href="/fanart.css">
+<link rel="stylesheet" href="/lifecycle-view.css">
+<script src="/lifecycle-view.js"></script>
 </head>
 <body>
 <nav id="nav">
@@ -1134,16 +1136,8 @@ function renderTree(o) {
   (o.tree || []).forEach((n, i) => { const m = el('div', 'mm'); m.append(branch(n, 0, 'tree' + i)); box.append(m); });
 }
 
-function taskState(t) {
-  const s = t.status || '';
-  if (/^(通过|完成|已完成|取消|收回|不再需要)/.test(s)) return {label:'已完成', css:'s-done', done:true, rank:4};
-  if (/待验收/.test(s)) return {label:'待验收', css:'task-review', rank:1};
-  if (/^(退回|卡住|受阻|失败)/.test(s)) return {label:'卡住', css:'task-blocked', rank:3};
-  if (/^(暂停|搁置|等待|等)|等 ?(key|T\d|用户|Claude|条件)|T\d+\s*(之后|交付后|通过后)/.test(s))
-    return {label:'排队', css:'task-queue', waiting:true, rank:2};
-  if (/^(排队|待领)/.test(s)) return {label:'排队', css:'task-queue', rank:2};
-  return {label:'在跑', css:'task-run', rank:0};
-}
+function taskState(t) { return LifecycleView.taskState(t); }
+
 function plainStatus(t) {
   const s = taskState(t); return [s.label, s.done ? 's-done' : s.rank < 2 ? 's-doing' : 's-todo'];
 }
@@ -1177,6 +1171,7 @@ function taskEntries(o, tasks) {
 }
 function renderTasks(o, tasks) {
   const box = $('#task-body'); box.replaceChildren();
+  LifecycleView.renderPatrols(box,o);
   const entries = taskEntries(o, tasks);
   const appendGroups = (target, rows) => {
     for (const name of [...new Set(rows.map(t=>t.category))]) {

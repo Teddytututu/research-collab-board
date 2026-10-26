@@ -34,7 +34,7 @@ test('previous delivery and phase completion keep their scope separate',()=>{
 });
 test('daily dates are separate from completed task counts',()=>assert.equal(eta.task({status:'日更10/24通过'},null,now),'—'));
 test('delivered tasks use 已交 regardless of their completed counts',()=>{
- for(const status of ['待验收 · 330/330；已交','已交','已完成 330/330'])assert.equal(eta.task({status},null,now),'已交');
+ for(const status of ['待验收 · 330/330；已交','已交','已完成 330/330','delivered · awaiting review','accepted: reviewed'])assert.equal(eta.task({status},null,now),'已交');
 });
 test('only a task-linked run supplies progress',()=>{
  assert.equal(eta.task({id:'T002',status:'进行中'},{id:'run-2',task_id:'T002',done:6,total:10},now),'6/10');
@@ -89,7 +89,8 @@ test('task DOM shows goal, deliverable and one current line while preserving exp
  }
  const box=new Element('div'),nodes=[],texts=[];
  const el=(tag,cls,text)=>{const value=new Element(tag);value.className=cls||'';value.textContent=text??'';nodes.push(value);return value;};
- const context={EtaView:eta,CODE:/T\d+/g,$:()=>box,el,document:{createTextNode:text=>{texts.push(text);return {textContent:text};}}};
+ const context={EtaView:eta,CODE:/T\d+/g,$:()=>box,el,document:{createElement:tag=>new Element(tag),createTextNode:text=>{texts.push(text);return {textContent:text};}}};
+ vm.runInNewContext(fs.readFileSync(require('node:path').join(__dirname,'../board/lifecycle-view.js'),'utf8'),context);
  const html=fs.readFileSync(require('node:path').join(__dirname,'../board/index.html'),'utf8');
  vm.runInNewContext(html.slice(html.indexOf('const openState ='),html.indexOf('function linkOrText('))+html.slice(html.indexOf('function taskState('),html.indexOf('function renderFiles('))+'\nthis.renderTasks=renderTasks;',context);
  const forecast={mode:'paused',remaining_seconds:7200,basis:'Full recovery explanation',previous_deliveries:[{scope:'Earlier release',at:'2026-10-23T20:00:00+08:00'}]};

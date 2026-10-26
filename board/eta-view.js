@@ -65,9 +65,9 @@
  function task(task,run,now=new Date()){
   const status=String(task.status||''),own=linked(task,run),p=progress(task,own);
   const eta=task.eta||own?.eta;
-  if(/待验收|^(?:通过|已完成|完成|已交|交付)|(?:^|[·；，])\s*已交(?:付)?\s*$/.test(status))return '已交';
+  if(/待验收|^(?:accepted|delivered|通过|已完成|完成|已交|交付)|(?:^|[·；，])\s*已交(?:付)?\s*$/i.test(status))return '已交';
   const left=p.stage+p.count;
-  if(/(?:^|[·；，])\s*(?:已停|停止|取消|终止)/.test(status)||eta?.mode==='stopped'){const text=compact(left,'已停');return text.includes('已停')?text:'已停';}
+  if(/(?:^|[·；，])\s*(?:stopped|cancelled|已停|停止|取消|终止)/i.test(status)||eta?.mode==='stopped'){const text=compact(left,'已停');return text.includes('已停')?text:'已停';}
   if(/暂停|搁置/.test(status)||eta?.mode==='paused'){const text=compact(left,'暂停');return text.includes('暂停')?text:'暂停';}
   if(eta?.mode==='conditional'||/^(?:等|等待|待领)/.test(status)){
    const waiting=wait(eta,status);return waiting||compact(left,'');

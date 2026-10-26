@@ -121,3 +121,13 @@ python -B -m unittest discover -s tests -p 'test_v023_night_watch*.py' -v
 ```
 
 Fixtures live under `work/`. Installation tests mock the scheduler and exercise preview, failure recovery, XML construction, project naming and quoting. Queue fixtures cover completion skipping, partial-result retry, frozen input, ENOSPC, anomaly isolation and five-error pause. Watch fixtures cover quiet polls, event deduplication, acknowledgement, recovery, X/N, ETA and containment.
+
+## Lifecycle wake conditions
+
+With a local board present, the watch also emits:
+
+- `idle_cards_unfinished_work`: unfinished running or queued tasks with spare slots under the observed resource cap. `state.allocation` or `state.resources.allocation` supplies `effective_cap`, `actual_cards`, `loading_cards` and `reserved_cards`; used IDs are unioned. `state.resources.available_slots` is the fallback observation.
+- `question_unanswered_30min`: a GPT decision request in the dated exchange has waited thirty minutes. A lead entry with the same task ID resolves it; unrelated replies preserve the pending question. Headings and examples are in `protocol/lifecycle.md`.
+- `flow_issue`: a GPT-owned lifecycle issue with a stable code, task and suggested action.
+
+These conditions use the existing deduplication, acknowledgement and recovery queue. Quiet polls preserve silence. The watch observes; the existing assistant session checks authorization and acts. Routine decisions go to the research lead while independent work continues. User-operated actions, external sending, payment, deletion and resource limits retain the user's approval rules.

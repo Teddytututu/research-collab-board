@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from board import storage
 from board.environment import use_project_environment
+from board.watch_rules import conditions as workflow_conditions
 from scripts.run_queue import atomic_json, project_path
 
 TERMINAL = {'complete', 'completed', 'done', 'accepted_complete', 'cancelled', 'delivered'}
@@ -193,6 +194,9 @@ def patrol(project_root=ROOT, *, data_dir='data', now=None):
                     event('capacity_below_floor', str(relative), floor, free=free, floor=floor)
             except OSError as error:
                 event('observation_error', str(relative), 'disk', reason=str(error))
+        for condition in workflow_conditions(p['data'], state, at):
+            kind = condition.pop('type')
+            event(kind, **condition)
         previous = set(cache.get('active', []))
         fresh = [event for key, event in conditions.items() if key not in previous]
         queue = storage.read(p['events'], {'events': []})

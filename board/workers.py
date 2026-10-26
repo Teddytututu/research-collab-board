@@ -42,17 +42,25 @@ def overlaps(a, b):
     a, b = scope(a), scope(b)
     return a == '.' or b == '.' or a == b or a.startswith(b + '/') or b.startswith(a + '/')
 
+def archived_task(root, task):
+    from .lifecycle import data_file, parse_board
+    root=Path(root).resolve();path=data_file(root,'tasks/archive.md')
+    return path.exists() and any(row['task']==task for row in parse_board(path.read_text('utf-8-sig')))
+
 def record(root, row, status=None):
+    if archived_task(root,row['task']):return
     path=Path(root)/'attachments/state.json';state=storage.read(path,{'tasks':{},'runs':{}})
     task=state.setdefault('tasks',{}).setdefault(row['task'],{})
     task.setdefault('owner','GPT')
     task.update(worker=row['worker'],write_scopes=row['scopes'],heartbeat_unix=row['heartbeat'])
     if row.get('estimated_completion'):task['estimated_completion']=row['estimated_completion']
     task['claimed_at']=row['started']
+    managed=task.get('lifecycle_managed',False)
+    state_key='worker_state' if managed else 'state'
     if row.get('released') is not None:
-        task.update(released_at=row['released'],state='review' if status=='待验收' else 'handoff')
-    else:task['state']='in_progress'
-    if status:task['status']=status
+        task['released_at']=row['released'];task[state_key]='handoff' if managed else 'review' if status=='待验收' else 'handoff'
+    else:task[state_key]='in_progress'
+    if status and not managed:task['status']=status
     storage.write(path,state)
 
 def claim(root, task, worker, scopes, allowed_workers=1, now=None, eta=None):
@@ -63,6 +71,7 @@ def claim(root, task, worker, scopes, allowed_workers=1, now=None, eta=None):
     now = time.time() if now is None else now
     folder = Path(root) / 'attachments/locks'
     with storage.locked(root):
+        if archived_task(root,task):raise ValueError('Task is archived; register a new task through task_flow.py')
         folder.mkdir(parents=True, exist_ok=True)
         active = []
         for path in folder.glob('*.lock'):
@@ -115,6 +124,9 @@ def append_shared(root,relative,text):
 def update_board(root,task,status):
     if any(x in status for x in '\r\n|'):raise ValueError('Use one status cell')
     with storage.locked(root):
+        state=storage.read(Path(root)/'attachments/state.json',{})
+        if state.get('tasks',{}).get(task,{}).get('lifecycle_managed'):
+            raise ValueError('Managed task status uses scripts/task_flow.py with evidence and lead review')
         path=storage.relative_file(root,'board.md');raw=path.read_bytes();matches=[]
         for match in re.finditer(rb'(?m)^\|[^\r\n]*',raw):
             cells=match.group().decode('utf-8').split('|')

@@ -26,3 +26,7 @@ Use conditional estimates for dependent work, revise delays with a reason, and k
 
 
 The five execution rules and eleven operational conditions in [continuous execution](execution.md) apply to experiment progress, resource counting, communication and completion.
+
+## Managed task lifecycle
+
+For tasks registered through `scripts/task_flow.py`, leases record worker ownership, scopes and heartbeat separately from lifecycle status. Releasing a lease hands work back to the dispatcher; evidence delivery and lead review use the lifecycle command. Archived tasks stay closed when an earlier lease is released. Existing unmanaged leases retain their compatibility behavior.

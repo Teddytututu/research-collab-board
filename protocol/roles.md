@@ -1,5 +1,7 @@
 # Roles and authorization
 
+Use the [task lifecycle](lifecycle.md) for registration, execution, review and archival. During accepted work, routine task questions go to the existing research-lead exchange with two options and a recommendation. The executor continues independent work while the lead decides. Thirty-minute recommendation handling applies to reversible authorized work within resource limits. Specific user-operated actions and consequential approvals follow the user's current policy.
+
 | Participant | Responsibility | Decision boundary |
 | --- | --- | --- |
 | User, default display name 大肥鱼 | Project goal, personal choices, resources and final tradeoffs | Direct user instructions take precedence |

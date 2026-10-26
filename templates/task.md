@@ -86,3 +86,7 @@
 - Estimated completion: {{date and time}}
 - Confidence and basis: {{high / medium / low; one sentence}}
 - Actual completion and estimate error: {{record at delivery}}
+
+## Lifecycle registration
+
+Use a reserved `T` number and a specification named `data/tasks/T001-short-name.md`. Register it with `scripts/task_flow.py new T001 --by Claude --title TITLE --when CONDITION`, adding `--node TITLE` for a result-tree task. State, progress, blocking, delivery and review follow `protocol/lifecycle.md`. Evidence contains existing artifact paths, numerical recomputation, and test commands with result tails; interface work includes actual screenshots.

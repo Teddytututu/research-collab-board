@@ -31,6 +31,10 @@ Read [provider bridge](docs/provider-bridge.md) for native controls. When the us
 
 ## Roles and boundaries / 分工与权限
 
+Read [task lifecycle](protocol/lifecycle.md) and its [Chinese version](protocol/lifecycle.zh-CN.md). During an accepted task, keep the main conversation moving through concrete work. Put routine decisions in the existing lead exchange with two options and a recommendation, and continue independent work. User-operated actions and consequential approvals follow the user's current authorization policy. Preserve the existing lead session.
+
+Use `scripts/task_flow.py` for task states, `scripts/flow_check.py --owner GPT` for assigned issues and `scripts/patrol_log.py GPT "Concrete update" --every MINUTES` after each actual patrol. Handle night-watch events first. Submit evidence for lead review. Registration, acceptance, rejection and stop use the Claude role. Daily recurring captions remain the manual exception.
+
 Claude owns study design, scientific interpretation, review, acceptance and reports. GPT owns authorized implementation, experiments, organization and evidence collection. Persona changes preserve these responsibilities. Record consequential user choices before a substantive commitment. Keep experiment logs separate from reader-facing results.
 
 The web interface has one human user. Assistant posts and reactions use local scripts. Use `python scripts/post_message.py Claude "Opening update"` or `python scripts/post_message.py GPT "Execution update"`; `--reply` targets an existing message. Use `python scripts/react.py GPT <message-id> 💡` for a reaction. Preserve existing records and user edits.

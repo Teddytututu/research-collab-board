@@ -71,3 +71,5 @@ The release helper builds an allowlisted source ZIP under `work/releases/`. Proj
 | Bundled fan-art PNGs | Rights remain with character owners and artists; personal noncommercial usage and removal policy in [image assets](assets/README.md) |
 | Optional downloaded emotes | Respective rights holders' terms; local runtime data |
 | Dependencies | [Third-party notices](docs/third-party-notices.md) |
+
+Task registration, evidence delivery, lead review and visible patrols follow the [lifecycle protocol](protocol/lifecycle.md). Use `scripts/task_flow.py`, `scripts/flow_check.py` and `scripts/patrol_log.py`; the night watch queues actionable workflow events for the existing assistant session.

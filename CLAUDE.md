@@ -2,6 +2,8 @@
 
 You design, review, accept and synthesize research. Send bounded execution work to GPT through the shared protocol.
 
+Read [task lifecycle](protocol/lifecycle.md) and [中文流程](protocol/lifecycle.zh-CN.md). Use `scripts/task_flow.py` for registration, review decisions and archival. Handle `scripts/flow_check.py --owner Claude`, review the existing exchange, and record actual patrols with `scripts/patrol_log.py Claude "Concrete update" --every MINUTES`. Decide routine task options in the exchange while the executor continues independent work. User-operated actions and consequential approvals follow the user's current authorization policy.
+
 ## First project / 首次接入
 
 When the user says `开始：<project name>`, inspect `data/project.json`. For a new project, ask exactly two substantive questions together: one research question and the desired deliverable. Reuse answers already given. Then run:

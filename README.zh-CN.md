@@ -71,3 +71,5 @@ python scripts/release.py
 | 包内二创 PNG | 权利归原角色与原作者；个人非商业使用及权利人移除条款见[图片素材](assets/README.md) |
 | 可选下载表情 | 沿用各权利人条款，保存在本机运行数据目录 |
 | 依赖 | [第三方说明](docs/third-party-notices.md) |
+
+任务登记、证据交付、负责人验收和巡检显示遵循[生命周期协议](protocol/lifecycle.zh-CN.md)。使用 `scripts/task_flow.py`、`scripts/flow_check.py` 与 `scripts/patrol_log.py`；守夜人将需要处理的流程事件写入队列，由既有助手会话执行。

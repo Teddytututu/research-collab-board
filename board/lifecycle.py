@@ -82,6 +82,70 @@ def task_spec(root, task):
     return data_file(root, found[0].relative_to(root))
 
 
+# Forecasts use the same fixed Taipei clock as the board UI.
+TAIPEI = timezone(timedelta(hours=8))
+DECLARED_ETA = re.compile(r'约\s*(明天|\d\d-\d\d)?\s*(\d{1,2}):(\d\d)')
+
+
+def declared_eta(status, updated):
+    match = DECLARED_ETA.search(status)
+    if not match or updated is None:
+        return None
+    base = updated.astimezone(TAIPEI)
+    day = base.date()
+    try:
+        if match[1] == '明天':
+            day += timedelta(days=1)
+        elif match[1]:
+            day = day.replace(month=int(match[1][:2]), day=int(match[1][3:]))
+        result = datetime(day.year, day.month, day.day, int(match[2]), int(match[3]), tzinfo=TAIPEI)
+    except ValueError:
+        return None
+    return result + timedelta(days=1) if not match[1] and result < base else result
+
+
+def estimate_progress(root, task, status, at):
+    """Estimate from the current counter's last twelve hours of recorded progress."""
+    current = COUNTS.match(status)
+    if not current:
+        return None
+    done, total = map(int, current.groups())
+    if done >= total:
+        return None
+    samples = []
+    for record in storage.lines(data_file(root, 'attachments/task-flow.jsonl')):
+        if record.get('task') != task or record.get('action') not in {'start', 'progress'}:
+            continue
+        stamp = moment(record.get('at'))
+        count = COUNTS.match(str(record.get('status', '')))
+        if not stamp or not count or int(count[2]) != total or not 0 <= (at-stamp).total_seconds() <= 12*3600:
+            continue
+        completed = int(count[1])
+        if not 0 <= completed <= total:
+            continue
+        if samples and completed < samples[-1][1]:
+            samples = []  # Counter reset starts a new phase.
+        samples.append((stamp, completed))
+    if not samples or samples[-1][1] > done or samples[0][1] >= done:
+        return None
+    start, previous = samples[0]
+    elapsed = (at-start).total_seconds()
+    remaining = (total-done)*elapsed/(done-previous)
+    return at+timedelta(seconds=remaining) if elapsed > 0 and 0 < remaining <= 7*86400 else None
+
+
+def with_progress_eta(root, task, status, at):
+    if '约' in status:
+        return status
+    estimate = estimate_progress(root, task, status, at)
+    if estimate is None:
+        return status
+    local, current = estimate.astimezone(TAIPEI), at.astimezone(TAIPEI)
+    days = (local.date()-current.date()).days
+    day = '' if days == 0 else '明天 ' if days == 1 else local.strftime('%m-%d ')
+    return re.sub(r'估不了[:：]\s*', '', status) + ' · 约 ' + day + local.strftime('%H:%M')
+
+
 def transition(root, action, task, *, by, now=None, **fields):
     root = Path(root).resolve()
     if by not in ROLES or action not in ACTIONS or not TASK.fullmatch(task):
@@ -98,6 +162,8 @@ def transition(root, action, task, *, by, now=None, **fields):
         match = COUNTS.match(clean(fields['status']))
         if not match or not 0 <= int(match[1]) <= int(match[2]) or int(match[2]) == 0:
             raise ValueError('Running status requires 0 <= X <= N and N > 0: X/N')
+    if action == 'start' and '约' not in fields['status'] and '估不了' not in fields['status']:
+        raise ValueError('Start requires an ETA: X/N · 约 HH:MM, or X/N · 估不了：specific reason')
     if action == 'block' and not re.match(r'^(waiting for\s+\S|等\s*\S)', clean(fields['wait']), re.I):
         raise ValueError('Use --wait "waiting for WHO to DO WHAT"')
     if action == 'deliver' and not data_file(root, fields['evidence']).is_file():
@@ -140,6 +206,8 @@ def transition(root, action, task, *, by, now=None, **fields):
                   'block': lambda: 'blocked: ' + clean(fields['wait']), 'deliver': lambda: 'delivered · awaiting review',
                   'accept': lambda: 'accepted: ' + clean(fields['summary']),
                   'reject': lambda: 'rejected: ' + clean(fields['reason']), 'stop': lambda: 'stopped: ' + clean(fields['reason'])}[action]()
+        if action in {'start', 'progress'}:
+            status = with_progress_eta(root, task, status, at)
         cells = list(row['cells']) if row else [task, '[' + clean(fields['title']) + '](tasks/' + spec.name + ')', '', 'GPT']
         cells[2] = status
         if len(cells) < 5:
@@ -225,6 +293,17 @@ def check(root, *, now=None, owner=None):
         if updated is None:
             add('GPT', task, 'missing_update', 'Task requires an update time', 'Record the current transition')
             continue
+        if status == 'running':
+            count = COUNTS.match(row['status'])
+            if int(count[1]) >= int(count[2]):
+                add('GPT', task, 'counter_complete', 'Running phase counter is complete', 'Deliver evidence or start the next phase counter')
+            elif '约' not in row['status'] and '估不了' not in row['status']:
+                add('GPT', task, 'eta_missing', 'Running phase requires an ETA', 'Progress with 约 HH:MM or 估不了：specific reason')
+            forecast = declared_eta(row['status'], updated)
+            if '约' in row['status'] and forecast is None:
+                add('GPT', task, 'eta_invalid', 'Declared ETA requires a valid clock and date', 'Correct the progress ETA')
+            elif forecast and at > forecast + timedelta(minutes=30):
+                add('GPT', task, 'eta_overdue', 'Declared ETA passed thirty minutes ago', 'Update progress and ETA or record the dependency')
         age = (at - updated).total_seconds() / 3600
         limit = {'delivered': 2, 'blocked': 2, 'rejected': 2, 'running': 3}.get(status)
         until = re.search(r'(?:until|到)\s*(\d{2})-(\d{2})', row['status'], re.I)

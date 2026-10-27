@@ -64,3 +64,37 @@ html.theme-default body .nd.st-todo .st{color:#c2410c!important}
 html.theme-pink body .nd.st-done .st{color:#23824a!important}
 html.theme-pink body .nd.st-doing .st{color:#c2306e!important}
 html.theme-pink body .nd.st-todo .st{color:#b8650e!important}
+
+/* Active report groups and the existing sticky-note helper text. */
+html body #files .files-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+html body #files .files-heading h2{margin:0;min-width:0}
+html body #files #file-filter{width:160px;max-width:45%;min-width:0;flex:0 1 160px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--ink);padding:5px 12px;font:13px/1.6 var(--sans,"Microsoft YaHei UI",sans-serif)}
+html body #files #file-filter::placeholder{color:var(--muted)}
+html body #files #file-filter:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+html body #files #file-body.factive{display:block}
+html body #files #file-body [hidden]{display:none!important}
+html body #files .factive-group{border:0;border-radius:0;background:transparent;box-shadow:none;margin:0 0 12px}
+html body #files .factive-group>.factive-head{padding:8px 0;font:600 14px/1.6 var(--sans,"Microsoft YaHei UI",sans-serif);color:var(--ink);list-style:none}
+html body #files .factive-group>.factive-head::before{content:"›";display:inline-block;width:12px;margin-right:8px;transform:none;color:var(--muted);font:16px/1 var(--sans,"Microsoft YaHei UI",sans-serif)}
+html body #files .factive-group[open]>.factive-head::before{transform:rotate(90deg)}
+html body #files .factive-head:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+html body #files .factive-group .fgrid{grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:22px 20px;padding:14px 0 8px}
+html.theme-default body #files .factive-group .fgrid{grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+html.theme-pink body #files .factive-group .fgrid{gap:24px 20px}
+html body #files .fcourse-label{margin:8px 0 0;font:600 12px/1.6 var(--sans,"Microsoft YaHei UI",sans-serif);color:var(--muted)}
+html body #files .file-empty{margin:8px 0}
+html body #todo .todo-item>.muted.small,
+html body #todo .todo-item>.todo-how,
+html.theme-pink body #todo .todo-item>.muted.small,
+html.theme-pink body #todo .todo-item>.todo-how{font:400 13px/1.6 var(--sans,"Microsoft YaHei UI",sans-serif);color:var(--muted)}
+html body #todo .todo-item>.todo-how,
+html.theme-pink body #todo .todo-item>.todo-how{display:block;margin-top:8px;padding:8px 0 0;border:0;border-top:1px dashed color-mix(in srgb,var(--muted) 35%,transparent);border-radius:0;background:transparent;box-shadow:none;overflow-wrap:anywhere}
+html body #todo .todo-how::before,
+html.theme-pink body #todo .todo-how::before{content:"→";margin-right:6px}
+html body #todo .todo-how>.muted,
+html.theme-pink body #todo .todo-how>.muted{font:inherit;color:inherit}
+html body #todo .todo-how a,
+html.theme-pink body #todo .todo-how a{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
+
+/* Full-width task timing on rows with a static summary. */
+html body #tasks #task-body .task-static>.task-summary{flex:1 1 100%;width:100%;min-width:0}

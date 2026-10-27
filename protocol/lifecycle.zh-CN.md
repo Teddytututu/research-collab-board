@@ -29,7 +29,7 @@
 
 ```sh
 python scripts/task_flow.py new T001 --by Claude --title "比较方法" --when "输入齐全" --node "比较结果"
-python scripts/task_flow.py start T001 --by GPT --status "0/6"
+python scripts/task_flow.py start T001 --by GPT --status "0/6 · 约 18:00"
 python scripts/task_flow.py progress T001 --by GPT --status "3/6 · 约18:00"
 python scripts/task_flow.py block T001 --by GPT --wait "等研究负责人审阅输入"
 python scripts/task_flow.py deliver T001 --by GPT --evidence attachments/T001/evidence.md
@@ -66,3 +66,9 @@ GPT 读取 `attachments/night-watch/events.json`，处理事件、检查自己�
 交流标题采用带时区的 ISO 时间和任务编号，例如 `### 2030-01-01T10:00:00+00:00 · GPT → Claude · T001`；正文写选项和建议，负责人用相同任务编号回复。每日文件放在 `data/exchange/YYYY-MM-DD.md`，同时支持 `exchange.md`。守夜人负责观测和写事件，实际会话负责判断授权与执行。
 
 负责人可用 `python scripts/flow_check.py --fix-tree --by Claude` 将关联任务全部归档的节点标为 done。
+
+## Progress forecasts / 进度预计
+
+Start with `X/N · 约 HH:MM` or `X/N · 估不了：specific reason`. Forecasts use the board's Taipei clock; `约 明天 HH:MM` and `约 MM-DD HH:MM` express later dates. Progress without an explicit “约” uses this counter's recorded speed over the last twelve hours. A counter reset starts a new phase. Speed-based forecasts replace an estimation-exception prefix while keeping the explanation.
+
+Flow checks report `eta_missing`, `eta_overdue` after thirty minutes, `counter_complete`, and `eta_invalid` for malformed dates. Completing a phase calls for delivery or a new phase counter. The compact UI allows sixteen Unicode code points and prefers an explicit status clock over a placeholder timing condition. Authenticated roles, evidence paths, archives, worker identities and review transitions retain the lifecycle rules above.

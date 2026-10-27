@@ -29,8 +29,8 @@ Create `data/tasks/T001-example.md` first, with goal, rationale, start condition
 
 ```sh
 python scripts/task_flow.py new T001 --by Claude --title "Compare methods" --when "Inputs ready" --node "Comparison"
-python scripts/task_flow.py start T001 --by GPT --status "0/6"
-python scripts/task_flow.py progress T001 --by GPT --status "3/6 · ~18:00"
+python scripts/task_flow.py start T001 --by GPT --status "0/6 · 约 18:00"
+python scripts/task_flow.py progress T001 --by GPT --status "3/6 · 约 18:00"
 python scripts/task_flow.py block T001 --by GPT --wait "waiting for researcher to review inputs"
 python scripts/task_flow.py deliver T001 --by GPT --evidence attachments/T001/evidence.md
 python scripts/task_flow.py accept T001 --by Claude --summary "Six cases reviewed" --node-summary "Comparison ready"
@@ -76,3 +76,9 @@ Use A.
 Daily files live in `data/exchange/YYYY-MM-DD.md`; `exchange.md` remains supported. The watcher observes and queues events. The assistant evaluates authorization and performs actions.
 
 The lead can request the mechanical all-archived tree repair with `python scripts/flow_check.py --fix-tree --by Claude`.
+
+## Progress forecasts / 进度预计
+
+Start with `X/N · 约 HH:MM` or `X/N · 估不了：specific reason`. Forecasts use the board's Taipei clock; `约 明天 HH:MM` and `约 MM-DD HH:MM` express later dates. Progress without an explicit “约” uses this counter's recorded speed over the last twelve hours. A counter reset starts a new phase. Speed-based forecasts replace an estimation-exception prefix while keeping the explanation.
+
+Flow checks report `eta_missing`, `eta_overdue` after thirty minutes, `counter_complete`, and `eta_invalid` for malformed dates. Completing a phase calls for delivery or a new phase counter. The compact UI allows sixteen Unicode code points and prefers an explicit status clock over a placeholder timing condition. Authenticated roles, evidence paths, archives, worker identities and review transitions retain the lifecycle rules above.

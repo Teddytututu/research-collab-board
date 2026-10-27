@@ -14,19 +14,19 @@ test('unclaimed task has one update clause',()=>assert.equal(eta.label({mode:'co
 test('video phase completion preserves whole-task scope',()=>assert.equal(eta.label({mode:'phase_complete',phase_label:'视频48/48已完成'}),'视频48/48已完成'));
 test('previous deliveries render in a separate dated history string',()=>assert.match(eta.history({previous_deliveries:[{at:'2026-10-23T21:20:00+08:00',scope:'v0.2'}]}),/v0.2 10-23 21:20/));
 test('short clocks use the actual same-day forecast',()=>assert.equal(eta.task({status:'6/48',eta:{mode:'estimate',at:'2026-10-23T23:59:00+08:00'}},null,now),'6/48 · 约 23:59'));
-test('a future morning uses 明早 within fourteen code points',()=>assert.equal(eta.task({status:'12/60 · 预计10-24 06:10',eta:{mode:'estimate',at:'2026-10-24T06:10:00+08:00'}},null,now),'12/60·明早06:10'));
-test('a future afternoon retains the correct day',()=>assert.equal(eta.task({status:'12/60',eta:{mode:'estimate',at:'2026-10-24T16:10:00+08:00'}},null,now),'12/60·明天16:10'));
-test('a numeric patrol timestamp keeps its seconds unit',()=>assert.equal(eta.task({status:'6/48',eta:{mode:'estimate',at:Date.parse('2026-10-24T06:10:00+08:00')/1000}},null,now),'6/48·明早06:10'));
+test('a future morning uses 明早 within sixteen code points',()=>assert.equal(eta.task({status:'12/60 · 预计10-24 06:10',eta:{mode:'estimate',at:'2026-10-24T06:10:00+08:00'}},null,now),'12/60 · 明早 06:10'));
+test('a future afternoon retains the correct day',()=>assert.equal(eta.task({status:'12/60',eta:{mode:'estimate',at:'2026-10-24T16:10:00+08:00'}},null,now),'12/60 · 明天 16:10'));
+test('a numeric patrol timestamp keeps its seconds unit',()=>assert.equal(eta.task({status:'6/48',eta:{mode:'estimate',at:Date.parse('2026-10-24T06:10:00+08:00')/1000}},null,now),'6/48 · 明早 06:10'));
 test('invalid, past and distant forecasts retain only progress',()=>{
  for(const at of ['invalid','2026-10-23T01:00:00+08:00','2026-11-28T01:42:00+08:00'])
   assert.equal(eta.task({status:'977/1176 · 预计完成01:42',eta:{mode:'estimate',at}},null,now),'977/1176');
  assert.equal(eta.task({status:'进行中',eta:{mode:'estimate',at:'invalid'}},null,now),'—');
 });
-test('a dated ETA overrides a contradictory legacy clock',()=>assert.equal(eta.task({status:'6/48 · 预计完成01:42',eta:{mode:'estimate',at:'2026-10-24T06:10:00+08:00'}},null,now),'6/48·明早06:10'));
+test('a dated ETA overrides a contradictory legacy clock',()=>assert.equal(eta.task({status:'6/48 · 预计完成01:42',eta:{mode:'estimate',at:'2026-10-24T06:10:00+08:00'}},null,now),'6/48 · 明早 06:10'));
 test('a current-day legacy clock is allowed and a past clock is suppressed',()=>{
  assert.equal(eta.task({status:'6/48 · 预计完成23:59'},null,now),'6/48 · 约 23:59');
  assert.equal(eta.task({status:'6/48 · 预计完成20:37'},null,now),'6/48');
- assert.equal(eta.task({status:'6/48 · 预计10-24 06:10'},null,now),'6/48');
+ assert.equal(eta.task({status:'6/48 · 预计10-24 06:10'},null,now),'6/48 · 明早 06:10');
 });
 test('previous delivery and phase completion keep their scope separate',()=>{
  for(const mode of ['complete','phase_complete','continuous'])
@@ -69,11 +69,11 @@ test('waiting labels retain action rather than explanations',()=>{
  assert.equal(eta.task({status:'12/60',eta:{mode:'conditional',short_condition:'本轮估时'}},null,now),'12/60');
 });
 test('documents without counters show a compact delivery time',()=>assert.equal(eta.task({status:'界面同步',eta:{mode:'estimate',at:'2026-10-24T06:10:00+08:00'}},null,now),'明早 06:10 交'));
-test('every short string fits fourteen Unicode code points',()=>{
+test('every short string fits sixteen Unicode code points',()=>{
  for(const status of ['采集1000/1000 · 原图回收877/1000','🧪训练 12/60','日更10/24通过','123456789/1234567890','已停 · 196/320','暂停 · 196/320'])
   for(const mode of ['estimate','paused','conditional','continuous','phase_complete','complete']){
    const result=eta.task({status,eta:{mode,at:'2026-10-24T06:10:00+08:00',short_condition:'超长🧪🧪🧪🧪🧪前置条件'}},null,now);
-   assert.ok(Array.from(result).length<=14,result);
+   assert.ok(Array.from(result).length<=16,result);
    assert.doesNotMatch(result,/[\uD800-\uDBFF]$/);
   }
 });

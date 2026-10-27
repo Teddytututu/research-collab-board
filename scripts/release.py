@@ -25,6 +25,7 @@ def files():
     names += ['board/message_controls.py','tests/discussion-actions.test.cjs','tests/mobile-layers.browser.cjs']
     names += ['board/lifecycle.py','board/watch_rules.py','board/writing.py','board/lifecycle-view.js','board/lifecycle-view.css']
     names += ['scripts/task_flow.py','scripts/flow_check.py','scripts/patrol_log.py']
+    names += ['tests/forecast.test.cjs','tests/file-groups.test.cjs']
     names += ['tests/lifecycle-view.test.cjs','tests/mobile-layers-optional-runtime.test.cjs']
     names += ['tests/room-collection.test.cjs','tests/eta-view.test.cjs','tests/identity-refresh.test.cjs','tests/quota-truth.test.cjs']
     for folder in ['personas','protocol','templates']:

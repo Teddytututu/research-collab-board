@@ -944,7 +944,7 @@ html.theme-pink #nav .brand .brand-person img{transform:scale(1.45);transform-or
     </form>
     </div>
   </section>
-  <section id="files"><h2>报告与文件</h2><div class="card" id="file-body"></div></section>
+  <section id="files"><div class="files-heading"><h2>报告与文件</h2><input id="file-filter" type="search" placeholder="筛选…" aria-label="筛选报告与文件" aria-controls="file-body" autocomplete="off"></div><div class="card" id="file-body"></div></section>
 </main>
 <script src="/identity.js"></script>
 <script src="/room-markdown.js"></script>
@@ -1218,7 +1218,8 @@ function renderTasks(o, tasks) {
 }
 
 function renderFiles(links) {
-  const box = $('#file-body'); box.replaceChildren(); box.classList.add('fgrid');
+  const box = $('#file-body'); box.replaceChildren(); box.classList.add('fgrid'); box.classList.add('factive');
+  const active = new Map();
   let arc = document.getElementById('file-archive');
   if (!arc) { arc = el('details', 'farchive'); arc.id = 'file-archive'; box.after(arc);
     arc.addEventListener('toggle', () => localStorage.setItem('farchive', arc.open ? '1' : '0')); }
@@ -1241,8 +1242,61 @@ function renderFiles(links) {
     const copy = el('button', 'fcopy', '⧉'); copy.type = 'button'; copy.title = '复制路径'; copy.setAttribute('aria-label', '复制路径');
     copy.onclick = e => { e.stopPropagation(); navigator.clipboard.writeText(l.path).then(() => { copy.textContent = '✓'; flash('路径已复制', true); setTimeout(() => copy.textContent = '⧉', 1600); }); };
     card.append(tile, text, copy);
-    if (l.archived) (groups[l.cat || '其他'] = groups[l.cat || '其他'] || []).push(card); else box.append(card); });
+    if (l.archived) (groups[l.cat || '其他'] = groups[l.cat || '其他'] || []).push(card); else {
+      const category = l.cat || '其他';
+      if (!active.has(category)) active.set(category, []);
+      active.get(category).push({card, title: String(l.title || '')});
+    } });
   const order = ['研究', '学习', '事务', '界面与设计', '项目', '其他'], keys = Object.keys(groups);
+  const filter = document.getElementById('file-filter'), states = [];
+  let filtering = false;
+  const saveOpen = (state, value) => {
+    state.preferred = value;
+    try { localStorage.setItem('fa:' + state.category, value ? '1' : '0'); } catch (_) {}
+  };
+  const rank = category => order.includes(category) ? order.indexOf(category) : order.length;
+  Array.from(active.keys()).sort((a, z) => rank(a) - rank(z)).forEach(category => {
+    const records = active.get(category), group = el('details', 'factive-group');
+    let saved = null;
+    try { saved = localStorage.getItem('fa:' + category); } catch (_) {}
+    const state = {category, group, records, courses: [], preferred: saved === null ? category === '研究' : saved === '1'};
+    group.open = state.preferred;
+    group.append(el('summary', 'factive-head', category + ' · ' + records.length));
+    const appendGrid = (target, items) => { const grid = el('div', 'fgrid'); items.forEach(item => grid.append(item.card)); target.append(grid); };
+    if (category === '学习') {
+      const courses = new Map();
+      records.forEach(item => {
+        const course = item.title.match(/[A-Z]{4}\d{4}/)?.[0] || '综合';
+        if (!courses.has(course)) courses.set(course, []);
+        courses.get(course).push(item);
+      });
+      courses.forEach((items, course) => {
+        const section = el('div', 'fcourse'); section.append(el('p', 'fcourse-label', course));
+        appendGrid(section, items); group.append(section); state.courses.push({section, items});
+      });
+    } else appendGrid(group, records);
+    group.addEventListener('toggle', () => {
+      if (group.isConnected && !filtering && group.open !== state.preferred) saveOpen(state, group.open);
+    });
+    states.push(state); box.append(group);
+  });
+  const empty = el('p', 'muted small file-empty'); empty.setAttribute('role', 'status'); box.append(empty);
+  const applyFilter = () => {
+    const query = (filter?.value || '').trim().toLocaleLowerCase();
+    if (query && !filtering) states.forEach(state => { if (state.group.open !== state.preferred) saveOpen(state, state.group.open); });
+    filtering = Boolean(query);
+    let visible = 0;
+    states.forEach(state => {
+      let count = 0;
+      state.records.forEach(item => { item.card.hidden = !item.title.toLocaleLowerCase().includes(query); if (!item.card.hidden) count++; });
+      state.courses.forEach(course => { course.section.hidden = course.items.every(item => item.card.hidden); });
+      state.group.hidden = !count; state.group.open = filtering ? count > 0 : state.preferred; visible += count;
+    });
+    empty.hidden = visible > 0;
+    empty.textContent = filtering ? '没有匹配的报告与文件' : '还没有报告与文件';
+  };
+  if (filter) filter.oninput = applyFilter;
+  applyFilter();
   const total = keys.reduce((a, k) => a + groups[k].length, 0); arc.hidden = !total;
   if (total) { arc.append(el('summary', 'farchive-head', '已处理的报告与文件（' + total + '）'));
     keys.sort((a, z) => (order.indexOf(a) + 99) % 99 - (order.indexOf(z) + 99) % 99).forEach(k => {

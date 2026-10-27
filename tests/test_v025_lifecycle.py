@@ -31,7 +31,7 @@ class Lifecycle(unittest.TestCase):
 
     def test_complete_lifecycle_archives_and_cannot_resurrect_snapshot(self):
         self.new()
-        self.move('start', status='0/2')
+        self.move('start', status='0/2 · 估不了：fixture setup')
         self.move('block', wait='waiting for researcher to review inputs')
         self.move('deliver', evidence=self.evidence())
         with self.assertRaisesRegex(ValueError, 'research lead'):
@@ -60,10 +60,10 @@ class Lifecycle(unittest.TestCase):
 
     def test_reject_resume_stop_and_duplicate_ids(self):
         self.new()
-        self.move('start', status='0/2')
+        self.move('start', status='0/2 · 估不了：fixture setup')
         self.move('deliver', evidence=self.evidence())
         self.move('reject', 'Claude', reason='Add second case')
-        self.move('start', status='1/2')
+        self.move('start', status='1/2 · 估不了：fixture setup')
         self.move('stop', 'Claude', reason='Scope changed')
         with self.assertRaises(ValueError):
             self.new()
@@ -79,7 +79,7 @@ class Lifecycle(unittest.TestCase):
 
     def test_checks_deadlines_patrol_grace_and_owner(self):
         self.new()
-        self.move('start', status='0/2')
+        self.move('start', status='0/2 · 估不了：fixture setup')
         late = self.now + timedelta(hours=4)
         issues = check(self.root, now=late)
         self.assertTrue(any(i['code'] == 'running_stale' and i['owner'] == 'GPT' for i in issues))
@@ -93,7 +93,7 @@ class Lifecycle(unittest.TestCase):
     def test_existing_bytes_preserved_and_missing_evidence_directory_rejected(self):
         before = (self.root / 'board.md').read_bytes()
         self.new()
-        self.move('start', status='0/2')
+        self.move('start', status='0/2 · 估不了：fixture setup')
         with self.assertRaises(ValueError):
             self.move('deliver', evidence='attachments')
         self.assertIn(before, [p.read_bytes() for p in (self.root / 'history').glob('*')])
@@ -119,10 +119,10 @@ class Lifecycle(unittest.TestCase):
 
     def test_worker_lease_keeps_managed_status_until_evidence_delivery(self):
         self.new()
-        self.move('start', status='0/2')
+        self.move('start', status='0/2 · 估不了：fixture setup')
         lease = workers.claim(self.root, 'T001', 'W1', ['work/output'])
         workers.update(self.root, 'T001', lease['token'], release=True)
-        self.assertEqual(storage.read(self.root / 'attachments/state.json')['tasks']['T001']['status'], '0/2')
+        self.assertEqual(storage.read(self.root / 'attachments/state.json')['tasks']['T001']['status'], '0/2 · 估不了：fixture setup')
         with self.assertRaisesRegex(ValueError, 'task_flow'):
             workers.update_board(self.root, 'T001', 'delivered')
         self.move('deliver', evidence=self.evidence())

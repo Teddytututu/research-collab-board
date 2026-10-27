@@ -47,10 +47,10 @@
  }
  function compact(left,right){
   if(left&&right){
-   for(const candidate of [left+' · '+right,left+'·'+right.replace(/\s/g,'')])if(size(candidate)<=14)return candidate;
+   for(const candidate of [left+' · '+right,left+'·'+right.replace(/\s/g,'')])if(size(candidate)<=16)return candidate;
   }
-  if(size(left)<=14&&left)return left;
-  if(size(right)<=14&&right)return right;
+  if(size(left)<=16&&left)return left;
+  if(size(right)<=16&&right)return right;
   return '—';
  }
  function wait(eta,status){
@@ -62,6 +62,16 @@
   const match=condition.match(/^(?:等)?([\p{L}\p{M}]{1,8}回复)/u);
   return match?'等'+match[1]:eta?.short_condition&&size('等'+condition)<=14?'等'+condition:'';
  }
+ // Status text “约 HH:MM / 约 明天 HH:MM / 约 MM-DD HH:MM” (also 预计…), Taipei clock; '' once passed.
+ function declared(status,now){
+  const m=String(status||'').match(/(?:预计(?:完成)?|约)\s*(明天|\d{1,2}-\d{2})?\s*(\d{1,2}):(\d{2})/);
+  if(!m)return '';
+  const hh=+m[2],mm=+m[3],clock=String(hh).padStart(2,'0')+':'+m[3];
+  const today=dateKey(now),tomorrow=dateKey(new Date(+now+86400000));
+  const day=!m[1]?today:m[1]==='明天'?tomorrow:today.slice(0,5)+m[1].padStart(5,'0');
+  if(!(hh<24&&mm<60&&(day>today||(day===today&&clock>time(now)))))return '';
+  return day===today?'约 '+clock:day===tomorrow?(hh<12?'明早 ':'明天 ')+clock:'约 '+day.slice(5);
+ }
  function task(task,run,now=new Date()){
   const status=String(task.status||''),own=linked(task,run),p=progress(task,own);
   const eta=task.eta||own?.eta;
@@ -69,7 +79,9 @@
   const left=p.stage+p.count;
   if(/(?:^|[·；，])\s*(?:stopped|cancelled|已停|停止|取消|终止)/i.test(status)||eta?.mode==='stopped'){const text=compact(left,'已停');return text.includes('已停')?text:'已停';}
   if(/暂停|搁置/.test(status)||eta?.mode==='paused'){const text=compact(left,'暂停');return text.includes('暂停')?text:'暂停';}
+  const said=declared(status,now);
   if(eta?.mode==='conditional'||/^(?:等|等待|待领)/.test(status)){
+   if(said&&/^\d+\s*\/\s*\d+/.test(status))return compact(left,said);
    const waiting=wait(eta,status);return waiting||compact(left,'');
   }
   // A completed phase and an earlier delivery carry no forecast for the next phase.
@@ -80,13 +92,8 @@
   if(reasonable){
    const tomorrow=dateKey(new Date(+now+86400000)),day=dateKey(at);
    timing=day===dateKey(now)?'约 '+time(at):day===tomorrow?(+time(at).slice(0,2)<12?'明早 ':'明天 ')+time(at):'';
-  }else if(!eta){
-   // Legacy clock-only declarations apply only later on the current Taipei day.
-   const declared=status.match(/预计(?:完成)?\s*(?:(\d{1,2}-\d{2})\s+)?(\d{1,2}):(\d{2})/);
-   if(declared){
-    const hh=+declared[2],mm=+declared[3],clock=String(hh).padStart(2,'0')+':'+declared[3];
-    if(hh<24&&mm<60&&clock>time(now)&&(!declared[1]||declared[1]===dateKey(now).slice(5)))timing='约 '+clock;
-   }
+  }else if(!eta||!eta.at){
+   timing=said;
   }
   return compact(left,timing?timing+(left?'':' 交'):'');
  }

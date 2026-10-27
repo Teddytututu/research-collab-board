@@ -1,0 +1,38 @@
+/* category layer only: original card, note, archive and character rules remain authoritative. */
+html body #files[data-index-tabs] .findex-bar{display:flex;align-items:flex-end;gap:4px;min-width:0}
+html body #files[data-index-tabs] .findex-tabs{display:flex;align-items:flex-end;gap:4px;flex:1 1 auto;min-width:0;overflow-x:auto;padding-top:4px;scrollbar-width:none}
+html body #files[data-index-tabs] .findex-tabs::-webkit-scrollbar{display:none}
+html body #files[data-index-tabs] [data-index-kind]{--index-paper:var(--paper,var(--card));--index-border:var(--line);--index-ink:var(--ink)}
+html body #files[data-index-tabs] [data-index-kind="研究"]{--index-paper:#FDECEC;--index-border:#F4C0D1;--index-ink:#72243E}
+html body #files[data-index-tabs] [data-index-kind="学习"]{--index-paper:#EAF6EE;--index-border:#9FE1CB;--index-ink:#085041}
+html body #files[data-index-tabs] [data-index-kind="事务"]{--index-paper:#FFF3E0;--index-border:#FAC775;--index-ink:#633806}
+html body #files[data-index-tabs] [data-index-kind="界面与设计"]{--index-paper:#F1E9FF;--index-border:#CECBF6;--index-ink:#3C3489}
+html body #files[data-index-tabs] [data-index-kind="项目"]{--index-paper:#E6EFFF;--index-border:#B5D4F4;--index-ink:#0C447C}
+html.theme-pink body #files[data-index-tabs] [data-index-kind="研究"]{--index-paper:#FBEAF0}
+html.theme-pink body #files[data-index-tabs] [data-index-kind="学习"]{--index-paper:#E1F5EE}
+html.theme-pink body #files[data-index-tabs] [data-index-kind="事务"]{--index-paper:#FAEEDA}
+html.theme-pink body #files[data-index-tabs] [data-index-kind="界面与设计"]{--index-paper:#EEEDFE}
+html.theme-pink body #files[data-index-tabs] [data-index-kind="项目"]{--index-paper:#E6F1FB}
+html body #files[data-index-tabs] .findex-tab{position:relative;flex:none;display:flex;align-items:center;gap:4px;box-sizing:border-box;margin:0;padding:6px 12px;border:1px solid var(--index-border);border-radius:8px 8px 0 0;background:#fff;color:var(--muted);font-family:var(--display-font,var(--hand,inherit));font-size:13px;font-weight:400;list-style:none;white-space:nowrap;cursor:pointer;box-shadow:none;transform:none;transition:padding-top 300ms cubic-bezier(.22,1,.36,1),background-color 300ms cubic-bezier(.22,1,.36,1),border-color 300ms cubic-bezier(.22,1,.36,1),color 300ms cubic-bezier(.22,1,.36,1),opacity 300ms cubic-bezier(.22,1,.36,1)}
+html body #files[data-index-tabs] .findex-tab::-webkit-details-marker{display:none}
+html body #files[data-index-tabs] .findex-tab::before{content:"";position:absolute;top:3px;left:12px;right:12px;border-top:1px dashed var(--index-border);pointer-events:none}
+html body #files[data-index-tabs] .findex-tab::after{content:none}
+html body #files[data-index-tabs] .findex-tab:is(:hover,:active){transform:none;box-shadow:none;background:#fff}
+html body #files[data-index-tabs] .findex-tab.is-selected{padding-top:10px;border-bottom-color:transparent;background:var(--index-paper);color:var(--index-ink)}
+html body #files[data-index-tabs] .findex-tab.is-empty{opacity:.55}
+html body #files[data-index-tabs] .findex-count{font-variant-numeric:tabular-nums}
+html body #files[data-index-tabs] .findex-pane{margin:0;background:var(--index-paper);border-radius:0 8px 8px 8px}
+html body #files[data-index-tabs] .findex-pane>summary[hidden]{display:none!important}
+html body #files[data-index-tabs] .findex-pane[hidden]{display:none!important}
+html body #files[data-index-tabs] #file-filter{box-sizing:border-box;flex:0 0 120px;width:120px;max-width:120px;height:28px;padding:0 12px;align-self:flex-end}
+html body #files[data-index-tabs] .findex-courses{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+html body #files[data-index-tabs] .findex-course{padding:6px 12px;border:1px solid var(--index-border);border-radius:999px;background:#fff;color:var(--index-ink);font-family:var(--body-font,var(--sans,inherit));font-size:12px;font-weight:400;box-shadow:none;transform:none;transition:background-color 300ms cubic-bezier(.22,1,.36,1),border-color 300ms cubic-bezier(.22,1,.36,1),color 300ms cubic-bezier(.22,1,.36,1)}
+html body #files[data-index-tabs] .findex-course::before{content:"•";margin-inline-end:4px}
+html body #files[data-index-tabs] .findex-course:is(:hover,:active){transform:none;box-shadow:none}
+html body #files[data-index-tabs] .findex-course[aria-pressed=true]{background:var(--index-border);color:var(--index-ink)}
+@media(width < 600px){
+ html body #files[data-index-tabs] .findex-bar{flex-direction:column;align-items:stretch}
+ html body #files[data-index-tabs] .findex-tabs{width:100%;order:1;flex-basis:auto}
+ html body #files[data-index-tabs] #file-filter{order:0;flex-basis:auto;align-self:flex-end}
+}
+@media(prefers-reduced-motion:reduce){html body #files[data-index-tabs] .findex-tab,html body #files[data-index-tabs] .findex-course{transition-duration:0s}}

@@ -2,7 +2,7 @@ const test=require('node:test'),assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 
 function harness(saved={}){
- const storage=new Map(Object.entries(saved)),ids=new Map(),requests=[];
+ const storage=new Map(Object.entries(saved)),ids=new Map(),requests=[],navigationCalls=[];
  class Element{
   constructor(tag,cls='',text=''){
    this.tagName=tag;this.className=cls;this.textContent=text;this.children=[];this.style={};this.handlers={};this.open=false;this.hidden=false;this.isConnected=false;
@@ -19,12 +19,14 @@ function harness(saved={}){
  ids.set('file-body',box);ids.set('file-filter',filter);
  const context={document:{getElementById:id=>ids.get(id)||null},$:selector=>ids.get(selector.slice(1)),
   el:(tag,cls,text)=>new Element(tag,cls||'',text||''),localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},
-  window:{open:()=>{}},navigator:{clipboard:{writeText:()=>Promise.resolve()}},
+  // These regressions exercise the original card/group renderer in isolation.
+  // The navigation enhancement has its own browser interaction coverage.
+  window:{open:()=>{},FileIndexTabs:{beforeRender:()=>navigationCalls.push('before'),enhance:()=>navigationCalls.push('after')}},navigator:{clipboard:{writeText:()=>Promise.resolve()}},
   fetch:async(url,args)=>{requests.push(JSON.parse(args.body));return {ok:true};},setTimeout:()=>{}};
  const html=fs.readFileSync(path.join(__dirname,'../board/index.html'),'utf8'),start=html.indexOf('function renderFiles(');
  vm.runInNewContext(html.slice(start,html.indexOf('let lastRev',start))+'\nthis.render=renderFiles;',context);
  const find=(node,cls)=>node.children.flatMap(c=>[...(c.className.split(' ').includes(cls)?[c]:[]),...find(c,cls)]);
- return {context,box,filter,storage,requests,find,groups:()=>find(box,'factive-group')};
+ return {context,box,filter,storage,requests,navigationCalls,find,groups:()=>find(box,'factive-group')};
 }
 const links=[
  {title:'Demo report',cat:'研究',path:'demo/report.md'},
@@ -37,6 +39,7 @@ const links=[
 ];
 test('active groups reuse category order and preserve course-local link ordering',()=>{
  const h=harness();h.context.render(links);const groups=h.groups();
+ assert.deepEqual(h.navigationCalls,['before','after']);
  assert.deepEqual(groups.map(g=>g.children[0].textContent),['研究 · 1','学习 · 4','其他 · 1']);
  assert.deepEqual(groups.map(g=>g.open),[true,false,false]);
  assert.deepEqual(h.find(groups[1],'fcourse-label').map(n=>n.textContent),['DEMO1001','TASK1002','综合']);

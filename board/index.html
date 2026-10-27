@@ -895,6 +895,7 @@ html.theme-pink #nav .brand .brand-person img{transform:scale(1.45);transform-or
 <link rel="stylesheet" href="/fanart.css">
 <link rel="stylesheet" href="/lifecycle-view.css">
 <script src="/lifecycle-view.js"></script>
+<link rel="stylesheet" href="/index-tabs.css">
 </head>
 <body>
 <nav id="nav">
@@ -950,6 +951,7 @@ html.theme-pink #nav .brand .brand-person img{transform:scale(1.45);transform-or
 <script src="/room-markdown.js"></script>
 <script src="/room-extras.js"></script>
 <script src="/discussion.js"></script>
+<script src="/index-tabs.js"></script>
 <script>
 (async () => { await BoardIdentity.ready;
 const $ = s => document.querySelector(s);
@@ -1218,7 +1220,7 @@ function renderTasks(o, tasks) {
 }
 
 function renderFiles(links) {
-  const box = $('#file-body'); box.replaceChildren(); box.classList.add('fgrid'); box.classList.add('factive');
+  const box = $('#file-body'); window.FileIndexTabs.beforeRender(box); box.replaceChildren(); box.classList.add('fgrid'); box.classList.add('factive');
   const active = new Map();
   let arc = document.getElementById('file-archive');
   if (!arc) { arc = el('details', 'farchive'); arc.id = 'file-archive'; box.after(arc);
@@ -1304,6 +1306,7 @@ function renderFiles(links) {
       g.addEventListener('toggle', () => localStorage.setItem('fg:' + k, g.open ? '1' : '0'));
       const grid = el('div', 'fgrid'); groups[k].forEach(c => grid.append(c));
       g.append(el('summary', 'fgroup-head', k + '（' + groups[k].length + '）'), grid); arc.append(g); }); }
+  window.FileIndexTabs.enhance(box, order);
 }
 
 let lastRev = '';

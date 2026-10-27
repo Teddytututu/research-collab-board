@@ -74,14 +74,14 @@ def snapshot(root,channel=None):
         if len(cells)>=4 and re.fullmatch('T[0-9]+',cells[0]):tasks.append(dict(id=cells[0],title=re.sub(r'\[([^]]+)\]\([^)]+\)',r'\1',cells[1]),status=cells[2],owner=cells[3]))
     for tid,row in state.get('tasks',{}).items():
         current=next((x for x in tasks if x['id']==tid),None)
-        if current:current.update({k:row[k] for k in ['title','status','owner'] if k in row})
-        else:tasks.append(dict(id=tid,title=row.get('title',tid),status=row.get('status','待领'),owner=row.get('owner','GPT')))
+        if current:current.update({k:row[k] for k in ['title','status','owner','current_stage'] if k in row})
+        else:tasks.append(dict(id=tid,title=row.get('title',tid),status=row.get('status','待领'),owner=row.get('owner','GPT'),**({'current_stage':row['current_stage']} if 'current_stage' in row else {})))
     for run in overview.get('runs',[]):run.update(state.get('runs',{}).get(run.get('id'),{}))
     from datetime import datetime,timedelta
     today=datetime.now().astimezone().date()
     for day in overview.get('schedule',[]):
         if type(day.get('relative_day')) is int:day['date']=(today+timedelta(days=day['relative_day'])).strftime('%m-%d')
-    overview=task_eta.refresh(root,overview)
+    overview=task_eta.project(root,overview)
     for task in tasks:task['eta']=overview.get('task_etas',{}).get(task['id'])
     result=dict(overview=overview,tasks=tasks,discussion=conversation(root,channel),project=storage.read(root/'project.json'),modified=datetime.now().astimezone().isoformat())
     result['revision']=hashlib.sha256(json.dumps({k:v for k,v in result.items() if k!='modified'},sort_keys=True).encode()).hexdigest();return result

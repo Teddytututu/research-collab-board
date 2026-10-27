@@ -1,7 +1,7 @@
 """Local task leases: serialized claims, overlapping scopes and finite heartbeats."""
 from pathlib import Path, PurePosixPath
 import json, os, re, time, uuid, math
-from . import storage
+from . import storage, lifecycle
 
 TTL = 1800
 
@@ -47,21 +47,6 @@ def archived_task(root, task):
     root=Path(root).resolve();path=data_file(root,'tasks/archive.md')
     return path.exists() and any(row['task']==task for row in parse_board(path.read_text('utf-8-sig')))
 
-def record(root, row, status=None):
-    if archived_task(root,row['task']):return
-    path=Path(root)/'attachments/state.json';state=storage.read(path,{'tasks':{},'runs':{}})
-    task=state.setdefault('tasks',{}).setdefault(row['task'],{})
-    task.setdefault('owner','GPT')
-    task.update(worker=row['worker'],write_scopes=row['scopes'],heartbeat_unix=row['heartbeat'])
-    if row.get('estimated_completion'):task['estimated_completion']=row['estimated_completion']
-    task['claimed_at']=row['started']
-    managed=task.get('lifecycle_managed',False)
-    state_key='worker_state' if managed else 'state'
-    if row.get('released') is not None:
-        task['released_at']=row['released'];task[state_key]='handoff' if managed else 'review' if status=='待验收' else 'handoff'
-    else:task[state_key]='in_progress'
-    if status and not managed:task['status']=status
-    storage.write(path,state)
 
 def claim(root, task, worker, scopes, allowed_workers=1, now=None, eta=None):
     if not re.fullmatch(r'[A-Za-z0-9_-]{1,64}', task) or not re.fullmatch(r'[A-Za-z0-9_-]{1,64}', worker):
@@ -91,7 +76,12 @@ def claim(root, task, worker, scopes, allowed_workers=1, now=None, eta=None):
         if eta:row['estimated_completion']=eta
         with (folder / (task + '.lock')).open('x', encoding='utf-8') as f:
             json.dump(row, f, ensure_ascii=False); f.flush(); os.fsync(f.fileno())
-        record(root,row,'进行中（'+worker+'）')
+        try:
+            lifecycle._worker_transition(root,'claim',row,status='进行中（'+worker+'）')
+        except Exception:
+            history=folder/'history';history.mkdir(exist_ok=True)
+            (folder/(task+'.lock')).replace(history/(task+'.'+uuid.uuid4().hex+'.unpublished'))
+            raise
         return row
 
 def update(root, task, token, release=False, now=None, status='待验收'):
@@ -103,12 +93,16 @@ def update(root, task, token, release=False, now=None, status='待验收'):
         now = time.time() if now is None else now
         if now - row['heartbeat'] > TTL: raise ValueError('Claim expired; reclaim before continuing')
         if release:
+            if not isinstance(status,str) or not status.strip() or any(c in status for c in '\r\n|'):
+                raise ValueError('Use one worker status cell')
             row.update(heartbeat=now,released=now)
+            lifecycle._worker_transition(root,'release',row,status=status)
             history = path.parent / 'history'; history.mkdir(exist_ok=True)
             path.replace(history / (path.name + '.' + uuid.uuid4().hex + '.released'))
         else:
-            row['heartbeat'] = now; storage.write(path, row)
-        record(root,row,status if release else None)
+            row['heartbeat'] = now
+            lifecycle._worker_transition(root,'heartbeat',row)
+            storage.write(path, row)
         return row
 
 def append_shared(root,relative,text):
@@ -122,15 +116,6 @@ def append_shared(root,relative,text):
         with path.open('ab') as stream:stream.write(data);stream.flush();os.fsync(stream.fileno())
 
 def update_board(root,task,status):
-    if any(x in status for x in '\r\n|'):raise ValueError('Use one status cell')
+    """Compatibility helper; lifecycle owns the shared board write."""
     with storage.locked(root):
-        state=storage.read(Path(root)/'attachments/state.json',{})
-        if state.get('tasks',{}).get(task,{}).get('lifecycle_managed'):
-            raise ValueError('Managed task status uses scripts/task_flow.py with evidence and lead review')
-        path=storage.relative_file(root,'board.md');raw=path.read_bytes();matches=[]
-        for match in re.finditer(rb'(?m)^\|[^\r\n]*',raw):
-            cells=match.group().decode('utf-8').split('|')
-            if len(cells)>=5 and cells[1].strip()==task:matches.append((match,cells))
-        if len(matches)!=1:raise ValueError('Choose one existing board task')
-        match,cells=matches[0];cells[3]=' '+status+' '
-        storage.write_bytes(path,raw[:match.start()]+'|'.join(cells).encode()+raw[match.end():])
+        return lifecycle._worker_transition(root,'status',{'task':task},status=status)

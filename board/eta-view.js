@@ -22,28 +22,14 @@
  const size=text=>units(text).length;
  const shortStage=text=>String(text||'').replace(/^原图(?:回收|接收)$|^回收原图$/,'收图');
  function linked(task,run){return run&&(!task.id||run.id===task.id||run.task_id===task.id)?run:null;}
- function counters(text,taskId){
-  const rows=[];
-  for(const part of String(text||'').split(/[·；;，,]/)){
-   // A reference to another task is detail, rather than this task's counter.
-   if(taskId&&Array.from(part.matchAll(/\bT\d+\b/g)).some(m=>m[0]!==taskId))continue;
-   const match=part.match(/(?:^|[\s：:])([\p{L}\p{M}]{0,12})\s*(\d+)\s*\/\s*(\d+)(?=\s|$|已完成|完成)/u);
-   if(match&&+match[3]>0&&+match[2]<=+match[3])rows.push({stage:shortStage(match[1]),done:+match[2],total:+match[3],count:match[2]+'/'+match[3]});
-  }
-  return rows;
- }
  function progress(task,run){
-  const own=linked(task,run),rows=counters(task.status,task.id);
-  const stage=task.current_stage;
-  if(stage&&Number.isInteger(stage.done)&&stage.done>=0&&stage.total>0&&stage.done<=stage.total)
+  const own=linked(task,run),stage=task.current_stage||own?.current_stage;
+  if(stage&&Number.isSafeInteger(stage.done)&&stage.done>=0&&Number.isSafeInteger(stage.total)&&stage.total>0&&stage.done<=stage.total)
    return {stage:shortStage(stage.label||stage.name),done:stage.done,total:stage.total,count:stage.done+'/'+stage.total};
-  const active=rows.find(row=>row.done<row.total);if(active)return active;
-  if(own){
-   const pending=counters(own.note,task.id).find(row=>row.done<row.total);if(pending)return pending;
-   if(Number.isInteger(own.done)&&own.done>=0&&own.total>0&&own.done<=own.total)
-    return {stage:shortStage(own.phase_label),done:own.done,total:own.total,count:own.done+'/'+own.total};
-  }
-  return rows[0]||{stage:'',count:''};
+  const match=String(task.status||'').match(/^\s*(\d+)\s*\/\s*(\d+)(?=\s|$|[·；;，,])/);
+  if(match&&Number.isSafeInteger(+match[1])&&Number.isSafeInteger(+match[2])&&+match[2]>0&&+match[1]<=+match[2])
+   return {stage:'',done:+match[1],total:+match[2],count:match[1]+'/'+match[2]};
+  return {stage:'',count:''};
  }
  function compact(left,right){
   if(left&&right){

@@ -1166,7 +1166,7 @@ function taskEntries(o, tasks) {
     const g = meta[t.id] || {}, title = g.name || (t.title || '').replace(CODE, '').trim();
     const category = taskCategory(title, g.group || '');
     const owner = g.who || t.owner || 'GPT';
-    return {...taskState(t), id:t.id, title, category, owner, eta:t.eta||o.task_etas?.[t.id], timing:EtaView.task({...t,eta:t.eta||o.task_etas?.[t.id]},(o.runs||[]).find(r=>r.task_id===t.id||r.id===t.id)), details:taskDetailRows(t,g,o)};
+    return {...taskState(t), id:t.id, title, category, owner, eta:t.eta||o.task_etas?.[t.id], timing:EtaView.task({...t,eta:t.eta||o.task_etas?.[t.id]},(o.runs||[]).find(r=>r.task_id===t.id||r.id===t.id)), progress:EtaView.progress(t,(o.runs||[]).find(r=>r.task_id===t.id||r.id===t.id)), details:taskDetailRows(t,g,o)};
   }).filter(t => !t.done).sort((a,b) => a.rank - b.rank);
 }
 function renderTasks(o, tasks) {
@@ -1183,11 +1183,11 @@ function renderTasks(o, tasks) {
         if (t.owner) labels.append(el('span', 'task-owner', t.owner));
         const title = el('span', 'n', t.title); title.title = t.title;
         const timing=el('span','task-timing'); timing.title=t.timing||'';
-        const progress=/(\d+)\s*\/\s*(\d+)/.exec(t.timing||'');
-        if (progress && +progress[2]>0) {
+        const progress=t.progress;
+        if (progress && progress.total>0) {
           const bar=el('span','tt-bar'), fill=el('i');
           bar.setAttribute('aria-hidden','true');
-          fill.style.width=Math.min(100,100*progress[1]/progress[2]).toFixed(1)+'%';
+          fill.style.width=Math.min(100,100*progress.done/progress.total).toFixed(1)+'%';
           bar.append(fill); timing.append(bar); timing.classList.add('has-bar');
         }
         timing.append(el('span','tt-text',t.timing||''));

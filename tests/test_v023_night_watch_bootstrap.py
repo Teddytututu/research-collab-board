@@ -37,7 +37,7 @@ class BootstrapNightWatchIntegration(unittest.TestCase):
         for relative in ('scripts/bootstrap.py', 'scripts/night_watch.py', 'scripts/run_queue.py',
                          'scripts/install_night_watch.py', 'scripts/install-night-watch.ps1',
                          'board/__init__.py', 'board/environment.py', 'board/storage.py',
-                         'board/watch_rules.py', 'board/lifecycle.py'):
+                         'board/watch_rules.py', 'board/lifecycle.py', 'board/task_eta.py'):
             target = self.root / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / relative, target)

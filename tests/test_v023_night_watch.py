@@ -189,7 +189,7 @@ class NightWatchTests(unittest.TestCase):
                 self.queue.run_queue(config, lambda row: called.append(row), project_root=self.root)
         self.assertEqual(called, [])
 
-    def test_unchanged_patrol_keeps_cache_and_state_bytes_and_mtime(self):
+    def test_unchanged_patrol_keeps_cache_and_samples_eta_on_its_timer(self):
         self.watch.patrol(self.root, now=1000)
         cache = self.root / 'data/attachments/night-watch/checkpoint.json'
         previous = (cache.read_bytes(), cache.stat().st_mtime_ns, self.state.read_bytes(), self.state.stat().st_mtime_ns)
@@ -197,7 +197,13 @@ class NightWatchTests(unittest.TestCase):
         with patch.object(self.watch.time, 'time', return_value=1600), contextlib.redirect_stdout(output):
             self.watch.main(['--project-root', str(self.root)])
         self.assertEqual(output.getvalue(), '')
-        self.assertEqual(previous, (cache.read_bytes(), cache.stat().st_mtime_ns, self.state.read_bytes(), self.state.stat().st_mtime_ns))
+        self.assertEqual(previous[:2], (cache.read_bytes(), cache.stat().st_mtime_ns))
+        before = json.loads(previous[2])
+        after = storage.read(self.state)
+        self.assertEqual({k: v for k, v in before.items() if k != 'eta_tracking'},
+                         {k: v for k, v in after.items() if k != 'eta_tracking'})
+        self.assertEqual(len(after['eta_tracking']['observations']['T001']), 2)
+        self.assertIn(previous[2], [p.read_bytes() for p in (self.state.parent / 'history').glob('*')])
 
     def test_symlinked_output_and_progress_are_rejected(self):
         target = self.root / 'real'

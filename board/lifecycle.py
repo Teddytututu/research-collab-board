@@ -146,6 +146,21 @@ def with_progress_eta(root, task, status, at):
     return re.sub(r'估不了[:：]\s*', '', status) + ' · 约 ' + day + local.strftime('%H:%M')
 
 
+def newline_of(raw):
+    return '\r\n' if b'\r\n' in raw else '\n'
+
+
+def encode_like(text, original):
+    """Retain the original BOM; callers keep existing line endings intact."""
+    return (b'\xef\xbb\xbf' if original.startswith(b'\xef\xbb\xbf') else b'') + text.encode('utf-8')
+
+
+def append_text(raw, text):
+    newline = newline_of(raw)
+    separator = b'' if not raw or raw.endswith(b'\n') else newline.encode()
+    return raw + separator + text.replace('\r\n', '\n').replace('\n', newline).encode('utf-8')
+
+
 def transition(root, action, task, *, by, now=None, **fields):
     root = Path(root).resolve()
     if by not in ROLES or action not in ACTIONS or not TASK.fullmatch(task):
@@ -178,15 +193,19 @@ def transition(root, action, task, *, by, now=None, **fields):
         'attachment_history': 'attachments/history',
     }.items()}
     with storage.locked(root):
-        text = paths['board'].read_text('utf-8-sig')
+        board_before = paths['board'].read_bytes()
+        text = board_before.decode('utf-8-sig')
+        newline = newline_of(board_before)
         rows = parse_board(text)
         matches = [row for row in rows if row['task'] == task]
-        archive = paths['archive'].read_text('utf-8-sig') if paths['archive'].exists() else '# Task archive\n\n| ID | Task | Status | Owner | Updated |\n| --- | --- | --- | --- | --- |\n'
+        archive_before = paths['archive'].read_bytes() if paths['archive'].exists() else b'# Task archive\n\n| ID | Task | Status | Owner | Updated |\n| --- | --- | --- | --- | --- |\n'
+        archive = archive_before.decode('utf-8-sig')
         archived = {row['task'] for row in parse_board(archive)}
         if len(matches) > 1 or task in archived or (action == 'new') == bool(matches):
             raise ValueError('Task must be unique and active; new requires an unused ID')
         spec = task_spec(root, task)
-        spec_text = spec.read_text('utf-8-sig')
+        spec_before = spec.read_bytes()
+        spec_text = spec_before.decode('utf-8-sig')
         row = matches[0] if matches else None
         current = state_of(row['status']) if row else None
         allowed = {'new': {None}, 'start': {'queued', 'blocked', 'rejected', 'unknown'}, 'progress': {'running'},
@@ -215,18 +234,23 @@ def transition(root, action, task, *, by, now=None, **fields):
         else:
             cells[4] = stamp
         rendered = '| ' + ' | '.join(cells) + ' |'
-        lines = text.splitlines()
+        lines = text.splitlines(keepends=True)
         if row:
             if action in {'accept', 'stop'}:
                 del lines[row['index']]
-                archive = archive.rstrip('\n') + '\n' + rendered + '\n'
+                archive_before = append_text(archive_before, rendered + '\n')
                 archived.add(task)
             else:
-                lines[row['index']] = rendered
+                previous = lines[row['index']]
+                ending = '\r\n' if previous.endswith('\r\n') else '\n' if previous.endswith('\n') else ''
+                lines[row['index']] = rendered + ending
         else:
+            if lines and not lines[-1].endswith('\n'):
+                lines[-1] += newline
             if not any(re.match(r'^\|\s*:?-+', line) for line in lines):
-                lines += ['', '| ID | Task | Status | Owner | Updated |', '| --- | --- | --- | --- | --- |']
-            lines.append(rendered)
+                lines += [newline, '| ID | Task | Status | Owner | Updated |' + newline,
+                          '| --- | --- | --- | --- | --- |' + newline]
+            lines.append(rendered + newline)
         if action == 'new':
             for node in attached:
                 node.setdefault('tasks', []).append(task)
@@ -249,16 +273,79 @@ def transition(root, action, task, *, by, now=None, **fields):
         record = dict(at=stamp, task=task, action=action, by=by, status=status,
                       evidence=fields.get('evidence'), tree_nodes=changed)
         if '## Transition history' not in spec_text:
-            spec_text = spec_text.rstrip() + '\n\n## Transition history\n'
-        spec_text = spec_text.rstrip() + '\n- ' + stamp + ' · ' + by + ' · ' + action + ' · ' + status + ((' · ' + fields['evidence']) if action == 'deliver' else '') + '\n'
-        storage.write_bytes(paths['board'], ('\n'.join(lines) + '\n').encode())
+            spec_before = append_text(spec_before, '\n## Transition history\n')
+        spec_before = append_text(spec_before, '- ' + stamp + ' · ' + by + ' · ' + action + ' · ' + status + ((' · ' + fields['evidence']) if action == 'deliver' else '') + '\n')
+        storage.write_bytes(paths['board'], encode_like(''.join(lines), board_before))
         if action in {'accept', 'stop'}:
-            storage.write_bytes(paths['archive'], archive.encode())
+            storage.write_bytes(paths['archive'], archive_before)
         storage.write(paths['overview'], overview)
         storage.write(paths['state'], state)
-        storage.write_bytes(spec, spec_text.encode())
+        storage.write_bytes(spec, spec_before)
         storage.append(paths['log'], record)
         return record
+
+
+def _worker_transition(root, action, lease, *, status=None):
+    """Internal publication under the worker registry's existing project lock.
+
+    Managed leases retain lifecycle status; unmanaged leases keep their generic
+    compatibility fields. Public actions and Claude review authority stay separate.
+    """
+    root = Path(root).resolve()
+    if action not in {'claim', 'heartbeat', 'release', 'status'}:
+        raise ValueError('Internal worker action required')
+    task_id = lease['task']
+    if status is not None and (not isinstance(status, str) or not status.strip() or any(c in status for c in '\r\n|')):
+        raise ValueError('Use one worker status cell')
+    paths = {name: data_file(root, relative) for name, relative in {
+        'state': 'attachments/state.json', 'log': 'attachments/task-flow.jsonl',
+        'board': 'board.md', 'archive': 'tasks/archive.md',
+        'history': 'history', 'attachment_history': 'attachments/history'}.items()}
+    archive = paths['archive']
+    if archive.exists() and any(r['task'] == task_id for r in parse_board(archive.read_text('utf-8-sig'))):
+        if action == 'status':
+            raise ValueError('Task is archived; use scripts/task_flow.py')
+        return None
+    state = storage.read(paths['state'], {'tasks': {}, 'runs': {}})
+    task = state.setdefault('tasks', {}).get(task_id, {})
+    if action == 'status':
+        if task.get('lifecycle_managed'):
+            raise ValueError('Managed task status uses scripts/task_flow.py with evidence and lead review')
+        raw = paths['board'].read_bytes()
+        matches = []
+        for match in re.finditer(rb'(?m)^\|[^\r\n]*', raw):
+            cells = match.group().decode('utf-8').split('|')
+            if len(cells) >= 5 and cells[1].strip() == task_id:
+                matches.append((match, cells))
+        if len(matches) != 1:
+            raise ValueError('Choose one existing board task')
+        match, cells = matches[0]
+        cells[3] = ' ' + status + ' '
+        storage.write_bytes(paths['board'], raw[:match.start()] + '|'.join(cells).encode() + raw[match.end():])
+        return None
+    task = state['tasks'].setdefault(task_id, {})
+    task.setdefault('owner', 'GPT')
+    task.update(worker=lease['worker'], write_scopes=lease['scopes'], heartbeat_unix=lease['heartbeat'])
+    if lease.get('estimated_completion'):
+        task['estimated_completion'] = lease['estimated_completion']
+    task['claimed_at'] = lease['started']
+    managed = task.get('lifecycle_managed', False)
+    state_key = 'worker_state' if managed else 'state'
+    if action == 'release':
+        task['released_at'] = lease['released']
+        task[state_key] = 'handoff' if managed else 'review' if status == '待验收' else 'handoff'
+    else:
+        task[state_key] = 'in_progress'
+    if status and not managed:
+        task['status'] = status
+    storage.write(paths['state'], state)
+    if action in {'claim', 'release'}:
+        record = dict(at=moment(lease['heartbeat']).isoformat(timespec='seconds'), task=task_id,
+                      action=action, by='GPT', source='workers', worker=lease['worker'],
+                      status=task.get('status', ''), worker_status=status)
+        storage.append(paths['log'], record)
+        return record
+    return None
 
 
 def check(root, *, now=None, owner=None):

@@ -10,7 +10,7 @@ test('declared clock replaces placeholder condition and preserves lifecycle stat
  assert.equal(eta.task({status,eta:{mode:'conditional',short_condition:'本轮估时'}},null,now),'1/6 · 约 12:00');
  assert.equal(eta.task({status,eta:{mode:'paused'}},null,now),'1/6 · 暂停');
  assert.equal(eta.task({status:'delivered · awaiting review'},null,now),'已交');
- assert.equal(eta.task({status:'stopped: 1/6'},null,now),'1/6 · 已停');
+ assert.equal(eta.task({status:'stopped: 1/6',current_stage:{done:1,total:6}},null,now),'1/6 · 已停');
  assert.equal(eta.task({status:'1/6 · 约 09:00'},null,now),'1/6');
  assert.equal(eta.task({status:'1/6 · 约 25:00'},null,now),'1/6');
 });

@@ -12,7 +12,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from board import storage
+from board import storage, task_eta
 from board.environment import use_project_environment
 from board.watch_rules import conditions as workflow_conditions
 from scripts.run_queue import atomic_json, project_path
@@ -209,7 +209,8 @@ def patrol(project_root=ROOT, *, data_dir='data', now=None):
         if state != before:
             storage.write(p['state'], state)
         atomic_json(p['cache'], dict(tracking=tracking, active=sorted(conditions)))
-        return fresh
+    task_eta.refresh(p['data'], storage.read(p['data'] / 'overview.json', {}), now=at)
+    return fresh
 
 
 def main(argv=None):

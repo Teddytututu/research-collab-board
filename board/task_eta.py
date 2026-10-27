@@ -294,7 +294,14 @@ def export_csv(root,rows):
         for row in new:writer.writerow(row)
         storage.write_bytes(path,raw+stream.getvalue().encode('utf-8'))
 
+def project(root,overview,now=None):
+    """Read persisted observations and project ETA without recording a poll."""
+    state=storage.read(Path(root)/'attachments/state.json',{})
+    return snapshot(state,overview,now) if state else overview or {}
+
+
 def refresh(root,overview,now=None):
+    """Timed patrol writer; retain observation throttling and calibration history."""
     root=Path(root);now=time.time() if now is None else now;path=root/'attachments/state.json'
     if not path.exists():return overview or {}
     with REFRESH_LOCK:

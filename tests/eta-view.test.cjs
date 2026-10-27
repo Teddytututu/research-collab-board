@@ -1,5 +1,20 @@
 const test=require('node:test');const assert=require('node:assert/strict');const eta=require('../board/eta-view.js');
 const now=new Date('2026-10-23T15:58:00Z');
+test('only leading counters or exact linked structured stages supply progress',()=>{
+ for(const status of ['每日10/27通过','daily 10/27 ready','Review on 10/27','phase 2/8','进行中 · 4/8'])
+  assert.deepEqual(eta.progress({id:'T001',status},null),{stage:'',count:''});
+ assert.equal(eta.progress({status:' 2 / 8 · next'}).count,'2/8');
+ assert.equal(eta.progress({id:'T001',status:'daily 10/27'},
+  {id:'run',task_id:'T001',current_stage:{done:3,total:8}}).count,'3/8');
+ assert.deepEqual(eta.progress({id:'T001',status:'daily 10/27'},
+  {id:'other',task_id:'T002',current_stage:{done:3,total:8}}),{stage:'',count:''});
+ for(const stage of [{done:true,total:8},{done:1,total:2.5},{done:-1,total:8},
+                    {done:2,total:1},{done:1,total:0},{done:1,total:Infinity},
+                    {done:Number.MAX_SAFE_INTEGER+1,total:Number.MAX_SAFE_INTEGER+2}])
+  assert.deepEqual(eta.progress({status:'daily 10/27',current_stage:stage}),{stage:'',count:''});
+ assert.deepEqual(eta.progress({id:'T001',status:'running'},
+  {id:'T001',done:3,total:8,note:'phase 3/8'}),{stage:'',count:''});
+});
 test('Taipei midnight shows tomorrow',()=>assert.equal(eta.label({mode:'estimate',at:'2026-10-23T16:10:00Z'},now),'预计 明天 00:10'));
 test('expired estimates return to pending',()=>assert.equal(eta.label({mode:'estimate',at:'2026-10-23T21:00:00+08:00',overdue:true},now),'预计待定'));
 test('pause states remaining time',()=>assert.equal(eta.label({mode:'paused',remaining_seconds:7200},now),'已暂停，恢复后约2小时'));
@@ -36,20 +51,20 @@ test('daily dates are separate from completed task counts',()=>assert.equal(eta.
 test('delivered tasks use 已交 regardless of their completed counts',()=>{
  for(const status of ['待验收 · 330/330；已交','已交','已完成 330/330','delivered · awaiting review','accepted: reviewed'])assert.equal(eta.task({status},null,now),'已交');
 });
-test('only a task-linked run supplies progress',()=>{
- assert.equal(eta.task({id:'T002',status:'进行中'},{id:'run-2',task_id:'T002',done:6,total:10},now),'6/10');
+test('only a task-linked structured run supplies progress',()=>{
+ assert.equal(eta.task({id:'T002',status:'进行中'},{id:'run-2',task_id:'T002',current_stage:{done:6,total:10}},now),'6/10');
  assert.equal(eta.task({id:'T002',status:'进行中'},{id:'run-3',task_id:'T003',done:6,total:10},now),'—');
  assert.equal(eta.task({id:'T002',status:'进行中 · 等T003 8/10'},null,now),'—');
 });
 test('a current receiving stage supersedes the completed collection',()=>{
  const task={id:'T007',status:'采集1000/1000 · 原图回收877/1000 · 预计10-24 00:17',eta:{mode:'estimate',at:'2026-10-24T00:17:00+08:00'}};
- const run={id:'T007',done:1000,total:1000,note:task.status};
+ const run={id:'T007',done:1000,total:1000,note:task.status,current_stage:{label:'原图回收',done:877,total:1000}};
  assert.equal(eta.task(task,run,now),'收图877/1000');
  assert.equal(eta.progress(task,run).done,877);
  assert.equal(eta.progress(task,run).total,1000);
  const copy=JSON.stringify([task,run]);eta.task(task,run,now);assert.equal(JSON.stringify([task,run]),copy);
  assert.equal(eta.task({...task,status:'采集1000/1000'},run,now),'收图877/1000');
- assert.equal(eta.task({id:'T007',status:'采集1000/1000 · 原图回收877/1000 · 预计10-26 00:15',eta:{mode:'estimate',at:'2026-10-26T00:15:00+08:00'}},{id:'T007',done:1000,total:1000},new Date('2026-10-25T23:00:00+08:00')),'收图877/1000');
+ assert.equal(eta.task({id:'T007',status:'采集1000/1000 · 原图回收877/1000 · 预计10-26 00:15',eta:{mode:'estimate',at:'2026-10-26T00:15:00+08:00'}},{id:'T007',done:1000,total:1000,current_stage:{label:'原图回收',done:877,total:1000}},new Date('2026-10-25T23:00:00+08:00')),'收图877/1000');
 });
 test('structured current stages retain their own counters',()=>assert.equal(eta.task({status:'采集1000/1000',current_stage:{label:'收图',done:877,total:1000}},null,now),'收图877/1000'));
 test('an astral stage marker counts as one Unicode code point',()=>{
@@ -58,7 +73,7 @@ test('an astral stage marker counts as one Unicode code point',()=>{
 });
 test('pause and stop have compact, distinct labels',()=>{
  assert.equal(eta.task({status:'196/320',eta:{mode:'paused',remaining_seconds:3600}},null,now),'196/320 · 暂停');
- assert.equal(eta.task({status:'已停 · 196/320'},null,now),'196/320 · 已停');
+ assert.equal(eta.task({status:'已停 · 196/320',current_stage:{done:196,total:320}},null,now),'196/320 · 已停');
  assert.equal(eta.task({status:'暂停 · 1234567/12345678'},null,now),'暂停');
 });
 test('waiting labels retain action rather than explanations',()=>{
@@ -103,6 +118,12 @@ test('task DOM shows goal, deliverable and one current line while preserving exp
  const row=nodes.find(n=>n.dataset.key==='task-title-T002');assert.equal(row.tagName,'details');assert.ok(row.querySelector('summary'));row.open=true;row.handlers.toggle();
  context.renderTasks(overview,[{id:'T002',title:'Sample task',status:'196/320'}]);
  assert.equal(nodes.filter(n=>n.dataset.key==='task-title-T002').at(-1).open,true);
+ const beforeDate=nodes.length;
+ context.renderTasks({},[{id:'T002',title:'Sample task',status:'每日10/27通过'}]);
+ assert.equal(nodes.slice(beforeDate).filter(n=>n.className==='tt-bar').length,0);
+ const beforeStage=nodes.length;
+ context.renderTasks({},[{id:'T002',title:'Sample task',status:'running',current_stage:{label:'stage1/2',done:6,total:10}}]);
+ assert.equal(nodes.slice(beforeStage).find(n=>n.className==='tt-bar').children[0].style.width,'60.0%');
 });
 test('three-line details omit duplicate progress and keep generic metadata',()=>{
  const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');

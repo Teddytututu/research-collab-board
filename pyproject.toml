@@ -1,6 +1,6 @@
 [project]
 name = "research-collab-board"
-version = "0.2.2rc24"
+version = "0.3.0"
 description = "A local research collaboration board with task protocols and a shared discussion"
 requires-python = ">=3.11"
 dependencies = ["Pillow>=10,<13"]

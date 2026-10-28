@@ -1,4 +1,4 @@
-# Research Collab Board 0.2
+# Research Collab Board 0.3
 
 [简体中文](README.zh-CN.md) · [Current instructions / 当前指令](当前指令.md)
 

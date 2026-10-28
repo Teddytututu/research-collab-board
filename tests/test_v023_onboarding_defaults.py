@@ -70,11 +70,11 @@ class FirstRunDefaults(unittest.TestCase):
         path = self.root/'emotes'/row['file']
         path.parent.mkdir()
         path.write_bytes(b'local fixture')
-        self.assertEqual(conversation(self.root)['reaction_catalog'], [])
+        self.assertEqual([x for x in conversation(self.root)['reaction_catalog'] if x['key'].startswith('bili:')], [])
         onboarding.configure_emotes(self.root, 'download', installer=lambda root: dict(downloaded=1, reused=0, failed=0))
         self.assertEqual(conversation(self.root)['reaction_catalog'][0]['key'], row['key'])
         onboarding.configure_emotes(self.root, 'download', installer=lambda root: dict(downloaded=1, reused=0, failed=1))
-        self.assertEqual(conversation(self.root)['reaction_catalog'], [])
+        self.assertEqual([x for x in conversation(self.root)['reaction_catalog'] if x['key'].startswith('bili:')], [])
         onboarding.configure_emotes(self.root, 'unicode')
         self.assertTrue(path.exists())
 

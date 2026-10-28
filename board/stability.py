@@ -109,7 +109,11 @@ def set_mood(root, who, mood, note='', *, now=None):
     root = Path(root).resolve()
     names = mood_names(root, who)
     if mood not in names:
-        raise ValueError('Choose an existing ' + who + ' expression: ' + ', '.join(names))
+        from . import expressions
+        try:
+            expressions.resolve(who, mood)
+        except ValueError:
+            raise ValueError('Choose an existing ' + who + ' expression: ' + ', '.join(names) + ', expression:NAME') from None
     if not isinstance(note, str) or len(note) > 200 or any(c in note for c in '\r\n'):
         raise ValueError('Use a single-line mood note within 200 characters')
     at = moment(now) or datetime.now().astimezone()

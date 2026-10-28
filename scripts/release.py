@@ -34,6 +34,9 @@ def files():
     names += ['board/private_notes.py','board/private-notes.css','board/private-notes.js','scripts/private_chat.py','docs/private-chat.md','tests/private-chat.browser.cjs']
     names += ['scripts/agent.py','docs/agent-commands.md','docs/optional-gpu-dispatcher.md','skills/board-agent/SKILL.md']
     names += ['board/exchange.py','board/stability.py','scripts/check_eol.py']
+    names += ['board/expressions.py','board/expressions.js','board/expressions.css']
+    names += ['tests/expressions.browser.cjs']
+    names += [p.relative_to(ROOT).as_posix() for p in (ROOT/'board/expressions').glob('*') if p.suffix in {'.json','.webp','.svg'}]
     for folder in ['personas','protocol','templates']:
         names += [p.relative_to(ROOT).as_posix() for p in (ROOT/folder).glob('*') if p.suffix in ['.md','.json']]
     names += ['skills/research-report-writing/'+name for name in [
@@ -47,6 +50,7 @@ def files():
 
 def scan(blob,name=''):
     if blob.startswith(b'\x89PNG'):return []
+    if blob.startswith(b'RIFF') and blob[8:12]==b'WEBP':return []
     text=blob.decode('utf-8',errors='replace');rules={
         'private_absolute_path':r'(?i)[A-Z]:[/\\](?:Users|科研工作)[/\\]|/(?:home|localdata|var/tmp)/[a-z0-9_-]+',
         'private_key':r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',

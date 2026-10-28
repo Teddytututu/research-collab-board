@@ -57,6 +57,8 @@ Categories for `file add --cat`: 研究, 学习, 事务, 界面与设计, 项目
 - Local free space below 20 GiB creates a GPT issue. Review disposable files within the task's authorized scope and refer owner-data decisions to the lead.
 - Today's executor greeting uses the lead reply deadline. Each role's mood registration becomes stale after 12 hours; an initial registration becomes due 12 hours after project creation. `mood` accepts existing bundled or project-generated expression names for that role and refreshes the timestamp even when the name stays the same. The command error lists valid names. Records are `claude_mood` and `gpt_mood` in the overview, each with `mood`, `note`, `at`; presentation is handled separately.
 
+Character expressions appear after the existing reaction grid, separated by one thin line. `mood expression:insight` and `mood expression:wave` select an assistant's own new artwork; `expr:ROLE-NAME` is an exact catalog key and stays role-scoped. Current moods appear in discussion, private-chat and title portraits. The owner clicks their own portrait to choose a persistent mood, while other portraits open the full uncropped image. Original account portraits remain the fallback. Avatar framing uses alpha-bound metadata and leaves the image pixels intact.
+
 Configure positive numeric thresholds in the existing `data/project.json` under `stability`:
 
 ```json

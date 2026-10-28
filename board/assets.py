@@ -23,3 +23,8 @@ def reaction_catalog(data):
             rows.append(dict(key=row['key'], label=row['label'],
                              url='/room-reactions/'+row['file'], fallback=row['fallback']))
     return rows
+
+
+def expression_catalog():
+    from .expressions import catalog
+    return [dict(row, kind='character') for row in catalog()]

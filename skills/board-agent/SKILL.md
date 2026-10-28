@@ -25,6 +25,7 @@ Every call prints one JSON object with `ok`, `command`, `result` and `error`. If
 
 - Use `ask TITLE BODY --option A --option B [--lean TEXT]` for a decision and `note TITLE BODY` for an update or answer. The command writes the daily exchange heading, time and direction. Answer each pending executor question with a lead `note` using the same title.
 - Use `mood NAME [NOTE]` to register your own mood. Choose an expression already available for your role; the command lists valid names on error. Refresh it within 12 hours, including when the expression stays the same.
+- Use `mood expression:NAME` for a new character expression, such as `expression:insight`. Each assistant owns its own portrait mood; the owner uses their portrait picker. The shared reaction picker offers all three characters after the original emotes.
 - `check` reports owner discussion/private replies due after 2.5 hours for the lead and 45 minutes for the executor. A leading role mention assigns just that assistant; an explicit reply or active reaction acknowledges a discussion message. Lead exchange replies and daily greetings use 2.5 hours. Low disk space below 20 GiB belongs to the executor. Project-specific positive thresholds live under `stability` in `data/project.json`; see the command reference for the keys.
 - Before committing run `python scripts/check_eol.py` after staging. `verify.py` and `release.py` also compare staged line endings with HEAD.
 

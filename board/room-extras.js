@@ -140,6 +140,7 @@ window.RoomExtras = (() => {
   }
   function actorFace(actor) {
     const frame=el('span','room-reaction-avatar');frame.setAttribute('aria-hidden','true');
+    frame.dataset.avatarId=actor.id;
     frame.textContent=(actor.display_name||actor.id).slice(0,1);
     const asset=actor.avatar??(typeof BoardIdentity==='object'?BoardIdentity.accounts?.find(a=>a.id===actor.id)?.avatar:null);
     const file=typeof asset==='string'?asset:asset?.file;
@@ -181,11 +182,12 @@ window.RoomExtras = (() => {
   const reactionFaces=new Map(unicodeFaces);
   api.setReactionCatalog=rows=>{
     reactionFaces.clear();for(const [symbol,face] of unicodeFaces)reactionFaces.set(symbol,face);
-    for(const row of rows)if(typeof row.key==='string' && /^\/room-reactions\/[0-9]+\.png$/.test(row.url))
-      reactionFaces.set(row.key,{label:row.label,src:row.url,fallback:row.fallback || '🙂'});
+    for(const row of rows)if(typeof row.key==='string' && /^(?:\/room-reactions\/[0-9]+\.png|\/expression-img\/[a-z0-9_-]+\.(?:webp|svg))$/.test(row.url))
+      reactionFaces.set(row.key,{...row,label:row.label,src:row.url,fallback:row.fallback || '🙂',character:row.kind==='character'});
   };
   const reactionFace = symbol => {
     const face=reactionFaces.get(symbol);
+    if(face?.character&&window.AvatarMoods?.thumbnail)return AvatarMoods.thumbnail(face);
     if(!face?.src)return el("span",null,symbol.startsWith('bili:')?'🙂':symbol);
     const img=el("img","room-reaction-image"); img.src=face.src; img.alt=""; img.width=24; img.height=24; img.draggable=false; img.loading="lazy";
     img.onerror=()=>img.replaceWith(el('span',null,face.fallback || symbol));
@@ -230,7 +232,9 @@ window.RoomExtras = (() => {
     }
     function showChoices() {
       grid.replaceChildren();
+      let characters=false;
       for(const symbol of choices) {
+        if(reactionFaces.get(symbol)?.character&&!characters){const line=el('div','room-reaction-separator');line.setAttribute('role','separator');grid.append(line);characters=true;}
         const b=button('','room-reaction-option'); b.append(reactionFace(symbol)); b.title=reactionLabel(symbol); b.setAttribute('aria-label','回应 '+reactionLabel(symbol));
         b.onclick=()=>apply(symbol,true); grid.append(b);
       }
@@ -247,7 +251,11 @@ window.RoomExtras = (() => {
         const bounds=box.closest('#msgs')?.getBoundingClientRect(), rect=picker.getBoundingClientRect();
         const right=Math.min(document.documentElement.clientWidth-12,(bounds?.right || innerWidth)-12);
         const left=Math.max(12,(bounds?.left || 0)+12);
-        picker.style.transform='translateX('+Math.max(left-rect.left,Math.min(0,right-rect.right))+'px)';
+        const log=box.closest('.room-threads')?.getBoundingClientRect();
+        const height=document.documentElement.clientHeight||window.innerHeight||768;
+        const top=(log?.top ?? bounds?.top ?? 0)+8, bottom=(log?.bottom ?? bounds?.bottom ?? height)-8;
+        const x=Math.max(left-rect.left,Math.min(0,right-rect.right)), y=Math.max(top-(rect.top??top),Math.min(0,bottom-(rect.bottom??bottom)));
+        picker.style.transform='translate('+x+'px,'+y+'px)';
         picker.scrollIntoView({block:'nearest',inline:'nearest'}); grid.querySelector('button')?.focus({preventScroll:true});
       }
     };

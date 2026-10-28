@@ -1,0 +1,22 @@
+.room-reaction-separator{grid-column:1/-1;height:1px;margin:4px 0;border:0;background:var(--room-border,var(--line,#d6dae0));pointer-events:none}
+.character-reaction-face{position:relative;display:block;flex:none;width:24px;height:24px;overflow:hidden}
+.character-reaction-face>img{display:block;max-width:none!important;max-height:none!important;transform:none!important;border-radius:0}
+.has-avatar-mood{position:relative!important;color:transparent!important;overflow:hidden}
+.has-avatar-mood>.room-avatar-image,.has-avatar-mood>.brand-person-frame,.has-avatar-mood>img{visibility:hidden}
+.mood-avatar-face{position:absolute;inset:0;display:block;overflow:hidden;border-radius:inherit;pointer-events:none}
+.mood-avatar-face img{display:block;max-width:none!important;max-height:none!important;border-radius:0!important;transform:none!important}
+.avatar-mood-picker{position:fixed;inset:auto;margin:0;padding:8px;width:248px;max-width:calc(100vw - 16px);max-height:min(320px,70vh);overflow:auto;border:1px solid var(--room-border,var(--line));border-radius:12px;background:var(--card,#fff);color:var(--ink);box-shadow:0 8px 26px #22334425}
+.avatar-mood-picker::backdrop{background:transparent}
+.avatar-mood-grid{display:grid;grid-template-columns:repeat(6,32px);gap:6px}
+.avatar-mood-option{width:32px;height:32px;padding:0;border:0;background:transparent;border-radius:6px;cursor:pointer}
+.avatar-mood-option:hover,.avatar-mood-option[aria-pressed="true"]{background:var(--room-bg,var(--bg,#eef2f7))}
+.avatar-mood-option:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.avatar-mood-preview{position:relative;display:block;width:32px;height:32px;overflow:hidden;border-radius:6px}
+.avatar-mood-preview img{display:block;max-width:none!important;border-radius:0}
+.avatar-mood-status{margin:0;font:12px/1.5 var(--sans,system-ui);color:var(--muted)}
+.avatar-mood-status:empty{display:none}
+.avatar-mood-portrait{width:min(600px,90vw);max-height:90vh;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--card,#fff);color:var(--ink)}
+.avatar-mood-portrait::backdrop{background:#17213399}
+.avatar-mood-portrait-actions{display:flex;justify-content:flex-end;gap:8px}
+.avatar-mood-portrait-actions>button{min-height:32px}
+.avatar-mood-portrait>img{display:block;width:auto;height:auto;max-width:100%;max-height:76vh;object-fit:contain;margin:auto}

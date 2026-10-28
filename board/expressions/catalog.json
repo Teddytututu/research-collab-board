@@ -1,0 +1,2377 @@
+{
+  "items": [
+    {
+      "key": "expr:owner-legacy-calm-svg",
+      "role": "owner",
+      "name": "legacy-calm-svg",
+      "aliases": [
+        "calm",
+        "淡定"
+      ],
+      "label": "淡定 · SVG",
+      "file": "owner-legacy-calm-svg.svg",
+      "url": "/expression-img/owner-legacy-calm-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:owner-legacy-shy-svg",
+      "role": "owner",
+      "name": "legacy-shy-svg",
+      "aliases": [
+        "shy",
+        "害羞"
+      ],
+      "label": "害羞 · SVG",
+      "file": "owner-legacy-shy-svg.svg",
+      "url": "/expression-img/owner-legacy-shy-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:owner-legacy-smile-svg",
+      "role": "owner",
+      "name": "legacy-smile-svg",
+      "aliases": [
+        "smile",
+        "微笑"
+      ],
+      "label": "微笑 · SVG",
+      "file": "owner-legacy-smile-svg.svg",
+      "url": "/expression-img/owner-legacy-smile-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:owner-legacy-surprised-svg",
+      "role": "owner",
+      "name": "legacy-surprised-svg",
+      "aliases": [
+        "surprised",
+        "惊讶"
+      ],
+      "label": "惊讶 · SVG",
+      "file": "owner-legacy-surprised-svg.svg",
+      "url": "/expression-img/owner-legacy-surprised-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:owner-legacy-teary-svg",
+      "role": "owner",
+      "name": "legacy-teary-svg",
+      "aliases": [
+        "teary",
+        "委屈"
+      ],
+      "label": "委屈 · SVG",
+      "file": "owner-legacy-teary-svg.svg",
+      "url": "/expression-img/owner-legacy-teary-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:owner-legacy-wink-svg",
+      "role": "owner",
+      "name": "legacy-wink-svg",
+      "aliases": [
+        "wink",
+        "眨眼"
+      ],
+      "label": "眨眼 · SVG",
+      "file": "owner-legacy-wink-svg.svg",
+      "url": "/expression-img/owner-legacy-wink-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:owner-assurance",
+      "role": "owner",
+      "name": "assurance",
+      "label": "安心",
+      "file": "owner-assurance.webp",
+      "url": "/expression-img/owner-assurance.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        290,
+        325,
+        988,
+        996
+      ],
+      "avatar_crop": [
+        390.73,
+        398.81,
+        496.54
+      ]
+    },
+    {
+      "key": "expr:owner-celebration",
+      "role": "owner",
+      "name": "celebration",
+      "label": "庆祝",
+      "file": "owner-celebration.webp",
+      "url": "/expression-img/owner-celebration.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        288,
+        342,
+        994,
+        974
+      ],
+      "avatar_crop": [
+        407.16,
+        411.52,
+        467.68
+      ]
+    },
+    {
+      "key": "expr:owner-coffee-sleepy",
+      "role": "owner",
+      "name": "coffee-sleepy",
+      "label": "咖啡困倦",
+      "file": "owner-coffee-sleepy.webp",
+      "url": "/expression-img/owner-coffee-sleepy.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        309,
+        321,
+        970,
+        955
+      ],
+      "avatar_crop": [
+        404.92,
+        390.74,
+        469.16
+      ]
+    },
+    {
+      "key": "expr:owner-comfort",
+      "role": "owner",
+      "name": "comfort",
+      "label": "安慰",
+      "file": "owner-comfort.webp",
+      "url": "/expression-img/owner-comfort.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        286,
+        321,
+        1031,
+        988
+      ],
+      "avatar_crop": [
+        411.71,
+        394.37,
+        493.58
+      ]
+    },
+    {
+      "key": "expr:owner-confused",
+      "role": "owner",
+      "name": "confused",
+      "label": "疑惑",
+      "file": "owner-confused.webp",
+      "url": "/expression-img/owner-confused.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        268,
+        310,
+        1036,
+        998
+      ],
+      "avatar_crop": [
+        397.44,
+        385.68,
+        509.12
+      ]
+    },
+    {
+      "key": "expr:owner-curiosity",
+      "role": "owner",
+      "name": "curiosity",
+      "label": "好奇",
+      "file": "owner-curiosity.webp",
+      "url": "/expression-img/owner-curiosity.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        274,
+        303,
+        1004,
+        984
+      ],
+      "avatar_crop": [
+        387.03,
+        377.91,
+        503.94
+      ]
+    },
+    {
+      "key": "expr:owner-encourage",
+      "role": "owner",
+      "name": "encourage",
+      "label": "加油",
+      "file": "owner-encourage.webp",
+      "url": "/expression-img/owner-encourage.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        279,
+        314,
+        1014,
+        992
+      ],
+      "avatar_crop": [
+        395.64,
+        388.58,
+        501.72
+      ]
+    },
+    {
+      "key": "expr:owner-excitement",
+      "role": "owner",
+      "name": "excitement",
+      "label": "兴奋",
+      "file": "owner-excitement.webp",
+      "url": "/expression-img/owner-excitement.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        265,
+        294,
+        1014,
+        970
+      ],
+      "avatar_crop": [
+        389.38,
+        368.36,
+        500.24
+      ]
+    },
+    {
+      "key": "expr:owner-explaining",
+      "role": "owner",
+      "name": "explaining",
+      "label": "严肃讲解",
+      "file": "owner-explaining.webp",
+      "url": "/expression-img/owner-explaining.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        311,
+        324,
+        996,
+        978
+      ],
+      "avatar_crop": [
+        411.52,
+        395.94,
+        483.96
+      ]
+    },
+    {
+      "key": "expr:owner-greeting",
+      "role": "owner",
+      "name": "greeting",
+      "label": "致意",
+      "file": "owner-greeting.webp",
+      "url": "/expression-img/owner-greeting.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        257,
+        283,
+        1053,
+        1031
+      ],
+      "avatar_crop": [
+        378.24,
+        365.28,
+        553.52
+      ]
+    },
+    {
+      "key": "expr:owner-insight",
+      "role": "owner",
+      "name": "insight",
+      "label": "洞见",
+      "file": "owner-insight.webp",
+      "url": "/expression-img/owner-insight.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        316,
+        339,
+        1014,
+        971
+      ],
+      "avatar_crop": [
+        431.16,
+        408.52,
+        467.68
+      ]
+    },
+    {
+      "key": "expr:owner-laughter",
+      "role": "owner",
+      "name": "laughter",
+      "label": "大笑",
+      "file": "owner-laughter.webp",
+      "url": "/expression-img/owner-laughter.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        271,
+        307,
+        1023,
+        1026
+      ],
+      "avatar_crop": [
+        380.97,
+        386.09,
+        532.06
+      ]
+    },
+    {
+      "key": "expr:owner-note-thinking",
+      "role": "owner",
+      "name": "note-thinking",
+      "label": "笔记思考",
+      "file": "owner-note-thinking.webp",
+      "url": "/expression-img/owner-note-thinking.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        273,
+        301,
+        1009,
+        1002
+      ],
+      "avatar_crop": [
+        381.63,
+        378.11,
+        518.74
+      ]
+    },
+    {
+      "key": "expr:owner-pout",
+      "role": "owner",
+      "name": "pout",
+      "label": "鼓腮",
+      "file": "owner-pout.webp",
+      "url": "/expression-img/owner-pout.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        255,
+        286,
+        1036,
+        1008
+      ],
+      "avatar_crop": [
+        378.36,
+        365.42,
+        534.28
+      ]
+    },
+    {
+      "key": "expr:owner-proud",
+      "role": "owner",
+      "name": "proud",
+      "label": "得意",
+      "file": "owner-proud.webp",
+      "url": "/expression-img/owner-proud.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        290,
+        331,
+        1017,
+        988
+      ],
+      "avatar_crop": [
+        410.41,
+        403.27,
+        486.18
+      ]
+    },
+    {
+      "key": "expr:owner-shy",
+      "role": "owner",
+      "name": "shy",
+      "label": "害羞",
+      "file": "owner-shy.webp",
+      "url": "/expression-img/owner-shy.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        235,
+        290,
+        1038,
+        1028
+      ],
+      "avatar_crop": [
+        363.44,
+        371.18,
+        546.12
+      ]
+    },
+    {
+      "key": "expr:owner-skeptical",
+      "role": "owner",
+      "name": "skeptical",
+      "label": "怀疑",
+      "file": "owner-skeptical.webp",
+      "url": "/expression-img/owner-skeptical.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        288,
+        324,
+        1047,
+        1041
+      ],
+      "avatar_crop": [
+        402.21,
+        402.87,
+        530.58
+      ]
+    },
+    {
+      "key": "expr:owner-surprise",
+      "role": "owner",
+      "name": "surprise",
+      "label": "惊讶",
+      "file": "owner-surprise.webp",
+      "url": "/expression-img/owner-surprise.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        306,
+        339,
+        1013,
+        992
+      ],
+      "avatar_crop": [
+        417.89,
+        410.83,
+        483.22
+      ]
+    },
+    {
+      "key": "expr:owner-touched",
+      "role": "owner",
+      "name": "touched",
+      "label": "感动",
+      "file": "owner-touched.webp",
+      "url": "/expression-img/owner-touched.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        288,
+        288,
+        979,
+        984
+      ],
+      "avatar_crop": [
+        377.83,
+        366.41,
+        511.34
+      ]
+    },
+    {
+      "key": "expr:owner-wave",
+      "role": "owner",
+      "name": "wave",
+      "label": "挥手",
+      "file": "owner-wave.webp",
+      "url": "/expression-img/owner-wave.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        309,
+        350,
+        1013,
+        986
+      ],
+      "avatar_crop": [
+        425.68,
+        419.96,
+        470.64
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-calm-png",
+      "role": "claude",
+      "name": "legacy-calm-png",
+      "aliases": [
+        "calm",
+        "淡定"
+      ],
+      "label": "淡定 · 原图",
+      "file": "claude-legacy-calm-png.webp",
+      "url": "/expression-img/claude-legacy-calm-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1312,
+      "height": 1199,
+      "alpha_bbox": [
+        23,
+        5,
+        1299,
+        1199
+      ],
+      "avatar_crop": [
+        219.22,
+        136.34,
+        883.56
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-calm-svg",
+      "role": "claude",
+      "name": "legacy-calm-svg",
+      "aliases": [
+        "calm",
+        "淡定"
+      ],
+      "label": "淡定 · SVG",
+      "file": "claude-legacy-calm-svg.svg",
+      "url": "/expression-img/claude-legacy-calm-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-cheer-png",
+      "role": "claude",
+      "name": "legacy-cheer-png",
+      "aliases": [
+        "cheer",
+        "加油"
+      ],
+      "label": "加油 · 原图",
+      "file": "claude-legacy-cheer-png.webp",
+      "url": "/expression-img/claude-legacy-cheer-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        68,
+        65,
+        1221,
+        1175
+      ],
+      "avatar_crop": [
+        233.8,
+        187.1,
+        821.4
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-cheer-svg",
+      "role": "claude",
+      "name": "legacy-cheer-svg",
+      "aliases": [
+        "cheer",
+        "加油"
+      ],
+      "label": "加油 · SVG",
+      "file": "claude-legacy-cheer-svg.svg",
+      "url": "/expression-img/claude-legacy-cheer-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-confused-png",
+      "role": "claude",
+      "name": "legacy-confused-png",
+      "aliases": [
+        "confused",
+        "困惑"
+      ],
+      "label": "困惑 · 原图",
+      "file": "claude-legacy-confused-png.webp",
+      "url": "/expression-img/claude-legacy-confused-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        127,
+        67,
+        1182,
+        1183
+      ],
+      "avatar_crop": [
+        264.15,
+        212.33,
+        780.7
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-confused-svg",
+      "role": "claude",
+      "name": "legacy-confused-svg",
+      "aliases": [
+        "confused",
+        "困惑"
+      ],
+      "label": "困惑 · SVG",
+      "file": "claude-legacy-confused-svg.svg",
+      "url": "/expression-img/claude-legacy-confused-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-happy-png",
+      "role": "claude",
+      "name": "legacy-happy-png",
+      "aliases": [
+        "happy",
+        "开心"
+      ],
+      "label": "开心 · 原图",
+      "file": "claude-legacy-happy-png.webp",
+      "url": "/expression-img/claude-legacy-happy-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1216,
+      "height": 1293,
+      "alpha_bbox": [
+        13,
+        9,
+        1196,
+        1266
+      ],
+      "avatar_crop": [
+        166.79,
+        174.65,
+        875.42
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-happy-svg",
+      "role": "claude",
+      "name": "legacy-happy-svg",
+      "aliases": [
+        "happy",
+        "开心"
+      ],
+      "label": "开心 · SVG",
+      "file": "claude-legacy-happy-svg.svg",
+      "url": "/expression-img/claude-legacy-happy-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-heart-png",
+      "role": "claude",
+      "name": "legacy-heart-png",
+      "aliases": [
+        "heart",
+        "比心"
+      ],
+      "label": "比心 · 原图",
+      "file": "claude-legacy-heart-png.webp",
+      "url": "/expression-img/claude-legacy-heart-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        64,
+        61,
+        1194,
+        1183
+      ],
+      "avatar_crop": [
+        213.86,
+        184.42,
+        830.28
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-heart-svg",
+      "role": "claude",
+      "name": "legacy-heart-svg",
+      "aliases": [
+        "heart",
+        "比心"
+      ],
+      "label": "比心 · SVG",
+      "file": "claude-legacy-heart-svg.svg",
+      "url": "/expression-img/claude-legacy-heart-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-panic-png",
+      "role": "claude",
+      "name": "legacy-panic-png",
+      "aliases": [
+        "panic",
+        "慌张"
+      ],
+      "label": "慌张 · 原图",
+      "file": "claude-legacy-panic-png.webp",
+      "url": "/expression-img/claude-legacy-panic-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        55,
+        32,
+        1203,
+        1205
+      ],
+      "avatar_crop": [
+        204.24,
+        170.28,
+        849.52
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-panic-svg",
+      "role": "claude",
+      "name": "legacy-panic-svg",
+      "aliases": [
+        "panic",
+        "慌张"
+      ],
+      "label": "慌张 · SVG",
+      "file": "claude-legacy-panic-svg.svg",
+      "url": "/expression-img/claude-legacy-panic-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-pout-png",
+      "role": "claude",
+      "name": "legacy-pout-png",
+      "aliases": [
+        "pout",
+        "鼓腮生气"
+      ],
+      "label": "鼓腮生气 · 原图",
+      "file": "claude-legacy-pout-png.webp",
+      "url": "/expression-img/claude-legacy-pout-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        57,
+        25,
+        1223,
+        1202
+      ],
+      "avatar_crop": [
+        208.58,
+        158.54,
+        862.84
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-pout-svg",
+      "role": "claude",
+      "name": "legacy-pout-svg",
+      "aliases": [
+        "pout",
+        "鼓腮生气"
+      ],
+      "label": "鼓腮生气 · SVG",
+      "file": "claude-legacy-pout-svg.svg",
+      "url": "/expression-img/claude-legacy-pout-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-proud-png",
+      "role": "claude",
+      "name": "legacy-proud-png",
+      "aliases": [
+        "proud",
+        "得意"
+      ],
+      "label": "得意 · 原图",
+      "file": "claude-legacy-proud-png.webp",
+      "url": "/expression-img/claude-legacy-proud-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        73,
+        63,
+        1212,
+        1190
+      ],
+      "avatar_crop": [
+        225.51,
+        186.97,
+        833.98
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-proud-svg",
+      "role": "claude",
+      "name": "legacy-proud-svg",
+      "aliases": [
+        "proud",
+        "得意"
+      ],
+      "label": "得意 · SVG",
+      "file": "claude-legacy-proud-svg.svg",
+      "url": "/expression-img/claude-legacy-proud-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-reading-png",
+      "role": "claude",
+      "name": "legacy-reading-png",
+      "aliases": [
+        "reading",
+        "认真读书"
+      ],
+      "label": "认真读书 · 原图",
+      "file": "claude-legacy-reading-png.webp",
+      "url": "/expression-img/claude-legacy-reading-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        78,
+        27,
+        1192,
+        1215
+      ],
+      "avatar_crop": [
+        222.82,
+        185.06,
+        824.36
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-reading-svg",
+      "role": "claude",
+      "name": "legacy-reading-svg",
+      "aliases": [
+        "reading",
+        "认真读书"
+      ],
+      "label": "认真读书 · SVG",
+      "file": "claude-legacy-reading-svg.svg",
+      "url": "/expression-img/claude-legacy-reading-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-shy-png",
+      "role": "claude",
+      "name": "legacy-shy-png",
+      "aliases": [
+        "shy",
+        "害羞"
+      ],
+      "label": "害羞 · 原图",
+      "file": "claude-legacy-shy-png.webp",
+      "url": "/expression-img/claude-legacy-shy-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1274,
+      "height": 1235,
+      "alpha_bbox": [
+        18,
+        2,
+        1224,
+        1235
+      ],
+      "avatar_crop": [
+        174.78,
+        147.62,
+        892.44
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-shy-svg",
+      "role": "claude",
+      "name": "legacy-shy-svg",
+      "aliases": [
+        "shy",
+        "害羞"
+      ],
+      "label": "害羞 · SVG",
+      "file": "claude-legacy-shy-svg.svg",
+      "url": "/expression-img/claude-legacy-shy-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-sleepy-png",
+      "role": "claude",
+      "name": "legacy-sleepy-png",
+      "aliases": [
+        "sleepy",
+        "困倦"
+      ],
+      "label": "困倦 · 原图",
+      "file": "claude-legacy-sleepy-png.webp",
+      "url": "/expression-img/claude-legacy-sleepy-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        56,
+        62,
+        1215,
+        1207
+      ],
+      "avatar_crop": [
+        211.85,
+        187.95,
+        847.3
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-sleepy-svg",
+      "role": "claude",
+      "name": "legacy-sleepy-svg",
+      "aliases": [
+        "sleepy",
+        "困倦"
+      ],
+      "label": "困倦 · SVG",
+      "file": "claude-legacy-sleepy-svg.svg",
+      "url": "/expression-img/claude-legacy-sleepy-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-smile-svg",
+      "role": "claude",
+      "name": "legacy-smile-svg",
+      "aliases": [
+        "smile",
+        "微笑"
+      ],
+      "label": "微笑 · SVG",
+      "file": "claude-legacy-smile-svg.svg",
+      "url": "/expression-img/claude-legacy-smile-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-surprised-png",
+      "role": "claude",
+      "name": "legacy-surprised-png",
+      "aliases": [
+        "surprised",
+        "惊讶"
+      ],
+      "label": "惊讶 · 原图",
+      "file": "claude-legacy-surprised-png.webp",
+      "url": "/expression-img/claude-legacy-surprised-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1298,
+      "height": 1212,
+      "alpha_bbox": [
+        39,
+        2,
+        1232,
+        1212
+      ],
+      "avatar_crop": [
+        194.09,
+        141.39,
+        882.82
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-surprised-svg",
+      "role": "claude",
+      "name": "legacy-surprised-svg",
+      "aliases": [
+        "surprised",
+        "惊讶"
+      ],
+      "label": "惊讶 · SVG",
+      "file": "claude-legacy-surprised-svg.svg",
+      "url": "/expression-img/claude-legacy-surprised-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-teary-png",
+      "role": "claude",
+      "name": "legacy-teary-png",
+      "aliases": [
+        "teary",
+        "委屈"
+      ],
+      "label": "委屈 · 原图",
+      "file": "claude-legacy-teary-png.webp",
+      "url": "/expression-img/claude-legacy-teary-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1214,
+      "height": 1296,
+      "alpha_bbox": [
+        11,
+        3,
+        1197,
+        1263
+      ],
+      "avatar_crop": [
+        165.18,
+        168.98,
+        877.64
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-teary-svg",
+      "role": "claude",
+      "name": "legacy-teary-svg",
+      "aliases": [
+        "teary",
+        "委屈"
+      ],
+      "label": "委屈 · SVG",
+      "file": "claude-legacy-teary-svg.svg",
+      "url": "/expression-img/claude-legacy-teary-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-thinking-png",
+      "role": "claude",
+      "name": "legacy-thinking-png",
+      "aliases": [
+        "thinking",
+        "认真思考"
+      ],
+      "label": "认真思考 · 原图",
+      "file": "claude-legacy-thinking-png.webp",
+      "url": "/expression-img/claude-legacy-thinking-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        72,
+        49,
+        1204,
+        1223
+      ],
+      "avatar_crop": [
+        219.16,
+        193.68,
+        837.68
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-thinking-svg",
+      "role": "claude",
+      "name": "legacy-thinking-svg",
+      "aliases": [
+        "thinking",
+        "认真思考"
+      ],
+      "label": "认真思考 · SVG",
+      "file": "claude-legacy-thinking-svg.svg",
+      "url": "/expression-img/claude-legacy-thinking-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-wink-png",
+      "role": "claude",
+      "name": "legacy-wink-png",
+      "aliases": [
+        "wink",
+        "眨眼"
+      ],
+      "label": "眨眼 · 原图",
+      "file": "claude-legacy-wink-png.webp",
+      "url": "/expression-img/claude-legacy-wink-png.webp",
+      "collection": "legacy",
+      "license": "Existing artwork terms",
+      "width": 1306,
+      "height": 1205,
+      "alpha_bbox": [
+        53,
+        2,
+        1232,
+        1201
+      ],
+      "avatar_crop": [
+        206.27,
+        141.29,
+        872.46
+      ]
+    },
+    {
+      "key": "expr:claude-legacy-wink-svg",
+      "role": "claude",
+      "name": "legacy-wink-svg",
+      "aliases": [
+        "wink",
+        "眨眼"
+      ],
+      "label": "眨眼 · SVG",
+      "file": "claude-legacy-wink-svg.svg",
+      "url": "/expression-img/claude-legacy-wink-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:claude-assurance",
+      "role": "claude",
+      "name": "assurance",
+      "label": "安心",
+      "file": "claude-assurance.webp",
+      "url": "/expression-img/claude-assurance.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        248,
+        299,
+        1039,
+        1014
+      ],
+      "avatar_crop": [
+        378.95,
+        377.65,
+        529.1
+      ]
+    },
+    {
+      "key": "expr:claude-celebration",
+      "role": "claude",
+      "name": "celebration",
+      "label": "庆祝",
+      "file": "claude-celebration.webp",
+      "url": "/expression-img/claude-celebration.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        259,
+        315,
+        1043,
+        971
+      ],
+      "avatar_crop": [
+        408.28,
+        387.16,
+        485.44
+      ]
+    },
+    {
+      "key": "expr:claude-coffee-sleepy",
+      "role": "claude",
+      "name": "coffee-sleepy",
+      "label": "咖啡困倦",
+      "file": "claude-coffee-sleepy.webp",
+      "url": "/expression-img/claude-coffee-sleepy.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        290,
+        343,
+        993,
+        977
+      ],
+      "avatar_crop": [
+        406.92,
+        412.74,
+        469.16
+      ]
+    },
+    {
+      "key": "expr:claude-comfort",
+      "role": "claude",
+      "name": "comfort",
+      "label": "安慰",
+      "file": "claude-comfort.webp",
+      "url": "/expression-img/claude-comfort.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        286,
+        310,
+        1008,
+        964
+      ],
+      "avatar_crop": [
+        405.02,
+        381.94,
+        483.96
+      ]
+    },
+    {
+      "key": "expr:claude-confused",
+      "role": "claude",
+      "name": "confused",
+      "label": "疑惑",
+      "file": "claude-confused.webp",
+      "url": "/expression-img/claude-confused.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        277,
+        316,
+        1023,
+        985
+      ],
+      "avatar_crop": [
+        402.47,
+        389.59,
+        495.06
+      ]
+    },
+    {
+      "key": "expr:claude-curiosity",
+      "role": "claude",
+      "name": "curiosity",
+      "label": "好奇",
+      "file": "claude-curiosity.webp",
+      "url": "/expression-img/claude-curiosity.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        277,
+        294,
+        1028,
+        1009
+      ],
+      "avatar_crop": [
+        387.95,
+        372.65,
+        529.1
+      ]
+    },
+    {
+      "key": "expr:claude-encourage",
+      "role": "claude",
+      "name": "encourage",
+      "label": "加油",
+      "file": "claude-encourage.webp",
+      "url": "/expression-img/claude-encourage.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        272,
+        326,
+        999,
+        968
+      ],
+      "avatar_crop": [
+        397.96,
+        396.62,
+        475.08
+      ]
+    },
+    {
+      "key": "expr:claude-excitement",
+      "role": "claude",
+      "name": "excitement",
+      "label": "兴奋",
+      "file": "claude-excitement.webp",
+      "url": "/expression-img/claude-excitement.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        285,
+        342,
+        987,
+        963
+      ],
+      "avatar_crop": [
+        406.23,
+        410.31,
+        459.54
+      ]
+    },
+    {
+      "key": "expr:claude-explaining",
+      "role": "claude",
+      "name": "explaining",
+      "label": "严肃讲解",
+      "file": "claude-explaining.webp",
+      "url": "/expression-img/claude-explaining.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        243,
+        261,
+        1054,
+        993
+      ],
+      "avatar_crop": [
+        377.66,
+        341.52,
+        541.68
+      ]
+    },
+    {
+      "key": "expr:claude-greeting",
+      "role": "claude",
+      "name": "greeting",
+      "label": "致意",
+      "file": "claude-greeting.webp",
+      "url": "/expression-img/claude-greeting.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        255,
+        303,
+        1035,
+        979
+      ],
+      "avatar_crop": [
+        394.88,
+        377.36,
+        500.24
+      ]
+    },
+    {
+      "key": "expr:claude-insight",
+      "role": "claude",
+      "name": "insight",
+      "label": "洞见",
+      "file": "claude-insight.webp",
+      "url": "/expression-img/claude-insight.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        305,
+        336,
+        992,
+        972
+      ],
+      "avatar_crop": [
+        413.18,
+        405.96,
+        470.64
+      ]
+    },
+    {
+      "key": "expr:claude-laughter",
+      "role": "claude",
+      "name": "laughter",
+      "label": "大笑",
+      "file": "claude-laughter.webp",
+      "url": "/expression-img/claude-laughter.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        287,
+        315,
+        996,
+        968
+      ],
+      "avatar_crop": [
+        399.89,
+        386.83,
+        483.22
+      ]
+    },
+    {
+      "key": "expr:claude-note-thinking",
+      "role": "claude",
+      "name": "note-thinking",
+      "label": "笔记思考",
+      "file": "claude-note-thinking.webp",
+      "url": "/expression-img/claude-note-thinking.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        301,
+        346,
+        974,
+        978
+      ],
+      "avatar_crop": [
+        403.66,
+        415.52,
+        467.68
+      ]
+    },
+    {
+      "key": "expr:claude-pout",
+      "role": "claude",
+      "name": "pout",
+      "label": "鼓腮",
+      "file": "claude-pout.webp",
+      "url": "/expression-img/claude-pout.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        289,
+        323,
+        995,
+        970
+      ],
+      "avatar_crop": [
+        402.61,
+        394.17,
+        478.78
+      ]
+    },
+    {
+      "key": "expr:claude-proud",
+      "role": "claude",
+      "name": "proud",
+      "label": "得意",
+      "file": "claude-proud.webp",
+      "url": "/expression-img/claude-proud.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        254,
+        300,
+        1024,
+        990
+      ],
+      "avatar_crop": [
+        383.7,
+        375.9,
+        510.6
+      ]
+    },
+    {
+      "key": "expr:claude-shy",
+      "role": "claude",
+      "name": "shy",
+      "label": "害羞",
+      "file": "claude-shy.webp",
+      "url": "/expression-img/claude-shy.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        279,
+        313,
+        1028,
+        984
+      ],
+      "avatar_crop": [
+        405.23,
+        386.81,
+        496.54
+      ]
+    },
+    {
+      "key": "expr:claude-skeptical",
+      "role": "claude",
+      "name": "skeptical",
+      "label": "怀疑",
+      "file": "claude-skeptical.webp",
+      "url": "/expression-img/claude-skeptical.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        289,
+        320,
+        1007,
+        986
+      ],
+      "avatar_crop": [
+        401.58,
+        393.26,
+        492.84
+      ]
+    },
+    {
+      "key": "expr:claude-surprise",
+      "role": "claude",
+      "name": "surprise",
+      "label": "惊讶",
+      "file": "claude-surprise.webp",
+      "url": "/expression-img/claude-surprise.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        266,
+        315,
+        1033,
+        991
+      ],
+      "avatar_crop": [
+        399.38,
+        389.36,
+        500.24
+      ]
+    },
+    {
+      "key": "expr:claude-touched",
+      "role": "claude",
+      "name": "touched",
+      "label": "感动",
+      "file": "claude-touched.webp",
+      "url": "/expression-img/claude-touched.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        258,
+        298,
+        1034,
+        1009
+      ],
+      "avatar_crop": [
+        382.93,
+        376.21,
+        526.14
+      ]
+    },
+    {
+      "key": "expr:claude-wave",
+      "role": "claude",
+      "name": "wave",
+      "label": "挥手",
+      "file": "claude-wave.webp",
+      "url": "/expression-img/claude-wave.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        299,
+        329,
+        972,
+        961
+      ],
+      "avatar_crop": [
+        401.66,
+        398.52,
+        467.68
+      ]
+    },
+    {
+      "key": "expr:gpt-legacy-calm-svg",
+      "role": "gpt",
+      "name": "legacy-calm-svg",
+      "aliases": [
+        "calm",
+        "淡定"
+      ],
+      "label": "淡定 · SVG",
+      "file": "gpt-legacy-calm-svg.svg",
+      "url": "/expression-img/gpt-legacy-calm-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:gpt-legacy-shy-svg",
+      "role": "gpt",
+      "name": "legacy-shy-svg",
+      "aliases": [
+        "shy",
+        "害羞"
+      ],
+      "label": "害羞 · SVG",
+      "file": "gpt-legacy-shy-svg.svg",
+      "url": "/expression-img/gpt-legacy-shy-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:gpt-legacy-smile-svg",
+      "role": "gpt",
+      "name": "legacy-smile-svg",
+      "aliases": [
+        "smile",
+        "微笑"
+      ],
+      "label": "微笑 · SVG",
+      "file": "gpt-legacy-smile-svg.svg",
+      "url": "/expression-img/gpt-legacy-smile-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:gpt-legacy-surprised-svg",
+      "role": "gpt",
+      "name": "legacy-surprised-svg",
+      "aliases": [
+        "surprised",
+        "惊讶"
+      ],
+      "label": "惊讶 · SVG",
+      "file": "gpt-legacy-surprised-svg.svg",
+      "url": "/expression-img/gpt-legacy-surprised-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:gpt-legacy-teary-svg",
+      "role": "gpt",
+      "name": "legacy-teary-svg",
+      "aliases": [
+        "teary",
+        "委屈"
+      ],
+      "label": "委屈 · SVG",
+      "file": "gpt-legacy-teary-svg.svg",
+      "url": "/expression-img/gpt-legacy-teary-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:gpt-legacy-wink-svg",
+      "role": "gpt",
+      "name": "legacy-wink-svg",
+      "aliases": [
+        "wink",
+        "眨眼"
+      ],
+      "label": "眨眼 · SVG",
+      "file": "gpt-legacy-wink-svg.svg",
+      "url": "/expression-img/gpt-legacy-wink-svg.svg",
+      "collection": "legacy",
+      "license": "MIT",
+      "width": 200.0,
+      "height": 200.0,
+      "avatar_crop": [
+        0,
+        0,
+        200.0
+      ]
+    },
+    {
+      "key": "expr:gpt-assurance",
+      "role": "gpt",
+      "name": "assurance",
+      "label": "安心",
+      "file": "gpt-assurance.webp",
+      "url": "/expression-img/gpt-assurance.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        302,
+        288,
+        988,
+        997
+      ],
+      "avatar_crop": [
+        391.18,
+        374.5,
+        507.64
+      ]
+    },
+    {
+      "key": "expr:gpt-celebration",
+      "role": "gpt",
+      "name": "celebration",
+      "label": "庆祝",
+      "file": "gpt-celebration.webp",
+      "url": "/expression-img/gpt-celebration.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        290,
+        310,
+        995,
+        975
+      ],
+      "avatar_crop": [
+        396.45,
+        383.15,
+        492.1
+      ]
+    },
+    {
+      "key": "expr:gpt-coffee-sleepy",
+      "role": "gpt",
+      "name": "coffee-sleepy",
+      "label": "咖啡困倦",
+      "file": "gpt-coffee-sleepy.webp",
+      "url": "/expression-img/gpt-coffee-sleepy.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        302,
+        283,
+        1010,
+        1016
+      ],
+      "avatar_crop": [
+        394.04,
+        372.88,
+        523.92
+      ]
+    },
+    {
+      "key": "expr:gpt-comfort",
+      "role": "gpt",
+      "name": "comfort",
+      "label": "安慰",
+      "file": "gpt-comfort.webp",
+      "url": "/expression-img/gpt-comfort.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        337,
+        302,
+        972,
+        986
+      ],
+      "avatar_crop": [
+        419.55,
+        395.37,
+        469.9
+      ]
+    },
+    {
+      "key": "expr:gpt-confused",
+      "role": "gpt",
+      "name": "confused",
+      "label": "疑惑",
+      "file": "gpt-confused.webp",
+      "url": "/expression-img/gpt-confused.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        324,
+        295,
+        1010,
+        995
+      ],
+      "avatar_crop": [
+        413.18,
+        377.18,
+        507.64
+      ]
+    },
+    {
+      "key": "expr:gpt-curiosity",
+      "role": "gpt",
+      "name": "curiosity",
+      "label": "好奇",
+      "file": "gpt-curiosity.webp",
+      "url": "/expression-img/gpt-curiosity.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        317,
+        311,
+        1004,
+        992
+      ],
+      "avatar_crop": [
+        408.53,
+        385.91,
+        503.94
+      ]
+    },
+    {
+      "key": "expr:gpt-encourage",
+      "role": "gpt",
+      "name": "encourage",
+      "label": "加油",
+      "file": "gpt-encourage.webp",
+      "url": "/expression-img/gpt-encourage.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        317,
+        303,
+        986,
+        978
+      ],
+      "avatar_crop": [
+        403.97,
+        379.47,
+        495.06
+      ]
+    },
+    {
+      "key": "expr:gpt-excitement",
+      "role": "gpt",
+      "name": "excitement",
+      "label": "兴奋",
+      "file": "gpt-excitement.webp",
+      "url": "/expression-img/gpt-excitement.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        304,
+        292,
+        1019,
+        1001
+      ],
+      "avatar_crop": [
+        399.17,
+        369.99,
+        524.66
+      ]
+    },
+    {
+      "key": "expr:gpt-explaining",
+      "role": "gpt",
+      "name": "explaining",
+      "label": "严肃讲解",
+      "file": "gpt-explaining.webp",
+      "url": "/expression-img/gpt-explaining.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        318,
+        323,
+        990,
+        984
+      ],
+      "avatar_crop": [
+        409.43,
+        395.71,
+        489.14
+      ]
+    },
+    {
+      "key": "expr:gpt-greeting",
+      "role": "gpt",
+      "name": "greeting",
+      "label": "致意",
+      "file": "gpt-greeting.webp",
+      "url": "/expression-img/gpt-greeting.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        296,
+        281,
+        1016,
+        1008
+      ],
+      "avatar_crop": [
+        389.6,
+        363.56,
+        532.8
+      ]
+    },
+    {
+      "key": "expr:gpt-insight",
+      "role": "gpt",
+      "name": "insight",
+      "label": "洞见",
+      "file": "gpt-insight.webp",
+      "url": "/expression-img/gpt-insight.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        324,
+        312,
+        989,
+        964
+      ],
+      "avatar_crop": [
+        415.26,
+        383.72,
+        482.48
+      ]
+    },
+    {
+      "key": "expr:gpt-laughter",
+      "role": "gpt",
+      "name": "laughter",
+      "label": "大笑",
+      "file": "gpt-laughter.webp",
+      "url": "/expression-img/gpt-laughter.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        291,
+        265,
+        1041,
+        1012
+      ],
+      "avatar_crop": [
+        389.61,
+        347.17,
+        552.78
+      ]
+    },
+    {
+      "key": "expr:gpt-note-thinking",
+      "role": "gpt",
+      "name": "note-thinking",
+      "label": "笔记思考",
+      "file": "gpt-note-thinking.webp",
+      "url": "/expression-img/gpt-note-thinking.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        278,
+        286,
+        1027,
+        1038
+      ],
+      "avatar_crop": [
+        375.37,
+        369.83,
+        554.26
+      ]
+    },
+    {
+      "key": "expr:gpt-pout",
+      "role": "gpt",
+      "name": "pout",
+      "label": "鼓腮",
+      "file": "gpt-pout.webp",
+      "url": "/expression-img/gpt-pout.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        304,
+        271,
+        987,
+        997
+      ],
+      "avatar_crop": [
+        392.79,
+        366.77,
+        505.42
+      ]
+    },
+    {
+      "key": "expr:gpt-proud",
+      "role": "gpt",
+      "name": "proud",
+      "label": "得意",
+      "file": "gpt-proud.webp",
+      "url": "/expression-img/gpt-proud.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        308,
+        364,
+        1004,
+        1027
+      ],
+      "avatar_crop": [
+        410.69,
+        436.93,
+        490.62
+      ]
+    },
+    {
+      "key": "expr:gpt-shy",
+      "role": "gpt",
+      "name": "shy",
+      "label": "害羞",
+      "file": "gpt-shy.webp",
+      "url": "/expression-img/gpt-shy.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        310,
+        272,
+        991,
+        988
+      ],
+      "avatar_crop": [
+        398.53,
+        363.71,
+        503.94
+      ]
+    },
+    {
+      "key": "expr:gpt-skeptical",
+      "role": "gpt",
+      "name": "skeptical",
+      "label": "怀疑",
+      "file": "gpt-skeptical.webp",
+      "url": "/expression-img/gpt-skeptical.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        321,
+        297,
+        994,
+        990
+      ],
+      "avatar_crop": [
+        408.49,
+        380.63,
+        498.02
+      ]
+    },
+    {
+      "key": "expr:gpt-surprise",
+      "role": "gpt",
+      "name": "surprise",
+      "label": "惊讶",
+      "file": "gpt-surprise.webp",
+      "url": "/expression-img/gpt-surprise.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        258,
+        294,
+        1023,
+        1028
+      ],
+      "avatar_crop": [
+        368.92,
+        374.74,
+        543.16
+      ]
+    },
+    {
+      "key": "expr:gpt-touched",
+      "role": "gpt",
+      "name": "touched",
+      "label": "感动",
+      "file": "gpt-touched.webp",
+      "url": "/expression-img/gpt-touched.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        302,
+        280,
+        994,
+        1025
+      ],
+      "avatar_crop": [
+        391.96,
+        381.56,
+        512.08
+      ]
+    },
+    {
+      "key": "expr:gpt-wave",
+      "role": "gpt",
+      "name": "wave",
+      "label": "挥手",
+      "file": "gpt-wave.webp",
+      "url": "/expression-img/gpt-wave.webp",
+      "collection": "original-60",
+      "license": "MIT",
+      "width": 1254,
+      "height": 1254,
+      "alpha_bbox": [
+        292,
+        278,
+        1009,
+        1005
+      ],
+      "avatar_crop": [
+        385.21,
+        361.67,
+        530.58
+      ]
+    }
+  ]
+}

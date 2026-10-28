@@ -3,12 +3,14 @@ from pathlib import Path
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from urllib.parse import urlsplit,unquote,parse_qs
 import base64,hashlib,html,io,ipaddress,json,mimetypes,os,re,uuid
-from . import project,storage,scheduler,contacts,task_eta,assets,onboarding
+from . import project,storage,scheduler,contacts,task_eta,assets,onboarding,expressions
 ASSETS=Path(__file__).resolve().parent
 STATIC={n for n in ['index.html','discussion.js','discussion.css','identity.js','identity.css','room-extras.js','room-markdown.js','room-features.css','room-collection.js','mood.js','room-collection.css','v02.js','v02.css','eta-view.js','eta-view.css','fanart.css','help.html']}
 STATIC.update({'lifecycle-view.js','lifecycle-view.css','index-tabs.js','index-tabs.css','private-notes.js','private-notes.css'})
+STATIC.update({'expressions.js','expressions.css'})
 REACTIONS={'👍':'done','❤️':'care','😂':'smile','🎉':'celebrate','👀':'review','💡':'idea'}
 REACTION_KEYS=list(dict.fromkeys([*REACTIONS,*(x['key'] for x in assets.emote_manifest())]))
+REACTION_KEYS += [row['key'] for row in expressions.catalog()]
 def contained(root,relative):
     root=Path(root).resolve();p=root/relative
     if Path(relative).is_absolute() or not p.resolve().is_relative_to(root):raise ValueError('Workspace-relative file required')
@@ -61,6 +63,7 @@ def conversation(root,channel=None):
             actors=[people[a] for mid,a,em in sorted(active) if mid==row['id'] and em==e and a in people]) for e in REACTION_KEYS if any(mid==row['id'] and em==e for mid,a,em in active)]
         items.append(value)
     catalog=assets.reaction_catalog(root) if onboarding.emote_preferences(root)['mode']=='download' else []
+    catalog += assets.expression_catalog()
     result=dict(items=items,channel=channel,unified=unified,max_text=6000,reaction_emoji=list(dict.fromkeys([*REACTIONS,*(x['key'] for x in catalog)])),reaction_catalog=catalog,sticker_catalog=[])
     result['revision']=hashlib.sha256(json.dumps(result,sort_keys=True).encode()).hexdigest();return result
 
@@ -176,6 +179,7 @@ def create_server(root,port=8780,open_file=None):
                     with storage.locked(root):storage.append(root/'attachments/discussion/reactions.jsonl',dict(message_id=mid,emoji=emoji,active=p['active'],actor='owner'))
                     return self.respond(200,dict(message_id=mid,reactions=next(x['reactions'] for c in project.CHANNELS for x in conversation(root,c)['items'] if x['id']==mid)))
                 if route=='/api/project':return self.respond(200,project.configure(root,p.get('question'),p.get('deliverable'),p.get('user_name')))
+                if route=='/api/mood':return self.respond(200,expressions.choose_owner(root,p))
                 if route=='/api/quota':
                     name=p.get('agent');tier=p.get('tier')
                     if tier not in scheduler.TIERS:raise ValueError('Choose a quota band')
@@ -198,6 +202,7 @@ def create_server(root,port=8780,open_file=None):
             if route=='/favicon.ico':return self.respond(204,b'','image/x-icon')
             if route=='/api/me':return self.respond(200,dict(id='owner',local=local,listener=self.server.server_address[0],channel='main',channels=list(project.CHANNELS),conversations=True))
             if route=='/api/accounts':return self.respond(200,dict(accounts=accounts(root)))
+            if route=='/api/expressions':return self.respond(200,expressions.snapshot(root))
             if route=='/api/board':return self.respond(200,snapshot(root,channel if 'channel' in query else None))
             if route=='/api/discussion':return self.respond(200,conversation(root,channel if 'channel' in query else None))
             if route=='/api/conversations':
@@ -216,6 +221,12 @@ def create_server(root,port=8780,open_file=None):
             name=route[1:]
             if route=='/help':name='help.html'
             if name in STATIC:return self.respond(200,(ASSETS/name).read_bytes(),mimetypes.guess_type(name)[0] or 'application/octet-stream')
+            if re.fullmatch(r'/expression-img/[a-z0-9_-]+\.(?:webp|svg)',route):
+                file=route.rsplit('/',1)[1]
+                if file in {row['file'] for row in expressions.catalog()}:
+                    path=contained(expressions.DIRECTORY,file)
+                    return self.respond(200,path.read_bytes(),mimetypes.guess_type(file)[0],
+                        headers=[('Content-Security-Policy',"sandbox; default-src 'none'; style-src 'unsafe-inline'")] if file.endswith('.svg') else ())
             if re.fullmatch(r'/(?:art|reactions)/[a-z0-9_-]+\.(?:svg|png|json)',route):
                 path=contained(ASSETS,route[1:])
                 if path.is_file():return self.respond(200,path.read_bytes(),mimetypes.guess_type(path.name)[0] or 'application/octet-stream')

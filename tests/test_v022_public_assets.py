@@ -49,7 +49,8 @@ class PublicAssets(unittest.TestCase):
                 self.assertEqual(json.loads(raw)['reaction_catalog'][0]['key'],row['key'])
                 path.unlink()
                 _,raw,_=request('/api/discussion')
-                self.assertEqual(json.loads(raw)['reaction_catalog'],[])
+                self.assertEqual([x for x in json.loads(raw)['reaction_catalog'] if x['key'].startswith('bili:')],[])
+                self.assertTrue(any(x['kind']=='character' for x in json.loads(raw)['reaction_catalog']))
                 self.assertIn('👍',json.loads(raw)['reaction_emoji'])
             finally:
                 server.shutdown()

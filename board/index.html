@@ -946,7 +946,7 @@ html.theme-pink #nav .brand .brand-person img{transform:scale(1.45);transform-or
     </form>
     </div>
   </section>
-  <section id="files"><div class="files-heading"><h2>报告与文件</h2><input id="file-filter" type="search" placeholder="筛选…" aria-label="筛选报告与文件" aria-controls="file-body" autocomplete="off"></div><div class="card" id="file-body"></div></section>
+  <section id="files"><div class="files-heading"><h2>报告与文件</h2><input hidden id="file-filter" type="search" placeholder="筛选…" aria-label="筛选报告与文件" aria-controls="file-body" autocomplete="off"></div><div class="card" id="file-body"></div></section>
 </main>
 <script src="/identity.js"></script>
 <script src="/room-markdown.js"></script>
@@ -1433,5 +1433,7 @@ load().then(spy); setInterval(load, 20000); setInterval(() => { lastRev = ''; lo
 })();
 </script>
 <script src="/v02.js"></script>
+<link rel="stylesheet" href="/expressions.css">
+<script src="/expressions.js"></script>
 </body>
 </html>

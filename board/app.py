@@ -6,7 +6,7 @@ import base64,hashlib,html,io,ipaddress,json,mimetypes,os,re,uuid
 from . import project,storage,scheduler,contacts,task_eta,assets,onboarding
 ASSETS=Path(__file__).resolve().parent
 STATIC={n for n in ['index.html','discussion.js','discussion.css','identity.js','identity.css','room-extras.js','room-markdown.js','room-features.css','room-collection.js','mood.js','room-collection.css','v02.js','v02.css','eta-view.js','eta-view.css','fanart.css','help.html']}
-STATIC.update({'lifecycle-view.js','lifecycle-view.css','index-tabs.js','index-tabs.css'})
+STATIC.update({'lifecycle-view.js','lifecycle-view.css','index-tabs.js','index-tabs.css','private-notes.js','private-notes.css'})
 REACTIONS={'👍':'done','❤️':'care','😂':'smile','🎉':'celebrate','👀':'review','💡':'idea'}
 REACTION_KEYS=list(dict.fromkeys([*REACTIONS,*(x['key'] for x in assets.emote_manifest())]))
 def contained(root,relative):
@@ -86,7 +86,7 @@ def snapshot(root,channel=None):
     result=dict(overview=overview,tasks=tasks,discussion=conversation(root,channel),project=storage.read(root/'project.json'),modified=datetime.now().astimezone().isoformat())
     result['revision']=hashlib.sha256(json.dumps({k:v for k,v in result.items() if k!='modified'},sort_keys=True).encode()).hexdigest();return result
 
-def image_upload(root,value):
+def decode_image(value):
     from PIL import Image,ImageOps
     import warnings
     if not isinstance(value,str) or len(value)>12*1024**2:raise ValueError('Image size limit 8MiB')
@@ -99,6 +99,10 @@ def image_upload(root,value):
         with Image.open(io.BytesIO(blob)) as im:
             if im.width*im.height>16_000_000 or im.format not in ['PNG','JPEG','WEBP','GIF']:raise ValueError('Image dimensions or type')
             image=ImageOps.exif_transpose(im).convert('RGB');image.load()
+    return image
+
+def image_upload(root,value):
+    image=decode_image(value)
     name=uuid.uuid4().hex+'.png';p=root/'attachments/discussion/images'/name;p.parent.mkdir(parents=True,exist_ok=True);image.save(p,'PNG');return name
 
 def file_upload(root,value):
@@ -143,9 +147,11 @@ def create_server(root,port=8780,open_file=None):
             if not local:return self.respond(403,dict(error='Use the local board address'))
             if self.command=='POST' and self.headers.get('X-Board-Identity') not in {None,'owner'}:return self.respond(403,dict(error='Browser identity is the project owner'))
             route=unquote(urlsplit(self.path).path)
-            query=parse_qs(urlsplit(self.path).query)
+            query=parse_qs(urlsplit(self.path).query,keep_blank_values=True)
             channel=project.channel_id((query.get('channel') or ['main'])[0])
             if self.command=='POST' and self.headers.get('Origin')!='http://'+authority:return self.respond(403,dict(error='Use the board page to send requests'))
+            from . import private_notes
+            if private_notes.dispatch(self,root,route,query):return
             if self.command=='POST':
                 p=self.body(68*1024**2 if route=='/api/discussion' else 100_000)
                 if route=='/api/discussion/delete':
@@ -178,7 +184,7 @@ def create_server(root,port=8780,open_file=None):
                     links=storage.read(root/'overview.json',{}).get('links',[]);index=p.get('i')
                     if type(index) is not int or not 0<=index<len(links):raise ValueError('Select a project file')
                     file=contained(root,links[index]['path'])
-                    if file.is_relative_to(root/'attachments/discussion'):return self.respond(404,dict(error='Choose a public project file'))
+                    if any(file.is_relative_to(root/'attachments'/name) for name in ('discussion','private')):return self.respond(404,dict(error='Choose a public project file'))
                     if not file.exists():return self.respond(404,dict(error='Project file is being prepared'))
                     if open_file:open_file(file)
                     elif os.name=='nt':os.startfile(file)
@@ -243,7 +249,7 @@ def create_server(root,port=8780,open_file=None):
                 return self.respond(200,path.read_bytes(),'application/octet-stream',headers=[('Content-Disposition',"attachment; filename*=UTF-8''"+quote(meta['name']))])
             if route.startswith('/files/'):
                 path=contained(root,route[len('/files/'):]);allowed={x.get('path') for x in storage.read(root/'overview.json',{}).get('links',[]) if isinstance(x.get('path'),str)}
-                if path.is_relative_to(root/'attachments/discussion'):return self.respond(404,dict(error='Choose a public project file'))
+                if any(path.is_relative_to(root/'attachments'/name) for name in ('discussion','private')):return self.respond(404,dict(error='Choose a public project file'))
                 if path.relative_to(root).as_posix() in allowed and path.is_file():
                     from urllib.parse import quote
                     return self.respond(200,path.read_bytes(),mimetypes.guess_type(path.name)[0] or 'application/octet-stream',headers=[('Content-Disposition',"attachment; filename*=UTF-8''"+quote(path.name))])

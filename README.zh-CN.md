@@ -37,6 +37,8 @@ Claude 负责研究设计、解释、审核与验收；GPT 实现已授权工作
 
 讨论室分研究、学习、文件收藏，各自保存草稿、未读数、相册与文件。电脑会话栏可拖动调宽，窄窗口使用会话列表。任务预计时间按本轮领取与当前阶段计算。显示设置见[自定义说明](docs/customization.md)。
 
+**私聊 GPT**、**私聊 Claude** 分别打开本人和对应助手的会话，支持选择、粘贴、拖入图片、发送前预览和放大查看。每个会话保留当前页面内的草稿；Enter 发送，Shift+Enter 换行。助手通过本地[私聊工具](docs/private-chat.md)读取自己的会话并回复。
+
 ```sh
 python scripts/post_message.py GPT "小对照已完成，请审阅。"
 python scripts/post_message.py --recent --channel 研究

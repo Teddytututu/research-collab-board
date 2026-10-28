@@ -1,0 +1,101 @@
+.social-section[hidden], .social-section [hidden], #nav a[hidden]{display:none!important}
+.social-card{padding:20px;min-width:0}
+.social-compose{display:grid;gap:8px;margin-top:16px}
+.social-compose label{font-weight:600}
+.social-compose input,.social-compose textarea{box-sizing:border-box;width:100%;min-width:0;padding:12px;border:1px solid var(--line);border-radius:4px;color:var(--ink);background:var(--card);font:inherit}
+.social-compose textarea{resize:vertical;min-height:96px}
+.social-section button{min-height:44px;padding:8px 16px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.social-section button:disabled{opacity:.65;cursor:wait}
+.social-section :focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.social-status,.social-empty{margin:8px 0;color:var(--ink)}
+.social-status:empty{display:none}
+.private-peers{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.private-peers button[aria-pressed="true"]{background:var(--paper-blue,var(--bg));border-color:var(--blue);font-weight:700;box-shadow:inset 0 -3px var(--blue)}
+.private-log{max-height:480px;overflow-y:auto;overscroll-behavior:contain}
+.private-message{border-bottom:1px solid var(--line);padding:12px 0}
+#msgs[data-private-peer] .room-log-wrap,#msgs[data-private-peer] #room-form{display:none!important}
+#msgs .room-private-panel{display:flex;flex-direction:column;flex:1;min-height:0;min-width:0;margin:0;scroll-margin:0;color:var(--ink)}
+.room-private-heading{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.room-private-heading h2{display:block;min-width:0;overflow-wrap:anywhere;margin:0;font-size:15px;line-height:1.5;letter-spacing:0}
+.room-private-heading h2::before,.room-private-heading h2::after{display:none}
+#msgs .room-private-panel .social-card{display:flex;flex-direction:column;flex:1;min-height:0;min-width:0;padding:12px 14px;border:0;box-shadow:none;background:var(--card)}
+.room-private-panel .private-peers{margin-bottom:8px}
+.room-private-panel .private-log{flex:1;min-height:96px;max-height:480px;overflow-y:auto}
+#msgs.dock .room-private-panel .private-log{min-height:0;max-height:none}
+.room-private-panel .social-compose{flex:none;margin-top:8px}
+.room-private-panel .social-compose textarea{min-height:72px;max-height:160px}
+html body .social-compose label{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0;padding:0}
+html body .social-section button,html.theme-pink body .social-section button{min-height:32px;height:auto;padding:4px 14px;border-radius:999px;font-size:13px;line-height:1.6;box-shadow:none;transform:none;width:auto}
+html body .social-section .social-refresh{position:absolute;top:10px;right:12px;min-height:28px;width:28px;padding:0;border:0;background:transparent;color:var(--muted,#8a7080);font-size:16px}
+html body .social-section .social-refresh:hover{color:var(--ink)}
+html body .social-card{position:relative}
+html body .social-empty{margin:24px 0;text-align:center;font-size:13px;color:var(--muted,#8a7080)}
+html body .social-status{font-size:12.5px;color:var(--muted,#8a7080);margin:2px 0 0}
+html body .social-compose input,html body .social-compose textarea{padding:8px 12px;border-radius:10px;font-size:14px;line-height:1.6;box-shadow:none}
+html body .social-compose input{height:38px}
+html body .room-private-heading{gap:10px;padding:8px 12px;flex-wrap:nowrap}
+html body .room-private-heading .room-private-back{min-height:30px;width:30px;padding:0;border:0;background:transparent;font-size:18px;color:var(--muted,#8a7080)}
+html body .room-private-heading h2{font-size:15px!important;margin:0}
+html body #msgs .room-private-panel .social-card{padding:8px 12px 10px}
+html body .room-private-panel .private-peers{display:inline-flex;align-self:flex-start;gap:2px;padding:2px;margin:0 0 6px;border:1px solid var(--line);border-radius:999px;background:var(--card)}
+html body .room-private-panel .private-peers button{min-height:26px;padding:2px 14px;border:0;background:transparent;font-size:12.5px}
+html body .room-private-panel .private-peers button[aria-pressed="true"]{background:var(--paper-blue,#eef3fc);box-shadow:none;font-weight:700}
+html.theme-pink body .room-private-panel .private-peers button[aria-pressed="true"]{background:#ffe3ee;color:#b4306a}
+html body .room-private-panel .social-refresh{top:8px}
+html body .room-private-panel .social-compose{display:grid;grid-template-columns:1fr auto;gap:6px 8px;align-items:end;margin-top:6px}
+html body .room-private-panel .social-compose textarea{min-height:44px;height:44px;resize:none}
+html body .room-private-panel .social-compose button[type=submit]{min-height:40px;padding:4px 16px}
+html body .room-private-panel .social-compose .social-status{grid-column:1/-1}
+html body #private-chat .private-log{padding:12px 8px 4px;background:var(--room-bg);border-radius:10px;overflow-x:hidden;overflow-anchor:none;scrollbar-width:thin}
+html body #private-chat .private-message{border:0;padding:0;margin-bottom:20px}
+html body #private-chat .private-message p{margin:0}
+html body #private-chat .private-avatar{width:34px;height:34px;min-height:34px;padding:0;border:0;border-radius:11px;font-size:13px;line-height:1;cursor:pointer}
+html body #private-chat .room-message-content{max-width:calc(100% - 44px)}
+html body #private-chat .room-meta{flex-wrap:wrap;overflow-wrap:anywhere}
+html body #private-chat .room-bubble{box-sizing:border-box;min-width:0}
+html body #private-chat .social-compose{grid-template-columns:minmax(0,1fr) auto;margin:8px 0 0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+html body #private-chat .social-compose::before{content:none}
+html body #private-chat .room-input-wrap{min-width:0}
+html body #private-chat .room-input-wrap textarea{height:44px;min-height:44px;max-height:160px;padding:8px 0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow-y:auto}
+html body #private-chat .room-submit{align-self:end;min-height:44px;border:0;background:var(--room-accent);color:var(--card);font-weight:600}
+html body #private-chat :is(button,textarea,.private-log):focus-visible{outline:2px solid var(--room-accent);outline-offset:3px}
+html.theme-pink body #private-chat .private-avatar{width:46px;height:46px;min-height:46px;border-radius:12px}
+html.theme-pink body #private-chat .room-message-content{max-width:calc(100% - 56px)}
+@media(max-width:600px){html body #private-chat .room-input-wrap textarea{font-size:16px}}
+html body #private-chat .social-compose{grid-template-columns:auto minmax(0,1fr) auto}
+html body #private-chat .room-attach,html body #private-chat .room-composer-hint{grid-column:1/-1}
+html body #private-chat .room-composer-hint{margin:0;font-size:12px;color:var(--muted)}
+html body #private-chat .room-pick{align-self:end;min-height:44px;padding:4px 10px}
+html body #private-chat .room-attach .thumb button{min-height:24px;width:24px;padding:0;line-height:24px}
+html body #private-chat .room-body:empty{display:none}
+html body #private-chat .private-log{background:transparent;border:0;border-radius:0}
+html body #private-chat .private-message .room-bubble,
+html.theme-pink body #private-chat .private-message .room-bubble{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:4px 0!important}
+html body #private-chat .private-message.mine .room-body,
+html.theme-pink body #private-chat .private-message.mine .room-body{color:var(--ink)}
+html body #private-chat .private-message .room-bubble::after{display:none!important}
+html body #private-chat .private-peers{border:0;background:transparent;padding:0;gap:10px}
+html body #private-chat .private-peers button[aria-pressed="true"],
+html.theme-pink body #private-chat .private-peers button[aria-pressed="true"]{background:transparent;border:0;box-shadow:none;text-decoration:underline;text-underline-offset:4px}
+html body #private-chat .private-message .room-bubble,
+html.theme-pink body #private-chat .private-message .room-bubble{background:#fff!important;border:1px solid #e1e6ee!important;border-radius:14px!important;box-shadow:none!important;padding:16px 14px 10px!important}
+html.theme-pink body #private-chat .private-message .room-bubble{border-color:#f6dce7!important}
+html body #private-chat .private-message.mine .room-bubble{background:#eef3fc!important}
+html.theme-pink body #private-chat .private-message.mine .room-bubble{background:#fff0f6!important}
+html body #private-chat .private-message{margin-bottom:16px}
+html body #private-chat .social-compose{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"attach attach attach" "input input input" "pick hint submit";align-items:center;gap:6px 10px;margin:10px 0 0;padding:8px 12px 10px;border:1px solid #e1e6ee;border-radius:16px;background:#fff;box-shadow:none;transition:border-color .3s cubic-bezier(.22,1,.36,1)}
+html.theme-pink body #private-chat .social-compose{border-color:#f3d3e0}
+html body #private-chat .social-compose:focus-within{border-color:#9db8e9}
+html.theme-pink body #private-chat .social-compose:focus-within{border-color:#f3a6c4}
+html body #private-chat .room-attach{grid-area:attach}
+html body #private-chat .room-input-wrap,html.theme-pink body #private-chat .room-input-wrap{grid-area:input;border:0;padding:0;background:transparent;box-shadow:none}
+html body #private-chat .room-input-wrap:focus-within{box-shadow:none}
+html body #private-chat .room-input-wrap textarea:focus-visible{outline:none}
+html body #private-chat .room-pick{grid-area:pick;align-self:center;min-height:28px;height:28px;padding:0 12px;font-size:12px;line-height:28px}
+html body #private-chat .room-composer-hint{grid-area:hint;justify-self:start;font-size:12px}
+html body #private-chat .room-submit{grid-area:submit;align-self:center;min-height:32px;height:32px;padding:0 18px;font-size:13px;border-radius:999px}
+.private-entry{display:flex;gap:8px;flex-wrap:wrap;padding:6px 14px;border-bottom:1px solid var(--line)}
+.private-entry button{font:inherit;font-size:12px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;min-height:32px;padding:4px 12px;cursor:pointer}
+.private-entry button:focus-visible{outline:2px solid var(--room-accent,var(--blue));outline-offset:3px}
+#msgs[data-private-peer] .private-entry{display:none}
+html body #private-chat .social-status{grid-column:1/-1}

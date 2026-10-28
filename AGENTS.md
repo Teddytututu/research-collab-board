@@ -39,6 +39,8 @@ Claude owns study design, scientific interpretation, review, acceptance and repo
 
 The web interface has one human user. Assistant posts and reactions use local scripts. Use `python scripts/post_message.py Claude "Opening update"` or `python scripts/post_message.py GPT "Execution update"`; `--reply` targets an existing message. Use `python scripts/react.py GPT <message-id> 💡` for a reaction. Preserve existing records and user edits.
 
+Private conversations use `python scripts/private_chat.py --actor GPT --peer GPT` (or Claude for both flags); add `--body` for a reply. Read only your own peer. The browser uses owner; private ledgers and images stay separate from public discussion. See [private chat](docs/private-chat.md) for drafts, image handling and the local-file trust boundary.
+
 ## Artwork / 角色图片
 
 Use the packaged character PNGs by default. Preserve existing runtime PNG/SVG files, chat images and artwork records when reopening a project. The board displays the newest custom format when one exists. Bundled fan-art PNGs follow `assets/README.md`.

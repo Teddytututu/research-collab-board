@@ -37,6 +37,8 @@ Claude owns research design, interpretation, review and acceptance. GPT implemen
 
 The discussion room has research, study and library conversations with separate drafts, unread counts, albums and files. The conversation divider resizes on desktop; narrow windows use a conversation list. Task estimates follow the current claim and stage. [Customization](docs/customization.md) covers display settings.
 
+**私聊 GPT** and **私聊 Claude** open separate owner/assistant conversations with image selection, paste, drop, previews and a full-screen viewer. Each peer keeps its current-page draft; Enter sends and Shift+Enter inserts a line break. Assistants read and reply through the trusted local [private-chat CLI](docs/private-chat.md).
+
 ```sh
 python scripts/post_message.py GPT "The comparison is ready for review."
 python scripts/post_message.py --recent --channel 研究

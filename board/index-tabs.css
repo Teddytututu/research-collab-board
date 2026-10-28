@@ -36,3 +36,5 @@ html body #files[data-index-tabs] .findex-course[aria-pressed=true]{background:v
  html body #files[data-index-tabs] #file-filter{order:0;flex-basis:auto;align-self:flex-end}
 }
 @media(prefers-reduced-motion:reduce){html body #files[data-index-tabs] .findex-tab,html body #files[data-index-tabs] .findex-course{transition-duration:0s}}
+
+html body #files[data-index-tabs] .findex-tab:focus-visible{outline:2px solid var(--index-ink);outline-offset:-3px}

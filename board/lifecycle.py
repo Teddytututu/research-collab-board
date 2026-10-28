@@ -441,6 +441,8 @@ def check(root, *, now=None, owner=None):
             add(who, '-', 'patrol_overdue', who + ' patrol is due', 'Inspect assigned events and run patrol_log.py')
         if who == 'Claude' and last and at - last > timedelta(hours=3.5):
             add('GPT', '-', 'lead_patrol_overdue', 'Research-lead patrol is overdue', 'Record the decision and recommendation in the exchange; continue authorized work')
+    from . import stability
+    issues.extend(stability.issues(root, at, overview, owner=owner))
     return [i for i in issues if owner is None or i['owner'] == owner]
 
 

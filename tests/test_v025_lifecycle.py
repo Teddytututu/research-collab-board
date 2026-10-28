@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from board import storage, project, workers
 from board.lifecycle import transition, check, log_patrol, fix_tree
@@ -17,6 +18,13 @@ class Lifecycle(unittest.TestCase):
         (self.root / 'tasks/T001-example.md').write_text('# Example\n\nGoal and acceptance criteria.\n', encoding='utf-8')
         storage.write(self.root / 'overview.json', {'tree': [{'title': 'Study', 'status': 'todo', 'tasks': []}]})
         self.now = datetime(2030, 1, 2, 12, tzinfo=timezone.utc)
+        # Lifecycle counts are independent of host disk capacity and project age.
+        capacity = patch('board.stability.disk_summary', return_value=[])
+        capacity.start()
+        self.addCleanup(capacity.stop)
+        value = storage.read(self.root / 'project.json')
+        value['created_at'] = self.now.isoformat()
+        storage.write(self.root / 'project.json', value)
 
     def move(self, action, by='GPT', **kwargs):
         return transition(self.root, action, 'T001', by=by, now=self.now, **kwargs)

@@ -2,8 +2,11 @@
 from pathlib import Path
 import os,subprocess,sys,tempfile,unittest
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'scripts'))
+from check_eol import check_eol
 
 def main():
+    if check_eol(ROOT):return 1
     env=ROOT/'.venv';python=env/('Scripts/python.exe' if os.name=='nt' else 'bin/python')
     if python.exists() and Path(sys.prefix).resolve()!=env.resolve():
         return subprocess.run([str(python),'-B',str(Path(__file__).resolve())],cwd=ROOT).returncode

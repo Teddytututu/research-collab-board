@@ -2,6 +2,8 @@
 from pathlib import Path
 import hashlib,json,re,zipfile,sys,uuid,shutil,getpass,socket,tomllib
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'scripts'))
+from check_eol import check_eol
 VERSION=tomllib.loads((ROOT/'pyproject.toml').read_text(encoding='utf-8'))['project']['version']
 
 def write_report(path,value):
@@ -31,6 +33,7 @@ def files():
     names += ['board/index-tabs.css', 'board/index-tabs.js']
     names += ['board/private_notes.py','board/private-notes.css','board/private-notes.js','scripts/private_chat.py','docs/private-chat.md','tests/private-chat.browser.cjs']
     names += ['scripts/agent.py','docs/agent-commands.md','docs/optional-gpu-dispatcher.md','skills/board-agent/SKILL.md']
+    names += ['board/exchange.py','board/stability.py','scripts/check_eol.py']
     for folder in ['personas','protocol','templates']:
         names += [p.relative_to(ROOT).as_posix() for p in (ROOT/folder).glob('*') if p.suffix in ['.md','.json']]
     names += ['skills/research-report-writing/'+name for name in [
@@ -58,6 +61,7 @@ def scan(blob,name=''):
     return problems
 
 def main():
+    if check_eol(ROOT):raise SystemExit(1)
     out=ROOT/'work/releases';out.mkdir(parents=True,exist_ok=True);manifest=[];problems=[];scanned=[]
     for name in files():
         path=ROOT/name

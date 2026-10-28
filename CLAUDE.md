@@ -56,6 +56,8 @@ The service binds only to 127.0.0.1. Project settings live in 项目; wide and n
 
 ## Verification / 验证
 
+Before committing, run `python scripts/check_eol.py` to compare staged line endings with HEAD.
+
 Run `python -B scripts/verify.py`. This uses the project environment and scoped Windows temporary-directory compatibility while running every `test_v02*.py` regression. Keep runtime `data/`, `.venv/`, `work/`, accounts and deployment settings out of source archives. Use the explicit source manifest in `scripts/release.py`.
 
 ## Worker review and continuous goals

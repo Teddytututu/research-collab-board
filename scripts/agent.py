@@ -17,7 +17,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from board import lifecycle, storage  # noqa: E402
+from board import exchange, lifecycle, stability, storage  # noqa: E402
 
 AGENTS = ['Claude', 'GPT']
 CATEGORIES = ['研究', '学习', '事务', '界面与设计', '项目', '其他']
@@ -36,6 +36,9 @@ COMMANDS = {
     'file': 'Add a report/file card (add) or move one to the processed area (archive)',
     'todo': 'Add an owner to-do sticky note (add) or mark one done (done)',
     'events': 'List pending night-watch events, or acknowledge one with --ack',
+    'ask': 'Ask the other assistant in the daily exchange: at least two --option values, optional --lean',
+    'note': 'Append a note or answer to the daily exchange with a standard heading',
+    'mood': 'Register my mood using an expression already available for my role',
     'commands': 'List these commands',
 }
 
@@ -63,6 +66,7 @@ def overview_update(data, transform):
 
 def cmd_status(a):
     data = a.data_dir
+    stability.daily_greeting(data, a.who)
     board_file = lifecycle.data_file(data, 'board.md')
     rows = lifecycle.parse_board(board_file.read_text('utf-8-sig')) if board_file.is_file() else []
     tasks = [dict(task=r['task'], title=r['title'], status=r['status'], state=lifecycle.state_of(r['status'])) for r in rows]
@@ -79,7 +83,8 @@ def cmd_status(a):
     return {'as': a.who, 'at': datetime.now(timezone.utc).isoformat(timespec='seconds'),
             'my_issues': lifecycle.check(data, owner=a.who), 'tasks': tasks,
             'patrols': overview.get('patrols'), 'unread_owner_messages': unread,
-            'pending_events': [dict(id=e.get('id'), type=e.get('type'), task=e.get('task')) for e in events]}
+            'pending_events': [dict(id=e.get('id'), type=e.get('type'), task=e.get('task')) for e in events],
+            'local_disk': stability.disk_summary()}
 
 
 def cmd_file(a):
@@ -147,6 +152,11 @@ def build_parser():
     td = add('todo'); td.add_argument('op', choices=['add', 'done']); td.add_argument('--what', required=True)
     td.add_argument('--when'); td.add_argument('--how'); td.add_argument('--note')
     e = add('events'); e.add_argument('--ack', action='append', default=[])
+    for command in ('ask', 'note'):
+        q = add(command); q.add_argument('title'); q.add_argument('body')
+        if command == 'ask':
+            q.add_argument('--option', action='append', default=[]); q.add_argument('--lean')
+    m = add('mood'); m.add_argument('mood'); m.add_argument('note', nargs='?', default='')
     return p
 
 
@@ -164,6 +174,11 @@ def main(argv=None):
             return emit(True, name, cmd_status(a))
         if a.command == 'check':
             return emit(True, name, lifecycle.check(a.data_dir, owner=a.who))
+        if a.command in ('ask', 'note'):
+            return emit(True, name, exchange.write(a.data_dir, a.who, a.title, a.body,
+                        ask=a.command == 'ask', options=getattr(a, 'option', None), lean=getattr(a, 'lean', None)))
+        if a.command == 'mood':
+            return emit(True, name, stability.set_mood(a.data_dir, a.who, a.mood, a.note))
         if a.command == 'file':
             return emit(True, name, cmd_file(a))
         if a.command == 'todo':

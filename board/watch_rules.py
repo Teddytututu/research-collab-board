@@ -1,35 +1,10 @@
 """Actionable lifecycle wake conditions; observations only, with stable event keys."""
-import re
-
 from .lifecycle import check, data_file, moment, parse_board, state_of, COUNTS
-
-HEAD = re.compile(r'^### (\d{4}-\d\d-\d\d[T ][^·\n]+?)\s*·\s*(GPT|Claude)\s*→\s*(GPT|Claude)(?:\s*·\s*(T\d+))?\s*$', re.M)
-ASK = re.compile(r'please (?:decide|confirm|approve)|decision requested|请定|请明确|请确认|请批', re.I)
 
 
 def open_questions(root):
-    folder = data_file(root, 'exchange')
-    paths = sorted(folder.glob('????-??-??.md'))
-    main = data_file(root, 'exchange.md')
-    if main.exists():
-        paths.append(main)
-    entries = {}
-    for path in paths:
-        text = data_file(root, path.relative_to(root)).read_text('utf-8-sig')
-        heads = list(HEAD.finditer(text))
-        for index, head in enumerate(heads):
-            at = moment(head[1])
-            if at:
-                body = text[head.end():heads[index + 1].start() if index + 1 < len(heads) else len(text)]
-                entries[(at.timestamp(), head[2], head[4] or 'exchange')] = body
-    pending = {}
-    for (at, author, task), body in sorted(entries.items()):
-        if author == 'GPT' and ASK.search(body):
-            # Follow-ups retain the original question deadline.
-            pending.setdefault(task, at)
-        elif author == 'Claude':
-            pending.pop(task, None)
-    return pending
+    from .exchange import open_questions as pending
+    return {task: row['at'].timestamp() for task, row in pending(root).items()}
 
 
 def conditions(root, state, at):

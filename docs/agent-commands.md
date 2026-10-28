@@ -16,6 +16,8 @@ python scripts/agent.py --as GPT status
 
 `status` returns, in one call: the flow issues assigned to you, every active task with its parsed state, both assistants' last patrols, the owner's private messages you have not answered yet, and pending night-watch events. Answer the owner's messages first, then the events, then the issues.
 
+It also returns `local_disk`: the available local volumes with `path`, `free_gib` and `total_gib`. The executor's first `status` each local calendar day posts one greeting in the discussion; repeated calls reuse that day's record. The lead acknowledges it with a reply or reaction.
+
 ## Commands / 命令
 
 | Command | What it does | Wraps |
@@ -31,6 +33,9 @@ python scripts/agent.py --as GPT status
 | `file add --title --path --cat` / `file archive --title` | Add a report card, or move it to the processed area | overview `links` |
 | `todo add --what [--when --how --note]` / `todo done --what` | Add an owner to-do sticky note, or mark it done | overview `todo` |
 | `events [--ack ID]` | List pending night-watch events, or acknowledge one | night watch |
+| `ask TITLE BODY --option A --option B [--lean TEXT]` | Ask the other assistant in today's exchange; two nonempty options required | daily exchange |
+| `note TITLE BODY` | Append an update or answer in today's exchange | daily exchange |
+| `mood NAME [NOTE]` | Register this assistant's mood using an existing expression | overview mood |
 | `commands` | List the commands | — |
 
 Categories for `file add --cat`: 研究, 学习, 事务, 界面与设计, 项目, 其他.
@@ -42,6 +47,32 @@ Categories for `file add --cat`: 研究, 学习, 事务, 界面与设计, 项目
 - **Messages state results.** `say` refuses internal process words, identifiers, paths and hedging. Name experiments the way the owner does, give the result number and when the next result lands.
 - **Roles.** `new`, `accept`, `reject` and `stop` belong to the research lead (Claude). The executor (GPT) starts, progresses, blocks, queues and delivers.
 
+## Stability checks / 稳定性检查
+
+`check` and `status` include these issues, assigned to the responsible assistant:
+
+- Owner discussion messages require an explicit `say --reply ID` or active reaction within 2.5 hours for Claude and 45 minutes for GPT. A leading `@Claude` or `@GPT` assigns just that assistant; mentions later in the body retain both recipients. Withdrawn messages and saved library copies are skipped; removing a reaction reopens the corresponding obligation.
+- Each assistant's private conversation uses the same role deadline. A later assistant reply acknowledges the preceding owner messages. Status reads only the acting assistant's private conversation, and flow issues contain metadata rather than private message bodies.
+- Executor exchange questions require a lead answer within 2.5 hours. `ask` and `note` write the date, timestamp and `sender → recipient` heading into `exchange/YYYY-MM-DD.md`; they add `问：` and `答：` respectively, keeping task-number titles distinct from legacy task labels. A later lead `note` with the same title answers that question; each title retains its own deadline. Legacy task-labelled headings retain task-specific matching, and the existing 30-minute night-watch question condition also recognizes new headings.
+- Local free space below 20 GiB creates a GPT issue. Review disposable files within the task's authorized scope and refer owner-data decisions to the lead.
+- Today's executor greeting uses the lead reply deadline. Each role's mood registration becomes stale after 12 hours; an initial registration becomes due 12 hours after project creation. `mood` accepts existing bundled or project-generated expression names for that role and refreshes the timestamp even when the name stays the same. The command error lists valid names. Records are `claude_mood` and `gpt_mood` in the overview, each with `mood`, `note`, `at`; presentation is handled separately.
+
+Configure positive numeric thresholds in the existing `data/project.json` under `stability`:
+
+```json
+{
+  "stability": {
+    "lead_reply_hours": 2.5,
+    "executor_reply_minutes": 45,
+    "collaboration_reply_hours": 2.5,
+    "disk_min_free_gib": 20,
+    "mood_max_age_hours": 12
+  }
+}
+```
+
+Before committing, stage the intended changes and run `python scripts/check_eol.py`. It compares staged text blobs with HEAD and lists files whose LF/CRLF/CR style changed, including detected renames and mixed styles. New files have no prior style; deleted files and binary blobs are skipped. `verify.py` and `release.py` run this guard before tests or packaging. Source archives without Git metadata report an explicit skip.
+
 ## Examples / 例子
 
 ```bash
@@ -52,4 +83,7 @@ python scripts/agent.py --as GPT task deliver T012 --evidence attachments/T012/r
 python scripts/agent.py --as GPT say "Same-budget run finished: 42/60 against 33/60. Table at 21:00."
 python scripts/agent.py --as GPT file add --title "Same-budget table" --path attachments/T012/table.html --cat 研究
 python scripts/agent.py --as Claude todo add --what "Reply to the co-author" --when "after the exam"
+python scripts/agent.py --as GPT ask "Comparison budget" "Which sample pool should we use?" --option "Reuse the accepted pool" --option "Generate a new pool" --lean "Reuse the accepted pool"
+python scripts/agent.py --as Claude note "Comparison budget" "Use the accepted pool."
+python scripts/agent.py --as GPT mood calm "Reviewing the comparison"
 ```

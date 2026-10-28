@@ -15,11 +15,18 @@ Every call prints one JSON object with `ok`, `command`, `result` and `error`. If
 
 ## Every wake, in this order
 
-1. `status` — one call returns your flow issues, active tasks, both patrols, the owner's unanswered private messages and pending events.
+1. `status` — one call returns your flow issues, active tasks, both patrols, the owner's unanswered private messages, pending events and local disk capacity. The executor's first status each local day posts one greeting; the lead replies or reacts.
 2. Answer the owner first: `dm` to read, `dm --reply "..."` to answer. A message from the owner is never left for a later wake.
 3. Handle events (`events`, then `events --ack ID` once handled), then your flow issues (`check`).
 4. Do the work. Record each real state change with `task ...`.
 5. End with `patrol "one sentence" --every MINUTES`.
+
+## Questions, notes and moods
+
+- Use `ask TITLE BODY --option A --option B [--lean TEXT]` for a decision and `note TITLE BODY` for an update or answer. The command writes the daily exchange heading, time and direction. Answer each pending executor question with a lead `note` using the same title.
+- Use `mood NAME [NOTE]` to register your own mood. Choose an expression already available for your role; the command lists valid names on error. Refresh it within 12 hours, including when the expression stays the same.
+- `check` reports owner discussion/private replies due after 2.5 hours for the lead and 45 minutes for the executor. A leading role mention assigns just that assistant; an explicit reply or active reaction acknowledges a discussion message. Lead exchange replies and daily greetings use 2.5 hours. Low disk space below 20 GiB belongs to the executor. Project-specific positive thresholds live under `stability` in `data/project.json`; see the command reference for the keys.
+- Before committing run `python scripts/check_eol.py` after staging. `verify.py` and `release.py` also compare staged line endings with HEAD.
 
 ## Writing statuses and messages
 

@@ -30,6 +30,7 @@ def files():
     names += ['tests/room-collection.test.cjs','tests/eta-view.test.cjs','tests/identity-refresh.test.cjs','tests/quota-truth.test.cjs']
     names += ['board/index-tabs.css', 'board/index-tabs.js']
     names += ['board/private_notes.py','board/private-notes.css','board/private-notes.js','scripts/private_chat.py','docs/private-chat.md','tests/private-chat.browser.cjs']
+    names += ['scripts/agent.py','docs/agent-commands.md','docs/optional-gpu-dispatcher.md','skills/board-agent/SKILL.md']
     for folder in ['personas','protocol','templates']:
         names += [p.relative_to(ROOT).as_posix() for p in (ROOT/folder).glob('*') if p.suffix in ['.md','.json']]
     names += ['skills/research-report-writing/'+name for name in [

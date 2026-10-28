@@ -21,3 +21,18 @@
 | Result-volume free space falls below 20GB | Pause new slices and report the capacity condition; retain checkpoints and all existing data. |
 
 Recover ordinary failures through the current process and existing checkpoint. Resume on an eligible device of the same model after resources recover. Spending, account permissions, system changes, resource increases and new scientific comparisons go to their decision owner. Each deployment keeps its protected devices, sharing exceptions, and other users' files and processes intact.
+
+## Light work, heavy work and time boxes
+
+- **Light work, done directly:** reading papers, scoring images, running approved experiments, tallying numbers. No candidate bundles, no independent review hand-offs, no protective copies of large files; split 20+ independent items across parallel workers.
+- **Heavy work, reviewed:** code other people run (the board, the night watch, lifecycle tools) keeps the candidate, tests and lead review.
+- **Engineering is time-boxed to four hours** from `start`: deliver with a list of what is left, or block with the reason. Until experiment tables are out, take no new interface or engineering work.
+- **Nobody working on it means queued:** a row whose counter is not moving with no process or worker behind it goes back with `task queue`.
+
+## Red lines
+
+- Never ask the owner for administrator rights or change operating-system settings.
+- Answer the owner's private and discussion messages first on every wake.
+- Statuses and discussion messages state results and times, not internal process words.
+
+All board actions go through `python scripts/agent.py`; see [agent commands](../docs/agent-commands.md).

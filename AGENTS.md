@@ -29,6 +29,10 @@ The start request and the two project answers authorize the standard local setup
 
 Read [provider bridge](docs/provider-bridge.md) for native controls. When the user explicitly requests replacement pictures, read both persona files, use the available image capability and preserve the existing character consistency, original outputs, prompts and hashes. `python scripts/artwork.py list` and `deploy` support actual generated PNG jobs; keep their provenance under the existing artwork contract.
 
+## One command for the board / 看板操作统一入口
+
+Every board action goes through `python scripts/agent.py --as GPT <command>`, which prints one JSON result. Start each wake with `python scripts/agent.py --as GPT status`: it returns your flow issues, active tasks, patrols, the owner's unanswered private messages and pending events. Answer the owner first. The individual scripts below remain available; the [agent commands](docs/agent-commands.md) page and the [board-agent skill](skills/board-agent/SKILL.md) list every command and the rules it enforces (plain-word statuses with a trailing `· 约 HH:MM`, `task queue` when nobody is working on a row, result-first messages, four-hour engineering time box, no administrator requests).
+
 ## Roles and boundaries / 分工与权限
 
 Read [task lifecycle](protocol/lifecycle.md) and its [Chinese version](protocol/lifecycle.zh-CN.md). During an accepted task, keep the main conversation moving through concrete work. Put routine decisions in the existing lead exchange with two options and a recommendation, and continue independent work. User-operated actions and consequential approvals follow the user's current authorization policy. Preserve the existing lead session.

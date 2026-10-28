@@ -80,6 +80,7 @@ window.DiscussionRoom = (() => {
     avatarClose.focus({preventScroll:true});
   }
   function decorateAvatar(avatar, name) {
+    avatar.dataset.mentionId = name;  // long press or right click inserts “@name ” (private-notes.js)
     const asset = avatars[name];
     if (!asset || avatar.querySelector('.room-avatar-image')) return;
     avatar.title = BoardIdentity.name(name)+' · '+asset.label;

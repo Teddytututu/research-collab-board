@@ -6,7 +6,7 @@ import re
 from . import storage
 
 LEAD_ACTIONS = {'new', 'accept', 'reject', 'stop'}
-ACTIONS = LEAD_ACTIONS | {'start', 'progress', 'block', 'deliver'}
+ACTIONS = LEAD_ACTIONS | {'start', 'progress', 'block', 'deliver', 'queue'}
 ROLES = ('Claude', 'GPT')
 TASK = re.compile(r'T\d+')
 COUNTS = re.compile(r'^(\d+)\s*/\s*(\d+)(?:\s|$)')
@@ -84,7 +84,9 @@ def task_spec(root, task):
 
 # Forecasts use the same fixed Taipei clock as the board UI.
 TAIPEI = timezone(timedelta(hours=8))
-DECLARED_ETA = re.compile(r'约\s*(明天|\d\d-\d\d)?\s*(\d{1,2}):(\d\d)')
+# Status text is read by the owner; internal process words belong in task files.
+STATUS_JARGON = re.compile(r'attempt\d*|RAM\d+|准入|接线|代次|租约|桥接|占位|原队列|原调度|原断点|执剑者')
+DECLARED_ETA = re.compile(r'(?:^|·)\s*约\s*(明天|\d{1,2}-\d{2})?\s*(\d{1,2}):(\d{2})\s*$')  # only a trailing “· 约 HH:MM” segment
 
 
 def declared_eta(status, updated):
@@ -97,7 +99,8 @@ def declared_eta(status, updated):
         if match[1] == '明天':
             day += timedelta(days=1)
         elif match[1]:
-            day = day.replace(month=int(match[1][:2]), day=int(match[1][3:]))
+            month, mday = match[1].split('-')
+            day = day.replace(month=int(month), day=int(mday))
         result = datetime(day.year, day.month, day.day, int(match[2]), int(match[3]), tzinfo=TAIPEI)
     except ValueError:
         return None
@@ -135,7 +138,7 @@ def estimate_progress(root, task, status, at):
 
 
 def with_progress_eta(root, task, status, at):
-    if '约' in status:
+    if DECLARED_ETA.search(status):
         return status
     estimate = estimate_progress(root, task, status, at)
     if estimate is None:
@@ -167,7 +170,7 @@ def transition(root, action, task, *, by, now=None, **fields):
         raise ValueError('Valid action, assistant role and T-number required')
     if action in LEAD_ACTIONS and by != 'Claude':
         raise ValueError(action + ' requires the research lead (Claude)')
-    required = {'new': ('title', 'when'), 'start': ('status',), 'progress': ('status',),
+    required = {'new': ('title', 'when'), 'queue': ('when',), 'start': ('status',), 'progress': ('status',),
                 'block': ('wait',), 'deliver': ('evidence',), 'accept': ('summary',),
                 'reject': ('reason',), 'stop': ('reason',)}[action]
     for name in required:
@@ -177,7 +180,7 @@ def transition(root, action, task, *, by, now=None, **fields):
         match = COUNTS.match(clean(fields['status']))
         if not match or not 0 <= int(match[1]) <= int(match[2]) or int(match[2]) == 0:
             raise ValueError('Running status requires 0 <= X <= N and N > 0: X/N')
-    if action == 'start' and '约' not in fields['status'] and '估不了' not in fields['status']:
+    if action == 'start' and not DECLARED_ETA.search(clean(fields['status'])) and '估不了' not in fields['status']:
         raise ValueError('Start requires an ETA: X/N · 约 HH:MM, or X/N · 估不了：specific reason')
     if action == 'block' and not re.match(r'^(waiting for\s+\S|等\s*\S)', clean(fields['wait']), re.I):
         raise ValueError('Use --wait "waiting for WHO to DO WHAT"')
@@ -210,6 +213,7 @@ def transition(root, action, task, *, by, now=None, **fields):
         current = state_of(row['status']) if row else None
         allowed = {'new': {None}, 'start': {'queued', 'blocked', 'rejected', 'unknown'}, 'progress': {'running'},
                    'block': {'queued', 'running', 'blocked', 'rejected'},
+                   'queue': {'queued', 'running', 'blocked', 'rejected', 'unknown'},
                    'deliver': {'running', 'blocked', 'rejected'}, 'accept': {'delivered'},
                    'reject': {'delivered'}, 'stop': {'queued', 'running', 'blocked', 'rejected', 'delivered', 'daily', 'unknown'}}
         if current not in allowed[action]:
@@ -220,7 +224,7 @@ def transition(root, action, task, *, by, now=None, **fields):
         if action == 'new' and fields.get('node') and len(attached) != 1:
             raise ValueError('--node requires one existing result-tree title')
         state = storage.read(paths['state'], {'tasks': {}, 'runs': {}})
-        status = {'new': lambda: 'queued: ' + clean(fields['when']),
+        status = {'new': lambda: 'queued: ' + clean(fields['when']), 'queue': lambda: 'queued: ' + clean(fields['when']),
                   'start': lambda: clean(fields['status']), 'progress': lambda: clean(fields['status']),
                   'block': lambda: 'blocked: ' + clean(fields['wait']), 'deliver': lambda: 'delivered · awaiting review',
                   'accept': lambda: 'accepted: ' + clean(fields['summary']),
@@ -372,6 +376,12 @@ def check(root, *, now=None, owner=None):
             add('Claude', task, 'closed_on_board', 'Closed task remains active', 'Archive with task_flow.py')
         elif status == 'unknown':
             add('GPT', task, 'status_format', 'Task status requires the lifecycle format', 'Use task_flow.py')
+        if status != 'rejected':
+            body = DECLARED_ETA.sub('', row['status']).strip()
+            jargon = sorted(set(STATUS_JARGON.findall(row['status'])))
+            if len(body) > 60 or jargon:
+                add('GPT', task, 'status_unreadable', 'Status is too long or uses internal terms' + (': ' + ', '.join(jargon[:4]) if jargon else ''),
+                    'Write “X/N · what is happening · 约 HH:MM” in 60 characters, plain words; details go in the task file')
         try:
             task_spec(root, task)
         except ValueError:
@@ -384,10 +394,10 @@ def check(root, *, now=None, owner=None):
             count = COUNTS.match(row['status'])
             if int(count[1]) >= int(count[2]):
                 add('GPT', task, 'counter_complete', 'Running phase counter is complete', 'Deliver evidence or start the next phase counter')
-            elif '约' not in row['status'] and '估不了' not in row['status']:
+            elif not DECLARED_ETA.search(row['status']) and '估不了' not in row['status']:
                 add('GPT', task, 'eta_missing', 'Running phase requires an ETA', 'Progress with 约 HH:MM or 估不了：specific reason')
             forecast = declared_eta(row['status'], updated)
-            if '约' in row['status'] and forecast is None:
+            if DECLARED_ETA.search(row['status']) and forecast is None:
                 add('GPT', task, 'eta_invalid', 'Declared ETA requires a valid clock and date', 'Correct the progress ETA')
             elif forecast and at > forecast + timedelta(minutes=30):
                 add('GPT', task, 'eta_overdue', 'Declared ETA passed thirty minutes ago', 'Update progress and ETA or record the dependency')

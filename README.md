@@ -46,7 +46,11 @@ python scripts/patrol.py GPT --auto
 python -m board schedule
 ```
 
-Progress captions follow [writing rules](protocol/writing.md): **progress · time**, at most 14 displayed characters. User updates lead with the result in one or two sentences. For reports, ask the assistant to read and follow [skills/research-report-writing/SKILL.md](skills/research-report-writing/SKILL.md); [skill setup](skills/research-report-writing/README.md) covers optional installation.
+Progress captions follow [writing rules](protocol/writing.md): **progress · time**, at most 16 displayed characters. User updates lead with the result in one or two sentences. For reports, ask the assistant to read and follow [skills/research-report-writing/SKILL.md](skills/research-report-writing/SKILL.md); [skill setup](skills/research-report-writing/README.md) covers optional installation.
+
+Assistants use one command for every board action: `python scripts/agent.py --as GPT status` lists their open issues, tasks, unanswered owner messages and pending events in one call; `task`, `say`, `dm`, `file`, `todo` and the other subcommands each do one thing and return JSON. See [agent commands](docs/agent-commands.md) and the assistant-facing [skills/board-agent/SKILL.md](skills/board-agent/SKILL.md). Long-press (touch) or right-click (desktop) an avatar in the discussion or a private chat to insert “@name ”.
+
+Optional: a [GPU slot dispatcher](docs/optional-gpu-dispatcher.md) for shared GPU servers lives outside the board; an assistant sets it up when the owner asks.
 
 ## Night watch and startup
 

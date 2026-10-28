@@ -35,7 +35,7 @@ test('a numeric patrol timestamp keeps its seconds unit',()=>assert.equal(eta.ta
 test('invalid, past and distant forecasts retain only progress',()=>{
  for(const at of ['invalid','2026-10-23T01:00:00+08:00','2026-11-28T01:42:00+08:00'])
   assert.equal(eta.task({status:'977/1176 · 预计完成01:42',eta:{mode:'estimate',at}},null,now),'977/1176');
- assert.equal(eta.task({status:'进行中',eta:{mode:'estimate',at:'invalid'}},null,now),'—');
+ assert.equal(eta.task({status:'进行中',eta:{mode:'estimate',at:'invalid'}},null,now),'');
 });
 test('a dated ETA overrides a contradictory legacy clock',()=>assert.equal(eta.task({status:'6/48 · 预计完成01:42',eta:{mode:'estimate',at:'2026-10-24T06:10:00+08:00'}},null,now),'6/48 · 明早 06:10'));
 test('a current-day legacy clock is allowed and a past clock is suppressed',()=>{
@@ -47,14 +47,14 @@ test('previous delivery and phase completion keep their scope separate',()=>{
  for(const mode of ['complete','phase_complete','continuous'])
   assert.equal(eta.task({status:'178/320',eta:{mode,phase_label:'视频48/48已完成',actual_at:'2026-10-23T11:05:00+08:00'}},null,now),'178/320');
 });
-test('daily dates are separate from completed task counts',()=>assert.equal(eta.task({status:'日更10/24通过'},null,now),'—'));
+test('daily dates are separate from completed task counts',()=>assert.equal(eta.task({status:'日更10/24通过'},null,now),''));
 test('delivered tasks use 已交 regardless of their completed counts',()=>{
  for(const status of ['待验收 · 330/330；已交','已交','已完成 330/330','delivered · awaiting review','accepted: reviewed'])assert.equal(eta.task({status},null,now),'已交');
 });
 test('only a task-linked structured run supplies progress',()=>{
  assert.equal(eta.task({id:'T002',status:'进行中'},{id:'run-2',task_id:'T002',current_stage:{done:6,total:10}},now),'6/10');
- assert.equal(eta.task({id:'T002',status:'进行中'},{id:'run-3',task_id:'T003',done:6,total:10},now),'—');
- assert.equal(eta.task({id:'T002',status:'进行中 · 等T003 8/10'},null,now),'—');
+ assert.equal(eta.task({id:'T002',status:'进行中'},{id:'run-3',task_id:'T003',done:6,total:10},now),'');
+ assert.equal(eta.task({id:'T002',status:'进行中 · 等T003 8/10'},null,now),'');
 });
 test('a current receiving stage supersedes the completed collection',()=>{
  const task={id:'T007',status:'采集1000/1000 · 原图回收877/1000 · 预计10-24 00:17',eta:{mode:'estimate',at:'2026-10-24T00:17:00+08:00'}};

@@ -4,6 +4,10 @@ You design, review, accept and synthesize research. Send bounded execution work 
 
 Read [task lifecycle](protocol/lifecycle.md) and [中文流程](protocol/lifecycle.zh-CN.md). Use `scripts/task_flow.py` for registration, review decisions and archival. Handle `scripts/flow_check.py --owner Claude`, review the existing exchange, and record actual patrols with `scripts/patrol_log.py Claude "Concrete update" --every MINUTES`. Decide routine task options in the exchange while the executor continues independent work. User-operated actions and consequential approvals follow the user's current authorization policy.
 
+## One command for the board / 看板操作统一入口
+
+Every board action goes through `python scripts/agent.py --as Claude <command>`, which prints one JSON result. Start each wake with `python scripts/agent.py --as Claude status`: it returns your flow issues, active tasks, patrols, the owner's unanswered private messages and pending events. Answer the owner first. The individual scripts below remain available; the [agent commands](docs/agent-commands.md) page and the [board-agent skill](skills/board-agent/SKILL.md) list every command and the rules it enforces (plain-word statuses with a trailing `· 约 HH:MM`, `task queue` when nobody is working on a row, result-first messages, four-hour engineering time box, no administrator requests).
+
 ## First project / 首次接入
 
 When the user says `开始：<project name>`, inspect `data/project.json`. For a new project, ask exactly two substantive questions together: one research question and the desired deliverable. Reuse answers already given. Then run:

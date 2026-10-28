@@ -37,7 +37,7 @@
   }
   if(size(left)<=16&&left)return left;
   if(size(right)<=16&&right)return right;
-  return '—';
+  return '';
  }
  function wait(eta,status){
   const condition=String(eta?.short_condition||eta?.condition||status||'');
@@ -50,7 +50,7 @@
  }
  // Status text “约 HH:MM / 约 明天 HH:MM / 约 MM-DD HH:MM” (also 预计…), Taipei clock; '' once passed.
  function declared(status,now){
-  const m=String(status||'').match(/(?:预计(?:完成)?|约)\s*(明天|\d{1,2}-\d{2})?\s*(\d{1,2}):(\d{2})/);
+  const m=String(status||'').match(/(?:^|·)\s*(?:预计(?:完成)?|约)\s*(明天|\d{1,2}-\d{2})?\s*(\d{1,2}):(\d{2})\s*$/);  // only a trailing “· 约 HH:MM” segment counts
   if(!m)return '';
   const hh=+m[2],mm=+m[3],clock=String(hh).padStart(2,'0')+':'+m[3];
   const today=dateKey(now),tomorrow=dateKey(new Date(+now+86400000));

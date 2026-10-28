@@ -237,6 +237,50 @@
     input.setSelectionRange(start + text.length, start + text.length);
     return true;
   }
+  // Long press (touch) or right click (desktop) on an avatar inserts “@name ” into the active composer.
+  function initLongPress() {
+    let press = null, suppressed = null;
+    const avatar = target => target.closest?.('[data-mention-id], .brand-person[data-character]');
+    const inputFor = target => target.closest('#private-chat') || !privateBox.hidden ? privateInput : document.getElementById('room-text');
+    const idOf = target => target.dataset.mentionId || target.dataset.character;
+    const cancel = () => { if (press) clearTimeout(press.timer); press = null; };
+    document.addEventListener('pointerdown', event => {
+      cancel(); suppressed = null;
+      const target = avatar(event.target);
+      if (!target || event.button !== 0 || !event.isPrimary) return;
+      press = {target, pointer: event.pointerId, x: event.clientX, y: event.clientY};
+      press.timer = setTimeout(() => {
+        if (target.isConnected && insertMention(idOf(target), inputFor(target))) suppressed = {target, until: Infinity};
+      }, 500);
+    }, true);
+    document.addEventListener('pointermove', event => {
+      if (press && (press.pointer !== event.pointerId || Math.hypot(event.clientX - press.x, event.clientY - press.y) > 10)) cancel();
+    }, true);
+    document.addEventListener('pointerout', event => { if (press && press.target.contains(event.target) && !press.target.contains(event.relatedTarget)) cancel(); }, true);
+    document.addEventListener('pointerup', () => { cancel(); if (suppressed) suppressed.until = Date.now() + 800; }, true);
+    document.addEventListener('pointercancel', () => { cancel(); suppressed = null; }, true);
+    document.addEventListener('scroll', cancel, true); window.addEventListener('blur', cancel);
+    document.addEventListener('visibilitychange', cancel);
+    const swallow = event => {
+      if (suppressed?.target.contains(event.target) && Date.now() < suppressed.until) {
+        event.preventDefault(); event.stopImmediatePropagation();
+        inputFor(suppressed.target)?.focus({preventScroll: true});
+        if (event.type === 'click') suppressed = null;
+      }
+    };
+    document.addEventListener('mousedown', swallow, true);
+    document.addEventListener('click', swallow, true);
+    document.addEventListener('contextmenu', event => {
+      const target = avatar(event.target);
+      if (!target) return;
+      if (suppressed?.target === target && Date.now() < suppressed.until) { event.preventDefault(); event.stopImmediatePropagation(); return; }
+      cancel();
+      if (insertMention(idOf(target), inputFor(target))) {
+        suppressed = {target, until: Date.now() + 800};
+        event.preventDefault(); event.stopImmediatePropagation();
+      }
+    }, true);
+  }
   function syncOwner() {
     if (owner()) { if (!privateBox.hidden) load(selected); }
     else {
@@ -286,7 +330,7 @@
     const links = el('div', 'private-entry'); links.setAttribute('aria-label', '私聊');
     for (const peer of Object.keys(peers)) { const open = button('私聊 ' + peer); open.onclick = () => openPrivate(peer, open); links.append(open); }
     room.querySelector('.room-header').after(links);
-    syncOwner(); window.addEventListener('identitychange', () => { syncOwner(); links.hidden = !owner(); });
+    syncOwner(); initLongPress(); window.addEventListener('identitychange', () => { syncOwner(); links.hidden = !owner(); });
     privateBox.addEventListener('keydown', event => { if (event.key === 'Escape' && !event.isComposing) { event.stopPropagation(); closePrivate(); } });
     setInterval(() => { if (document.visibilityState === 'visible' && owner() && !privateBox.hidden) load(selected); }, 15000);
   }).catch(() => {});

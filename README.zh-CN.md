@@ -46,7 +46,11 @@ python scripts/patrol.py GPT --auto
 python -m board schedule
 ```
 
-进度小字遵循[写法规则](protocol/writing.zh-CN.md)：**进度 · 时间**，最多 14 个显示字符。给用户的消息用一两句先写结果。写报告或改报告时，让助手读取并遵循 [skills/research-report-writing/SKILL.md](skills/research-report-writing/SKILL.md)；可选安装方式见[技能说明](skills/research-report-writing/README.md)。
+助手的所有看板操作走一个命令：`python scripts/agent.py --as GPT status` 一次列出自己名下的问题、任务、主人没回的私聊和待处理事件；`task`、`say`、`dm`、`file`、`todo` 等子命令各管一件事，都返回 JSON。完整列表见[代理命令](docs/agent-commands.md)，给助手读的说明在 [skills/board-agent/SKILL.md](skills/board-agent/SKILL.md)。在讨论室或私聊里长按（手机）或右键（电脑）头像，会在输入框插入“@名字 ”。
+
+可选能力：共享显卡服务器上的[卡位自动调度](docs/optional-gpu-dispatcher.md)不在看板里，主人需要时由助手按这份说明搭。
+
+进度小字遵循[写法规则](protocol/writing.zh-CN.md)：**进度 · 时间**，最多 16 个显示字符；预计时间只认状态结尾的“· 约 HH:MM”。给用户的消息用一两句先写结果。写报告或改报告时，让助手读取并遵循 [skills/research-report-writing/SKILL.md](skills/research-report-writing/SKILL.md)；可选安装方式见[技能说明](skills/research-report-writing/README.md)。
 
 ## 守夜人与启动
 

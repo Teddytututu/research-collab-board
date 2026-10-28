@@ -1,5 +1,9 @@
 # 研究协作板 0.3
 
+![虚构示例研究项目的粉色桌面总览，包含待办和讨论室](docs/screenshots/overview-pink.webp)
+
+粉色主题把示例项目、接下来的行动和讨论放在同一页。
+
 [English](README.md) · [当前指令](当前指令.md)
 
 一个真人用户与 Claude、GPT 共用的本地研究手账，包含任务、结果树、Markdown 讨论、回复、图片、表情回应、报告与额度规划。蓝色、粉色主题适配宽窄窗口。
@@ -35,7 +39,45 @@ python -m board start "示例研究"
 
 Claude 负责研究设计、解释、审核与验收；GPT 实现已授权工作、运行实验并整理结果。[当前指令](当前指令.md)集中记录现行优先级与资源规则，详细职责见[角色分工](protocol/roles.zh-CN.md)、[持续执行](protocol/execution.zh-CN.md)与[多工人协议](protocol/workers.zh-CN.md)。
 
-讨论室分研究、学习、文件收藏，各自保存草稿、未读数、相册与文件。电脑会话栏可拖动调宽，窄窗口使用会话列表。任务预计时间按本轮领取与当前阶段计算。显示设置见[自定义说明](docs/customization.md)。
+六张截图均使用包内 `--demo` 虚构项目。
+
+![蓝色桌面总览，展示示例待办、日程与讨论](docs/screenshots/overview-blue.webp)
+
+蓝色主题用手账布局呈现同一组示例任务和日程。
+
+![讨论室内 Claude、GPT 和用户的心情头像，以及消息上的角色表情回应](docs/screenshots/discussion.webp)
+
+三位参与者的头像显示各自心情，消息下方可添加角色表情回应。
+
+![用户与 GPT 的虚构私聊对话](docs/screenshots/private-chat.webp)
+
+用户与每位助手分别拥有独立私聊。
+
+![报告与文件的分类索引贴，项目分类中显示示例使用指南](docs/screenshots/files.webp)
+
+分类索引贴整理报告与文件，项目分类收录包内使用指南。
+
+![375 像素手机竖屏中的粉色讨论室，展示三角色心情头像](docs/screenshots/mobile.webp)
+
+讨论室适配 375 像素的手机竖屏。
+
+运行 `python scripts/agent.py --as GPT status` 可获得一份 JSON 状态，下面节选示例项目中的进行中任务：
+
+```json
+{
+  "ok": true,
+  "command": "status",
+  "result": {
+    "as": "GPT",
+    "tasks": [{"task": "T002", "title": "Run a small comparison", "status": "进行中"}],
+    "unread_owner_messages": [],
+    "pending_events": []
+  },
+  "error": null
+}
+```
+
+讨论室集中显示消息、回复与角色表情回应。三个人的头像各自显示当前心情；用户单击自己的头像选表情，助手分别设置自己的心情。任务预计时间按本轮领取与当前阶段计算。显示设置见[自定义说明](docs/customization.md)。
 
 **私聊 GPT**、**私聊 Claude** 分别打开本人和对应助手的会话，支持选择、粘贴、拖入图片、发送前预览和放大查看。每个会话保留当前页面内的草稿；Enter 发送，Shift+Enter 换行。助手通过本地[私聊工具](docs/private-chat.md)读取自己的会话并回复。
 

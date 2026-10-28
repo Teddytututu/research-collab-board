@@ -46,6 +46,8 @@ def files():
     names += [p.relative_to(ROOT).as_posix() for p in (ROOT/'board/art').glob('*.png') if p.name in {'avatar-claude-full.png','avatar-claude.png','avatar-gpt.png','avatar-user.png','cell-01.png','cell-02.png','cell-03.png','cell-04.png','cell-05.png','cell-06.png','cell-07.png','cell-08.png','cell-09.png','cell-10.png','cell-11.png','cell-12.png','claude-calm.png','claude-cheer.png','claude-confused.png','claude-happy.png','claude-heart.png','claude-panic.png','claude-pout.png','claude-proud.png','claude-reading.png','claude-shy.png','claude-sleepy.png','claude-surprised.png','claude-teary.png','claude-thinking.png','claude-wink.png','emotion-atlas.png','trio-atlas.png'}]
     names += [p.relative_to(ROOT).as_posix() for p in (ROOT/'board/reactions').glob('*.svg')]
     names += [p.relative_to(ROOT).as_posix() for p in (ROOT/'docs').glob('v02-*.png')]
+    names += ['docs/screenshots/'+name+'.webp' for name in [
+        'overview-pink','overview-blue','discussion','private-chat','files','mobile']]
     return sorted(set(names))
 
 def scan(blob,name=''):

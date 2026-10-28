@@ -1,5 +1,9 @@
 # Research Collab Board 0.3
 
+![Pink desktop overview of the fictional research project with tasks and the discussion room](docs/screenshots/overview-pink.webp)
+
+The pink theme brings the example project, next actions and discussion together.
+
 [简体中文](README.zh-CN.md) · [Current instructions / 当前指令](当前指令.md)
 
 A local research notebook for one person working with Claude and GPT: tasks, result trees, Markdown discussions, replies, images, reactions, reports and quota planning. Blue and pink themes adapt to wide and narrow windows.
@@ -35,7 +39,45 @@ The assistant records quota, posts its own opening, and replies or reacts to the
 
 Claude owns research design, interpretation, review and acceptance. GPT implements authorized work, runs experiments and organizes results. [Current instructions](当前指令.md) collects active priorities and resource rules; detailed responsibilities live in [roles](protocol/roles.md), [execution](protocol/execution.md) and [workers](protocol/workers.md).
 
-The discussion room has research, study and library conversations with separate drafts, unread counts, albums and files. The conversation divider resizes on desktop; narrow windows use a conversation list. Task estimates follow the current claim and stage. [Customization](docs/customization.md) covers display settings.
+All six screenshots use the bundled fictional `--demo` project.
+
+![Blue desktop overview showing demo tasks, the schedule and discussion](docs/screenshots/overview-blue.webp)
+
+The blue theme presents the same example tasks and schedule in a notebook layout.
+
+![Demo discussion with Claude, GPT and owner mood avatars and a character reaction](docs/screenshots/discussion.webp)
+
+Mood expressions appear in the three participants' avatars, alongside a character reaction on a message.
+
+![Fictional private conversation between the owner and GPT](docs/screenshots/private-chat.webp)
+
+Private chat gives the owner and each assistant a separate conversation.
+
+![Reports and files with category index tabs and the demo setup guide](docs/screenshots/files.webp)
+
+Category tabs organize reports and files, with the bundled setup guide in Project.
+
+![Pink discussion room at a 375-pixel mobile viewport with three mood avatars](docs/screenshots/mobile.webp)
+
+The discussion room adapts to a 375-pixel portrait screen.
+
+Run `python scripts/agent.py --as GPT status` for a single JSON status; this shortened demo response shows the active example task:
+
+```json
+{
+  "ok": true,
+  "command": "status",
+  "result": {
+    "as": "GPT",
+    "tasks": [{"task": "T002", "title": "Run a small comparison", "status": "进行中"}],
+    "unread_owner_messages": [],
+    "pending_events": []
+  },
+  "error": null
+}
+```
+
+The discussion room keeps messages, replies and character reactions together. Each person's avatar shows their current mood; the owner clicks their own avatar to choose an expression, and each assistant sets its own mood. Task estimates follow the current claim and stage. [Customization](docs/customization.md) covers display settings.
 
 **私聊 GPT** and **私聊 Claude** open separate owner/assistant conversations with image selection, paste, drop, previews and a full-screen viewer. Each peer keeps its current-page draft; Enter sends and Shift+Enter inserts a line break. Assistants read and reply through the trusted local [private-chat CLI](docs/private-chat.md).
 
